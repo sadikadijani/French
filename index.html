@@ -1,0 +1,2155 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cahier">
+<meta name="theme-color" content="#2344B5">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Cahier de Français</title>
+<meta name="description" content="Daily French practice: texts, Ma journée, vocabulary, grammar, speaking.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;1,7..72,400&family=Caveat:wght@500;700&display=swap">
+<style>
+:root{
+  --paper:#F7F7FC; --surface:#FFFFFF; --surface-2:#EFEEF8; --surface-3:#E4E2F3;
+  --ink:#191E3A; --ink-2:#4B5274; --ink-3:#7A809F;
+  --blue:#2344B5; --blue-soft:#DDE3FA; --on-blue:#FFFFFF;
+  --seyes:#D9D5EF; --seyes-strong:#BDB6E3;
+  --red:#D23F57; --red-soft:#FBE3E7;
+  --ok:#1B8756; --ok-soft:#DDF3E8; --warn:#A86A12; --warn-soft:#FBEFD9;
+  --line:#DEDCEC; --shadow:0 1px 2px rgba(25,30,58,.06),0 6px 20px rgba(25,30,58,.06);
+  --f-display:"Young Serif",Georgia,"Times New Roman",serif;
+  --f-ui:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-read:"Literata",Georgia,serif;
+  --f-hand:"Caveat","Comic Sans MS",cursive;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#11132A; --surface:#191C37; --surface-2:#222647; --surface-3:#2C3159;
+    --ink:#E9EAF6; --ink-2:#AEB2D0; --ink-3:#7F84A6;
+    --blue:#8EA5FF; --blue-soft:#27305F; --on-blue:#0E1330;
+    --seyes:#262A4E; --seyes-strong:#353A6B;
+    --red:#FF7B8E; --red-soft:#43202C;
+    --ok:#52D39B; --ok-soft:#173A2E; --warn:#F2B75B; --warn-soft:#3B2E17;
+    --line:#2B2F55; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#11132A; --surface:#191C37; --surface-2:#222647; --surface-3:#2C3159;
+  --ink:#E9EAF6; --ink-2:#AEB2D0; --ink-3:#7F84A6;
+  --blue:#8EA5FF; --blue-soft:#27305F; --on-blue:#0E1330;
+  --seyes:#262A4E; --seyes-strong:#353A6B;
+  --red:#FF7B8E; --red-soft:#43202C;
+  --ok:#52D39B; --ok-soft:#173A2E; --warn:#F2B75B; --warn-soft:#3B2E17;
+  --line:#2B2F55; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0;letter-spacing:.005em}
+h1{font-size:1.9rem;line-height:1.15}
+h2{font-size:1.35rem;line-height:1.2}
+h3{font-size:1.08rem;line-height:1.25}
+p{margin:0}
+.muted{color:var(--ink-2)}
+.small{font-size:.86rem}
+.tiny{font-size:.76rem}
+.eyebrow{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- shell ---------- */
+.app{display:grid;grid-template-columns:232px 1fr;min-height:100%}
+.side{position:sticky;top:0;height:100vh;padding:22px 14px;border-right:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px}
+.brand-mark{width:34px;height:34px;border-radius:8px;background:var(--blue);color:var(--on-blue);display:grid;place-items:center;font-family:var(--f-display);font-size:20px;position:relative;overflow:hidden}
+.brand-mark::after{content:"";position:absolute;left:7px;top:0;bottom:0;width:1.5px;background:var(--red)}
+.brand-name{font-family:var(--f-display);font-size:1.12rem;line-height:1.1}
+.brand-sub{font-size:.72rem;color:var(--ink-3)}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav button{display:flex;align-items:center;gap:11px;border:0;background:none;padding:9px 10px;border-radius:8px;text-align:left;color:var(--ink-2);font-weight:500}
+.nav button:hover{background:var(--surface-2);color:var(--ink)}
+.nav button[aria-current="page"]{background:var(--blue-soft);color:var(--blue);font-weight:600}
+.nav svg,.tabbar svg{width:19px;height:19px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.side-foot{margin-top:auto;display:flex;flex-direction:column;gap:8px;padding:0 6px}
+main{min-width:0;display:flex;flex-direction:column}
+.top{display:none}
+#view{width:100%;max-width:980px;margin:0 auto;padding-inline:28px;padding-block:28px 60px}
+.tabbar{display:none}
+
+.levelchip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px 5px 6px;font-weight:600;font-size:.86rem}
+.levelchip b{background:var(--blue);color:var(--on-blue);border-radius:999px;padding:1px 8px;font-size:.8rem}
+.levelchip span{color:var(--ink-2);font-weight:500}
+
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .side{display:none}
+  .top{display:flex;position:sticky;top:env(safe-area-inset-top,0px);z-index:20;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  #view{padding-inline:16px;padding-block:18px 110px}
+  .tabbar{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+  .tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.66rem;color:var(--ink-3);padding:4px 0;font-weight:600}
+  .tabbar button[aria-current="page"]{color:var(--blue)}
+  h1{font-size:1.55rem}
+}
+
+/* ---------- common ---------- */
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack-lg{display:flex;flex-direction:column;gap:26px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.card.flat{box-shadow:none}
+.card.raised{box-shadow:var(--shadow)}
+.panel{background:var(--surface-2);border-radius:var(--r);padding:14px 16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;font-weight:600;font-size:.9rem;line-height:1.2;white-space:nowrap}
+.btn:hover{border-color:var(--seyes-strong);background:var(--surface-2)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:var(--on-blue)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{border-color:transparent;background:none}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn.sm{padding:5px 10px;font-size:.82rem}
+.btn.danger{color:var(--red)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.iconbtn{width:32px;height:32px;display:inline-grid;place-items:center;border-radius:8px;border:1px solid var(--line);background:var(--surface);padding:0;flex:none}
+.iconbtn:hover{background:var(--surface-2)}
+.iconbtn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.iconbtn.speaking{background:var(--blue);color:var(--on-blue);border-color:var(--blue)}
+.pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:2px 9px;font-size:.74rem;font-weight:600;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.pill.lv{background:var(--blue-soft);color:var(--blue)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.red{background:var(--red-soft);color:var(--red)}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:9px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:none;border-radius:7px;padding:6px 12px;font-weight:600;font-size:.84rem;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+input[type=text],input[type=search],textarea,select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 12px;outline:none}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+textarea{resize:vertical;min-height:120px;line-height:1.6}
+label.lbl{display:block;font-size:.8rem;font-weight:600;color:var(--ink-2);margin-bottom:5px}
+hr.sep{border:0;border-top:1px solid var(--line);margin:0}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs button{border:0;background:none;padding:9px 12px;font-weight:600;color:var(--ink-3);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--blue);border-bottom-color:var(--blue)}
+.empty{padding:26px;text-align:center;color:var(--ink-3);border:1px dashed var(--line);border-radius:var(--r)}
+.note{font-size:.84rem;color:var(--ink-2);background:var(--surface-2);border-radius:8px;padding:9px 12px}
+.note.warn{background:var(--warn-soft);color:var(--warn)}
+.progress{height:6px;border-radius:99px;background:var(--surface-3);overflow:hidden}
+.progress > i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .4s}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--seyes-strong);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.thinking{display:flex;align-items:center;gap:10px;color:var(--ink-2);font-size:.9rem;padding:10px 0}
+
+/* ---------- Seyès notebook paper ---------- */
+.seyes{
+  --lh:32px;
+  background-color:var(--surface);
+  background-image:
+    linear-gradient(90deg,transparent 46px,var(--red) 46px,var(--red) 47.5px,transparent 47.5px),
+    repeating-linear-gradient(180deg,transparent 0 calc(var(--lh) - 1px),var(--seyes-strong) calc(var(--lh) - 1px) var(--lh)),
+    repeating-linear-gradient(180deg,transparent 0 7px,var(--seyes) 7px 8px);
+  background-position:0 0,0 12px,0 12px;
+  border:1px solid var(--line);border-radius:var(--r);
+  padding:12px 18px 20px 62px;
+}
+@media (max-width:560px){.seyes{padding-left:40px;background-image:linear-gradient(90deg,transparent 28px,var(--red) 28px,var(--red) 29.5px,transparent 29.5px),repeating-linear-gradient(180deg,transparent 0 calc(var(--lh) - 1px),var(--seyes-strong) calc(var(--lh) - 1px) var(--lh)),repeating-linear-gradient(180deg,transparent 0 7px,var(--seyes) 7px 8px)}}
+.reader{font-family:var(--f-read);font-size:1.13rem;line-height:32px}
+.sent{position:relative;display:block;padding:0 0 0 0;border-radius:4px;transition:background .2s}
+.sent + .sent{margin-top:0}
+.sent.active{background:color-mix(in srgb,var(--blue-soft) 80%,transparent)}
+.sent .play{position:absolute;left:-36px;top:3px;width:26px;height:26px;border-radius:50%;border:0;background:none;color:var(--ink-3);display:grid;place-items:center;padding:0}
+.sent .play:hover{color:var(--blue);background:var(--surface-2)}
+.sent .play svg{width:14px;height:14px;fill:currentColor}
+@media (max-width:560px){.sent .play{left:-34px}}
+.w{cursor:pointer;border-radius:3px}
+.w:hover{background:var(--blue-soft);color:var(--blue)}
+.w.saved{text-decoration:underline;text-decoration-color:var(--blue);text-decoration-thickness:2px;text-underline-offset:4px}
+.tr{display:block;font-family:var(--f-ui);font-size:.9rem;color:var(--ink-3);line-height:32px;font-style:italic}
+.hand{font-family:var(--f-hand);color:var(--red);font-size:1.25em;line-height:1}
+
+/* ---------- popover / modal / toast ---------- */
+#pop{position:fixed;z-index:60;width:min(320px,calc(100vw - 24px));background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:14px}
+#pop .pw{font-family:var(--f-read);font-size:1.25rem}
+#selbtn{position:fixed;z-index:55;background:var(--ink);color:var(--paper);border:0;border-radius:8px;padding:7px 12px;font-weight:600;font-size:.84rem;box-shadow:var(--shadow)}
+#modal{position:fixed;inset:0;z-index:70;background:rgba(10,12,30,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px}
+@media (min-width:640px){#modal{align-items:center}}
+.sheet{background:var(--surface);border-radius:14px;width:min(640px,100%);max-height:calc(100% - 20px);overflow:auto;padding:22px;box-shadow:var(--shadow)}
+#toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:calc(100% - 32px);max-width:420px}
+@media (min-width:861px){#toast{bottom:28px}}
+.toast{background:var(--ink);color:var(--paper);border-radius:10px;padding:10px 16px;font-weight:500;font-size:.9rem;box-shadow:var(--shadow);animation:tin .25s ease}
+.toast.good{background:var(--ok);color:#fff}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}}
+#accentbar{position:fixed;left:0;right:0;bottom:0;z-index:65;display:flex;gap:4px;justify-content:center;flex-wrap:wrap;background:var(--surface-2);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+#accentbar button{min-width:34px;height:34px;border-radius:7px;border:1px solid var(--line);background:var(--surface);font-family:var(--f-read);font-size:1.05rem}
+
+/* ---------- today ---------- */
+.hello{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.hello .date{font-family:var(--f-hand);font-size:1.5rem;color:var(--red);line-height:1}
+.plan{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.task{display:flex;gap:12px;align-items:flex-start;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;width:100%}
+.task:hover{border-color:var(--seyes-strong)}
+.task .chk{width:24px;height:24px;border-radius:50%;border:2px solid var(--seyes-strong);flex:none;display:grid;place-items:center;margin-top:1px}
+.task.done .chk{background:var(--ok);border-color:var(--ok)}
+.task.done .chk::after{content:"";width:7px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.task.done h3{color:var(--ink-2)}
+.task .meta{font-size:.8rem;color:var(--ink-3)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.stat .v{font-family:var(--f-display);font-size:1.6rem;line-height:1.1}
+.stat .k{font-size:.76rem;color:var(--ink-3);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.heat{display:grid;grid-template-columns:repeat(30,1fr);gap:3px}
+.heat i{aspect-ratio:1;border-radius:3px;background:var(--surface-3);max-width:100%}
+.heat i.l1{background:color-mix(in srgb,var(--blue) 30%,var(--surface-3))}
+.heat i.l2{background:color-mix(in srgb,var(--blue) 60%,var(--surface-3))}
+.heat i.l3{background:var(--blue)}
+
+/* ---------- lists ---------- */
+.textcard{display:flex;flex-direction:column;gap:8px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;width:100%;position:relative}
+.textcard:hover{border-color:var(--seyes-strong);box-shadow:var(--shadow)}
+.textcard .ex{font-family:var(--f-read);font-size:.92rem;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.textcard .read{position:absolute;top:12px;right:12px}
+.list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.li{display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid var(--line)}
+.li:first-child{border-top:0}
+.li .fr{font-family:var(--f-read);font-weight:500}
+.li .grow{flex:1;min-width:0}
+
+/* ---------- drills ---------- */
+.drill{display:flex;flex-direction:column;gap:12px}
+.prompt-big{font-family:var(--f-read);font-size:1.3rem;line-height:1.45}
+.blank{display:inline-block;min-width:90px;border-bottom:2px solid var(--blue);margin:0 4px}
+.feedback{border-radius:8px;padding:10px 14px;font-size:.92rem}
+.feedback.good{background:var(--ok-soft);color:var(--ok)}
+.feedback.bad{background:var(--red-soft);color:var(--red)}
+.feedback.close{background:var(--warn-soft);color:var(--warn)}
+.feedback .ans{font-family:var(--f-read);font-weight:500;color:var(--ink)}
+.choices{display:grid;gap:8px}
+.choice{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:11px 14px;font-family:var(--f-read);font-size:1.02rem}
+.choice:hover:not(:disabled){border-color:var(--blue)}
+.choice.right{border-color:var(--ok);background:var(--ok-soft)}
+.choice.wrong{border-color:var(--red);background:var(--red-soft)}
+.choice:disabled{cursor:default}
+
+/* ---------- flashcard ---------- */
+.flash{min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:30px 20px}
+.flash .big{font-family:var(--f-read);font-size:2rem;line-height:1.2}
+.flash .exs{font-family:var(--f-read);font-style:italic;color:var(--ink-2)}
+.rate{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
+.rate button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:9px 4px}
+.rate small{font-weight:500;color:var(--ink-3);font-size:.72rem}
+
+/* ---------- ladder ---------- */
+.ladder{display:flex;flex-direction:column;gap:8px}
+.rung{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;width:100%}
+.rung:hover{border-color:var(--seyes-strong)}
+.rung.next{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.rung .step{font-family:var(--f-display);font-size:1.3rem;color:var(--ink-3);width:30px;text-align:center}
+.rung .mast{width:90px}
+.rule{font-family:var(--f-ui)}
+.rule p{margin:0 0 10px}
+.rule table{border-collapse:collapse;font-size:.92rem;margin:4px 0 12px}
+.rule td,.rule th{border-bottom:1px solid var(--line);padding:5px 12px 5px 0;text-align:left}
+.rule th{font-size:.76rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}
+.rule .ex{font-family:var(--f-read);display:flex;gap:8px;align-items:baseline;margin:4px 0}
+.rule .ex em{color:var(--ink-3);font-family:var(--f-ui);font-size:.86rem}
+.rule ul{margin:0 0 10px;padding-left:20px}
+.tablewrap{overflow-x:auto}
+.conjtable{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.conjtable .card{padding:12px 14px}
+.conjtable ol{list-style:none;margin:6px 0 0;padding:0;font-family:var(--f-read);font-size:.95rem;line-height:1.7}
+.conjtable ol b{font-weight:500;color:var(--blue)}
+
+/* ---------- chat ---------- */
+.chat{display:flex;flex-direction:column;gap:10px;min-height:240px}
+.bubble{max-width:86%;padding:10px 14px;border-radius:14px;font-family:var(--f-read);line-height:1.55}
+.bubble.me{align-self:flex-end;background:var(--blue);color:var(--on-blue);border-bottom-right-radius:4px}
+.bubble.ai{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-bottom-left-radius:4px}
+.fix{align-self:flex-end;max-width:86%;font-size:.84rem;color:var(--red);background:var(--red-soft);border-radius:8px;padding:6px 10px}
+.fix.okay{color:var(--ok);background:var(--ok-soft)}
+
+/* ---------- timer ---------- */
+.timer{width:170px;height:170px;border-radius:50%;display:grid;place-items:center;margin:0 auto;background:conic-gradient(var(--blue) var(--p,0%),var(--surface-3) 0)}
+.timer > div{width:146px;height:146px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-family:var(--f-display);font-size:2.6rem}
+
+.corr{font-family:var(--f-read);font-size:1.05rem;line-height:32px}
+.corr del{color:var(--red);text-decoration-thickness:1.5px}
+.corr ins{text-decoration:none;font-family:var(--f-hand);color:var(--red);font-size:1.35em;padding:0 2px}
+.err{display:grid;grid-template-columns:1fr;gap:3px;padding:10px 0;border-top:1px solid var(--line)}
+.err:first-child{border-top:0}
+.err .pair{font-family:var(--f-read)}
+.err .pair s{color:var(--red)}
+.err .pair b{color:var(--ok);font-weight:500}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">C</div>
+      <div><div class="brand-name">Cahier</div><div class="brand-sub">de français</div></div>
+    </div>
+    <nav class="nav" id="sidenav" aria-label="Sections"></nav>
+    <div class="side-foot">
+      <button class="levelchip" id="lvchip-side" type="button"></button>
+      <button class="btn ghost sm" id="settings-side" type="button" style="justify-content:flex-start">Réglages</button>
+    </div>
+  </aside>
+  <main>
+    <header class="top">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">C</div><div class="brand-name">Cahier</div></div>
+      <div class="row" style="gap:6px">
+        <button class="levelchip" id="lvchip-top" type="button"></button>
+        <button class="iconbtn" id="settings-top" type="button" aria-label="Réglages"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+      </div>
+    </header>
+    <div id="view"></div>
+  </main>
+  <nav class="tabbar" id="tabbar" aria-label="Sections"></nav>
+</div>
+<div id="pop" hidden></div>
+<button id="selbtn" type="button" hidden>Traduire la sélection</button>
+<div id="modal" hidden></div>
+<div id="toast" aria-live="polite"></div>
+<div id="accentbar" hidden></div>
+<script>
+/* ================= CONTENT ================= */
+const LEVELS = ['A1','A2','B1','B2','C1'];
+const LEVEL_NAMES = {A1:'Débutant',A2:'Élémentaire',B1:'Intermédiaire',B2:'Avancé',C1:'Autonome'};
+
+const BUILTIN_TEXTS = [
+{id:'b-journee',level:'A1',title:'Ma journée de travail',focus:'Présent',
+ s:[["Je m'appelle Léa et j'habite à Luxembourg.","My name is Léa and I live in Luxembourg."],
+ ["Le matin, je me lève à sept heures.","In the morning, I get up at seven o'clock."],
+ ["Je prends une douche et je bois un café.","I take a shower and drink a coffee."],
+ ["Je vais au bureau en bus.","I go to the office by bus."],
+ ["Je commence le travail à neuf heures.","I start work at nine o'clock."],
+ ["À midi, je mange avec mes collègues.","At noon, I eat with my colleagues."],
+ ["Le soir, je rentre à la maison et je prépare le dîner.","In the evening, I go home and make dinner."],
+ ["Je lis un peu et je me couche à onze heures.","I read a little and go to bed at eleven."]],
+ g:["se lever|to get up","prendre une douche|to take a shower","le bureau|the office","commencer|to start","midi|noon","un collègue|a colleague","rentrer|to go back home","se coucher|to go to bed"],
+ d:[["Replace « je » with « nous »","Je prends une douche et je bois un café.","Nous prenons une douche et nous buvons un café."],
+ ["Replace « je » with « il »","Je vais au bureau en bus.","Il va au bureau en bus."],
+ ["Put it in the passé composé","À midi, je mange avec mes collègues.","À midi, j'ai mangé avec mes collègues."],
+ ["Make it negative (pas de)","Je bois un café.","Je ne bois pas de café."]],
+ q:[["À quelle heure Léa se lève-t-elle ?",["À six heures","À sept heures","À neuf heures","À onze heures"],1],
+ ["Comment va-t-elle au bureau ?",["En voiture","À pied","En bus","En train"],2]]},
+
+{id:'b-cafe',level:'A1',title:'Au café',focus:'Politesse',
+ s:[["— Bonjour madame, qu'est-ce que vous désirez ?","— Hello madam, what would you like?"],
+ ["— Bonjour ! Je voudrais un café crème et un croissant, s'il vous plaît.","— Hello! I'd like a coffee with milk and a croissant, please."],
+ ["— Sur place ou à emporter ?","— To have here or to take away?"],
+ ["— Sur place.","— Here."],
+ ["— Très bien. Ça fait six euros cinquante.","— Very good. That's six euros fifty."],
+ ["— Je peux payer par carte ?","— Can I pay by card?"],
+ ["— Bien sûr. Voilà votre ticket.","— Of course. Here is your receipt."],
+ ["— Merci, bonne journée !","— Thank you, have a nice day!"]],
+ g:["je voudrais|I would like","sur place|to have here","à emporter|to take away","ça fait|that comes to","payer par carte|to pay by card","bien sûr|of course","le ticket|the receipt"],
+ d:[["Replace « je » with « nous »","Je voudrais un café crème.","Nous voudrions un café crème."],
+ ["Replace « vous » with « tu »","Qu'est-ce que vous désirez ?","Qu'est-ce que tu désires ?"],
+ ["Replace « je » with « on »","Je peux payer par carte ?","On peut payer par carte ?"]],
+ q:[["Qu'est-ce que la cliente commande ?",["Un thé et un croissant","Un café crème et un croissant","Un café et une baguette","Un chocolat chaud"],1],
+ ["Combien ça coûte ?",["5,50 €","6,00 €","6,50 €","7,50 €"],2]]},
+
+{id:'b-marche',level:'A2',title:'Un samedi au marché',focus:'Passé composé',
+ s:[["Samedi dernier, je me suis levé tôt.","Last Saturday, I got up early."],
+ ["J'ai pris mon vélo et je suis allé au marché.","I took my bike and went to the market."],
+ ["Il y avait beaucoup de monde.","There were a lot of people."],
+ ["J'ai acheté des tomates, du fromage et une baguette.","I bought tomatoes, cheese and a baguette."],
+ ["Ensuite, j'ai rencontré mon voisin Marc.","Then I met my neighbour Marc."],
+ ["Nous avons bu un café ensemble sur une terrasse.","We had a coffee together on a terrace."],
+ ["Vers midi, je suis rentré chez moi.","Around noon, I went back home."],
+ ["L'après-midi, j'ai cuisiné une soupe et j'ai regardé un film.","In the afternoon, I cooked a soup and watched a film."]],
+ g:["tôt|early","le marché|the market","il y avait|there was / there were","beaucoup de monde|a lot of people","ensuite|then","le voisin|the neighbour","ensemble|together","vers midi|around noon"],
+ d:[["Replace « je » with « nous »","Je suis allé au marché.","Nous sommes allés au marché."],
+ ["Replace « je » with « elle »","Je me suis levé tôt.","Elle s'est levée tôt."],
+ ["Put it in the présent","J'ai acheté des tomates.","J'achète des tomates."],
+ ["Replace « nous » with « ils »","Nous avons bu un café ensemble.","Ils ont bu un café ensemble."]],
+ q:[["Comment est-il allé au marché ?",["En bus","À vélo","À pied","En voiture"],1],
+ ["Qui a-t-il rencontré ?",["Son frère","Sa collègue","Son voisin","Son professeur"],2]]},
+
+{id:'b-medecin',level:'A2',title:'Chez le médecin',focus:'Passé composé + imparfait',
+ s:[["Hier, je ne me sentais pas bien.","Yesterday, I wasn't feeling well."],
+ ["J'avais mal à la tête et un peu de fièvre.","I had a headache and a bit of a fever."],
+ ["J'ai appelé le cabinet et j'ai pris rendez-vous pour l'après-midi.","I called the practice and made an appointment for the afternoon."],
+ ["Le médecin m'a demandé : « Depuis quand avez-vous ces symptômes ? »","The doctor asked me: “How long have you had these symptoms?”"],
+ ["J'ai répondu : « Depuis deux jours. »","I answered: “For two days.”"],
+ ["Il m'a examiné et il m'a donné une ordonnance.","He examined me and gave me a prescription."],
+ ["Je suis passé à la pharmacie avant de rentrer.","I stopped by the pharmacy before going home."],
+ ["Aujourd'hui, ça va beaucoup mieux !","Today, I feel much better!"]],
+ g:["se sentir bien|to feel well","avoir mal à la tête|to have a headache","la fièvre|fever","prendre rendez-vous|to make an appointment","depuis quand|since when / how long","une ordonnance|a prescription","la pharmacie|the pharmacy","mieux|better"],
+ d:[["Replace « je » with « nous »","J'avais mal à la tête.","Nous avions mal à la tête."],
+ ["Replace « je » with « tu »","J'ai appelé le cabinet.","Tu as appelé le cabinet."],
+ ["Put it in the futur proche","J'ai pris rendez-vous.","Je vais prendre rendez-vous."],
+ ["Replace « il » with « elle »","Il m'a donné une ordonnance.","Elle m'a donné une ordonnance."]],
+ q:[["Quels symptômes avait-il ?",["Mal au dos","Mal à la tête et de la fièvre","Mal au ventre","Une toux"],1],
+ ["Depuis quand ?",["Un jour","Deux jours","Une semaine","Un mois"],1]]},
+
+{id:'b-travail',level:'A2',title:'Le nouveau travail',focus:'Passé composé + imparfait',
+ s:[["Lundi, Karim a commencé un nouveau travail dans une banque.","On Monday, Karim started a new job at a bank."],
+ ["Il était un peu stressé, mais tout s'est bien passé.","He was a bit stressed, but everything went well."],
+ ["Sa responsable lui a présenté l'équipe.","His manager introduced the team to him."],
+ ["Les collègues sont sympas et ils parlent français, anglais et luxembourgeois.","The colleagues are nice and they speak French, English and Luxembourgish."],
+ ["Le matin, il a eu une formation sur les outils internes.","In the morning, he had training on the internal tools."],
+ ["À midi, ils ont déjeuné tous ensemble à la cantine.","At noon, they all had lunch together in the canteen."],
+ ["Le soir, Karim était fatigué mais content.","In the evening, Karim was tired but happy."],
+ ["Il a hâte de continuer demain.","He is looking forward to continuing tomorrow."]],
+ g:["la responsable|the manager","présenter|to introduce","sympa|nice","une formation|a training","déjeuner|to have lunch","la cantine|the canteen","fatigué|tired","avoir hâte de|to look forward to"],
+ d:[["Replace « il » with « je »","Il était un peu stressé.","J'étais un peu stressé."],
+ ["Replace « il » with « nous »","Il a eu une formation.","Nous avons eu une formation."],
+ ["Put it in the présent","Ils ont déjeuné tous ensemble.","Ils déjeunent tous ensemble."],
+ ["Replace « il » with « elle »","Il a commencé un nouveau travail.","Elle a commencé un nouveau travail."]],
+ q:[["Où travaille Karim ?",["Dans une école","Dans une banque","Dans un hôpital","Dans un restaurant"],1],
+ ["Comment était-il le soir ?",["Triste et malade","Fatigué mais content","En colère","Stressé et déçu"],1]]},
+
+{id:'b-enfance',level:'B1',title:"Souvenirs d'enfance",focus:'Imparfait vs passé composé',
+ s:[["Quand j'étais petit, nous habitions dans un petit village près de la mer.","When I was little, we lived in a small village near the sea."],
+ ["Chaque été, mes grands-parents venaient passer un mois chez nous.","Every summer, my grandparents came to spend a month with us."],
+ ["Mon grand-père se levait toujours avant tout le monde pour aller pêcher.","My grandfather always got up before everyone to go fishing."],
+ ["Pendant ce temps, ma grand-mère préparait des confitures dans la cuisine.","Meanwhile, my grandmother made jam in the kitchen."],
+ ["Moi, je passais mes journées à la plage avec mes cousins.","As for me, I spent my days at the beach with my cousins."],
+ ["Un jour, pendant que nous jouions dans l'eau, un orage a éclaté.","One day, while we were playing in the water, a storm broke out."],
+ ["Nous sommes rentrés en courant, complètement trempés.","We ran home, completely soaked."],
+ ["Ma grand-mère riait et elle nous a servi un chocolat chaud.","My grandmother was laughing and she served us a hot chocolate."]],
+ g:["quand j'étais petit|when I was little","pêcher|to fish","pendant ce temps|meanwhile","la confiture|jam","un orage|a storm","éclater|to break out","en courant|running","trempé|soaked"],
+ d:[["Replace « nous » with « je »","Nous habitions dans un petit village.","J'habitais dans un petit village."],
+ ["Put it in the présent","Mon grand-père se levait toujours avant tout le monde.","Mon grand-père se lève toujours avant tout le monde."],
+ ["Replace « je » with « nous »","Je passais mes journées à la plage.","Nous passions nos journées à la plage."],
+ ["Replace « nous » with « elles »","Nous sommes rentrés en courant.","Elles sont rentrées en courant."]],
+ q:[["Pourquoi l'imparfait dans « nous jouions » ?",["Action terminée et ponctuelle","Action en cours, interrompue par un événement","Action future","C'est un ordre"],1],
+ ["Que faisait la grand-mère ?",["Elle pêchait","Elle préparait des confitures","Elle jouait à la plage","Elle dormait"],1]]},
+
+{id:'b-demenager',level:'B1',title:'Déménager à Luxembourg',focus:'Temps du passé + conditionnel',
+ s:[["L'année dernière, Sofia a décidé de quitter Lisbonne pour s'installer à Luxembourg.","Last year, Sofia decided to leave Lisbon to settle in Luxembourg."],
+ ["Trouver un appartement n'a pas été facile, car les loyers sont très élevés.","Finding an apartment wasn't easy, because rents are very high."],
+ ["Elle a visité une dizaine de logements avant d'en trouver un qui lui plaisait.","She visited about ten places before finding one she liked."],
+ ["Le propriétaire lui a demandé trois mois de caution et plusieurs justificatifs.","The landlord asked her for three months' deposit and several supporting documents."],
+ ["Le jour du déménagement, il pleuvait à verse, mais ses amis sont venus l'aider.","On moving day, it was pouring with rain, but her friends came to help her."],
+ ["Depuis, elle s'est habituée à son quartier et elle prend le tram tous les jours.","Since then, she has got used to her neighbourhood and takes the tram every day."],
+ ["Elle trouve que la ville est calme, verte et très internationale.","She finds the city quiet, green and very international."],
+ ["Si c'était à refaire, elle chercherait un logement plus tôt.","If she had to do it again, she would look for a place earlier."]],
+ g:["s'installer|to settle","le loyer|the rent","élevé|high","une dizaine|about ten","le propriétaire|the landlord","la caution|the deposit","un justificatif|a supporting document","pleuvoir à verse|to pour with rain","s'habituer à|to get used to","le quartier|the neighbourhood"],
+ d:[["Replace « elle » with « je »","Elle a visité une dizaine de logements.","J'ai visité une dizaine de logements."],
+ ["Replace « elle » with « nous »","Elle s'est habituée à son quartier.","Nous nous sommes habitués à notre quartier."],
+ ["Put it in the futur simple","Elle prend le tram tous les jours.","Elle prendra le tram tous les jours."],
+ ["Put it in the conditionnel","Je cherche un logement plus tôt.","Je chercherais un logement plus tôt."]],
+ q:[["Pourquoi était-ce difficile ?",["Il n'y avait pas de tram","Les loyers sont très élevés","Elle ne parlait pas français","Il pleuvait"],1],
+ ["Qu'est-ce que « la caution » ?",["Le loyer mensuel","Un dépôt de garantie","Une facture","Un contrat de travail"],1]]},
+
+{id:'b-voyage',level:'B1',title:'Un voyage raté',focus:'Plus-que-parfait, venir de',
+ s:[["Le mois dernier, nous avions prévu un week-end à Strasbourg.","Last month, we had planned a weekend in Strasbourg."],
+ ["Tout était réservé : le train, l'hôtel et même un restaurant.","Everything was booked: the train, the hotel and even a restaurant."],
+ ["Malheureusement, le matin du départ, le réveil n'a pas sonné.","Unfortunately, on the morning we were leaving, the alarm didn't go off."],
+ ["Quand nous sommes arrivés à la gare, le train venait de partir.","When we got to the station, the train had just left."],
+ ["Le prochain train était complet, alors nous avons loué une voiture.","The next train was full, so we rented a car."],
+ ["Sur l'autoroute, il y avait des bouchons pendant deux heures.","On the motorway, there were traffic jams for two hours."],
+ ["Finalement, nous sommes arrivés juste à temps pour le dîner.","In the end, we arrived just in time for dinner."],
+ ["Avec le recul, c'est le voyage dont on parle le plus en riant !","Looking back, it's the trip we laugh about the most!"]],
+ g:["prévoir|to plan","réservé|booked","malheureusement|unfortunately","le réveil|the alarm clock","venir de + infinitif|to have just done","complet|full","louer|to rent","les bouchons|traffic jams","avec le recul|in hindsight"],
+ d:[["Replace « nous » with « je »","Nous sommes arrivés à la gare.","Je suis arrivé à la gare."],
+ ["Put it in the présent","Le train venait de partir.","Le train vient de partir."],
+ ["Replace « nous » with « ils »","Nous avons loué une voiture.","Ils ont loué une voiture."],
+ ["Put it in the plus-que-parfait","Nous avons prévu un week-end.","Nous avions prévu un week-end."]],
+ q:[["Pourquoi ont-ils raté le train ?",["Une grève","Le réveil n'a pas sonné","Les bouchons","Le train était annulé"],1],
+ ["« Le train venait de partir » signifie…",["Le train allait partir","Le train était parti il y a très peu de temps","Le train arrivait","Le train était en retard"],1]]},
+
+{id:'b-teletravail',level:'B2',title:'Le télétravail : pour ou contre ?',focus:'Argumenter, subjonctif',
+ s:[["Depuis la pandémie, le télétravail fait partie du quotidien de nombreux salariés.","Since the pandemic, remote work has been part of daily life for many employees."],
+ ["Ses partisans soulignent qu'il permet de gagner du temps et de mieux concilier vie professionnelle et vie privée.","Its supporters stress that it saves time and helps balance work and private life."],
+ ["Au Luxembourg, où beaucoup de travailleurs frontaliers passent des heures dans les bouchons, l'argument pèse lourd.","In Luxembourg, where many cross-border workers spend hours in traffic, the argument carries a lot of weight."],
+ ["Pourtant, certains managers craignent que la cohésion des équipes ne s'affaiblisse.","Yet some managers fear that team cohesion will weaken."],
+ ["Ils estiment que les échanges informels, à la machine à café par exemple, sont indispensables à la créativité.","They believe informal exchanges, at the coffee machine for example, are essential to creativity."],
+ ["D'autres salariés avouent se sentir isolés lorsqu'ils travaillent seuls chez eux toute la semaine.","Other employees admit feeling isolated when they work alone at home all week."],
+ ["C'est pourquoi de plus en plus d'entreprises optent pour un modèle hybride.","That is why more and more companies opt for a hybrid model."],
+ ["Reste à savoir si ce compromis satisfera à la fois les employeurs et les employés.","It remains to be seen whether this compromise will satisfy both employers and employees."]],
+ g:["le quotidien|daily life","un salarié|an employee","un partisan|a supporter","souligner|to stress","concilier|to reconcile / balance","un frontalier|a cross-border worker","peser lourd|to carry weight","pourtant|yet / however","craindre que (+ subj.)|to fear that","avouer|to admit","opter pour|to opt for","reste à savoir|it remains to be seen"],
+ d:[["Put it in the passé composé","Beaucoup d'entreprises optent pour un modèle hybride.","Beaucoup d'entreprises ont opté pour un modèle hybride."],
+ ["Replace « ils » with « je »","Ils estiment que les échanges sont indispensables.","J'estime que les échanges sont indispensables."],
+ ["Start with « Il est possible que » (subjonctif)","La cohésion s'affaiblit.","Il est possible que la cohésion s'affaiblisse."],
+ ["Put it in the futur simple","Ce compromis satisfait les employés.","Ce compromis satisfera les employés."]],
+ q:[["Pourquoi l'argument pèse-t-il lourd au Luxembourg ?",["À cause des loyers","Les frontaliers passent des heures dans les bouchons","À cause du climat","À cause des langues"],1],
+ ["Pourquoi le subjonctif après « craignent que » ?",["C'est une certitude","C'est un verbe de crainte","C'est au passé","C'est une question"],1]]},
+
+{id:'b-langues',level:'B2',title:'Plusieurs langues au bureau',focus:'Nuancer, connecteurs',
+ s:[["Dans beaucoup d'entreprises luxembourgeoises, on passe d'une langue à l'autre plusieurs fois par jour.","In many Luxembourg companies, people switch languages several times a day."],
+ ["Une réunion peut commencer en anglais, continuer en français et se terminer en luxembourgeois.","A meeting can start in English, continue in French and end in Luxembourgish."],
+ ["Pour les nouveaux arrivants, ce multilinguisme est à la fois une richesse et un défi.","For newcomers, this multilingualism is both an asset and a challenge."],
+ ["Beaucoup avouent qu'ils hésitaient à parler français de peur de faire des fautes.","Many admit they hesitated to speak French for fear of making mistakes."],
+ ["Or, les collègues francophones apprécient généralement l'effort, même quand la grammaire n'est pas parfaite.","Yet French-speaking colleagues generally appreciate the effort, even when the grammar isn't perfect."],
+ ["Le plus efficace, selon les formateurs, c'est de se lancer sans attendre d'être « prêt ».","The most effective thing, according to trainers, is to jump in without waiting to be “ready”."],
+ ["Il suffit de quelques phrases utiles pour participer à une conversation.","A few useful sentences are enough to take part in a conversation."],
+ ["Au bout de quelques mois, on s'étonne de comprendre presque tout.","After a few months, you're surprised to understand almost everything."]],
+ g:["passer d'une langue à l'autre|to switch languages","un nouvel arrivant|a newcomer","un défi|a challenge","de peur de|for fear of","une faute|a mistake","or|yet / now","se lancer|to take the plunge","il suffit de|all it takes is","au bout de|after (a period)","s'étonner|to be surprised"],
+ d:[["Replace « on » with « nous »","On passe d'une langue à l'autre.","Nous passons d'une langue à l'autre."],
+ ["Put it in the passé composé","Une réunion commence en anglais.","Une réunion a commencé en anglais."],
+ ["Replace « ils » with « je »","Ils hésitaient à parler français.","J'hésitais à parler français."],
+ ["Put it in the conditionnel","Il suffit de quelques phrases.","Il suffirait de quelques phrases."]],
+ q:[["Selon les formateurs, que faut-il faire ?",["Attendre d'être prêt","Se lancer sans attendre","Parler uniquement anglais","Étudier seulement la grammaire"],1],
+ ["Que signifie « il suffit de » ?",["Il faut beaucoup de","Il est suffisant de","Il est interdit de","Il manque"],1]]},
+
+{id:'b-lenteur',level:'C1',title:'Éloge de la lenteur',focus:'Registre soutenu',
+ s:[["À l'heure où tout s'accélère, prendre son temps passe presque pour un acte de résistance.","At a time when everything is speeding up, taking one's time almost passes for an act of resistance."],
+ ["Nos journées sont rythmées par des notifications qui exigent une réponse immédiate.","Our days are punctuated by notifications demanding an immediate response."],
+ ["Il n'est donc guère étonnant que tant de gens se disent épuisés sans avoir eu le sentiment d'accomplir quoi que ce soit.","It's hardly surprising, then, that so many people say they're exhausted without feeling they've accomplished anything at all."],
+ ["Les adeptes du « slow » plaident pour une autre approche : faire moins, mais le faire pleinement.","Followers of “slow” living argue for another approach: do less, but do it fully."],
+ ["Loin d'être une perte de temps, flâner permettrait à l'esprit de faire des liens inattendus.","Far from being a waste of time, strolling reportedly lets the mind make unexpected connections."],
+ ["Encore faut-il oser se déconnecter, ce qui, avouons-le, n'est pas donné à tout le monde.","Still, one has to dare to disconnect, which, let's admit it, not everyone can do."],
+ ["Quoi qu'il en soit, ralentir ne signifie pas renoncer à l'ambition.","Be that as it may, slowing down doesn't mean giving up ambition."],
+ ["Peut-être est-ce même la condition pour qu'elle porte ses fruits.","Perhaps it's even the condition for it to bear fruit."]],
+ g:["à l'heure où|at a time when","rythmé|punctuated","guère|hardly","épuisé|exhausted","quoi que ce soit|anything at all","plaider pour|to argue for","flâner|to stroll","encore faut-il|still, one must","avouons-le|let's admit it","quoi qu'il en soit|be that as it may","porter ses fruits|to bear fruit"],
+ d:[["Put it in the passé composé","Les adeptes plaident pour une autre approche.","Les adeptes ont plaidé pour une autre approche."],
+ ["Put it in the futur simple","Ralentir ne signifie pas renoncer.","Ralentir ne signifiera pas renoncer."],
+ ["Rewrite with « Bien que » + subjonctif","C'est difficile, mais il faut oser.","Bien que ce soit difficile, il faut oser."],
+ ["Use subject inversion after « peut-être »","Peut-être que c'est la condition.","Peut-être est-ce la condition."]],
+ q:[["Pourquoi « permettrait » au conditionnel ?",["Hypothèse irréelle","Information rapportée, non confirmée","Politesse","Futur"],1],
+ ["« Il n'est guère étonnant » signifie…",["C'est très étonnant","C'est peu étonnant","C'est choquant","C'est drôle"],1]]}
+];
+
+/* vocabulary: fr | en | example | level | theme */
+const VOCAB_RAW = `bonjour|hello|Bonjour, ça va ?|A1|Essentiels
+merci beaucoup|thank you very much|Merci beaucoup pour ton aide.|A1|Essentiels
+s'il vous plaît|please (formal)|Un café, s'il vous plaît.|A1|Essentiels
+excusez-moi|excuse me|Excusez-moi, où est la gare ?|A1|Essentiels
+je ne comprends pas|I don't understand|Pardon, je ne comprends pas.|A1|Essentiels
+vous pouvez répéter ?|can you repeat?|Vous pouvez répéter plus lentement ?|A1|Essentiels
+comment dit-on… ?|how do you say…?|Comment dit-on « deadline » en français ?|A1|Essentiels
+qu'est-ce que ça veut dire ?|what does that mean?|Qu'est-ce que ça veut dire, « flâner » ?|A1|Essentiels
+d'accord|OK / agreed|D'accord, à demain !|A1|Essentiels
+bien sûr|of course|Bien sûr, pas de problème.|A1|Essentiels
+peut-être|maybe|Peut-être demain.|A1|Essentiels
+je voudrais|I would like|Je voudrais un rendez-vous.|A1|Essentiels
+il y a|there is / there are|Il y a un problème.|A1|Essentiels
+ça va|it's fine / how are you?|Ça va, merci.|A1|Essentiels
+à bientôt|see you soon|Merci, à bientôt !|A1|Essentiels
+aujourd'hui|today|Aujourd'hui, je travaille à la maison.|A1|Temps
+hier|yesterday|Hier, j'ai vu un film.|A1|Temps
+demain|tomorrow|Demain, je vais au marché.|A1|Temps
+le matin|in the morning|Le matin, je bois un café.|A1|Temps
+l'après-midi|the afternoon|L'après-midi, j'ai une réunion.|A1|Temps
+le soir|the evening|Le soir, je cuisine.|A1|Temps
+la semaine prochaine|next week|La semaine prochaine, je suis en vacances.|A1|Temps
+le week-end dernier|last weekend|Le week-end dernier, je suis allé à Metz.|A2|Temps
+toujours|always|Je prends toujours le bus.|A1|Temps
+souvent|often|Je cuisine souvent le soir.|A1|Temps
+parfois|sometimes|Parfois, je travaille tard.|A1|Temps
+jamais|never|Je ne bois jamais de café le soir.|A1|Temps
+d'abord|first|D'abord, je prends une douche.|A1|Temps
+ensuite|then / next|Ensuite, je prends le petit-déjeuner.|A1|Temps
+enfin|finally|Enfin, je pars au travail.|A1|Temps
+tout à l'heure|in a moment / a moment ago|Je t'appelle tout à l'heure.|A2|Temps
+en retard|late|Je suis en retard, désolé.|A1|Temps
+à l'heure|on time|Le train est à l'heure.|A1|Temps
+il y a deux jours|two days ago|Je l'ai vu il y a deux jours.|A2|Temps
+depuis|since / for|J'apprends le français depuis un an.|A2|Temps
+se réveiller|to wake up|Je me réveille à sept heures.|A1|Routine
+se lever|to get up|Je me lève tout de suite.|A1|Routine
+se doucher|to shower|Je me douche le matin.|A1|Routine
+s'habiller|to get dressed|Je m'habille vite.|A1|Routine
+prendre le petit-déjeuner|to have breakfast|Je prends le petit-déjeuner à la maison.|A1|Routine
+partir au travail|to leave for work|Je pars au travail à huit heures.|A1|Routine
+déjeuner|to have lunch|Je déjeune avec mes collègues.|A1|Routine
+faire les courses|to do the shopping|Je fais les courses le samedi.|A1|Routine
+faire le ménage|to do the housework|Je fais le ménage le dimanche.|A2|Routine
+rentrer|to come back home|Je rentre vers dix-huit heures.|A1|Routine
+se reposer|to rest|Le soir, je me repose.|A2|Routine
+se coucher|to go to bed|Je me couche tard.|A1|Routine
+se dépêcher|to hurry|Je me dépêche, je suis en retard !|A2|Routine
+avoir besoin de|to need|J'ai besoin d'un café.|A2|Routine
+avoir envie de|to feel like|J'ai envie de sortir ce soir.|A2|Routine
+l'addition|the bill|L'addition, s'il vous plaît.|A1|Café & repas
+un verre d'eau|a glass of water|Je voudrais un verre d'eau.|A1|Café & repas
+à emporter|to take away|Un sandwich à emporter.|A1|Café & repas
+sur place|to eat in|C'est pour manger sur place.|A1|Café & repas
+le plat du jour|the dish of the day|Je prends le plat du jour.|A2|Café & repas
+une boulangerie|a bakery|Je vais à la boulangerie.|A1|Café & repas
+avoir faim|to be hungry|J'ai faim !|A1|Café & repas
+avoir soif|to be thirsty|Tu as soif ?|A1|Café & repas
+c'est délicieux|it's delicious|Merci, c'est délicieux.|A1|Café & repas
+réserver une table|to book a table|Je voudrais réserver une table pour deux.|A2|Café & repas
+une réunion|a meeting|J'ai une réunion à dix heures.|A2|Travail
+un collègue|a colleague|Mon collègue est en télétravail.|A1|Travail
+le télétravail|remote work|Je suis en télétravail le vendredi.|A2|Travail
+un rendez-vous|an appointment|J'ai un rendez-vous avec un client.|A2|Travail
+envoyer un mail|to send an email|Je t'envoie un mail tout de suite.|A2|Travail
+un dossier|a file / a case|Je travaille sur un dossier important.|A2|Travail
+un délai|a deadline / time limit|Le délai est très court.|B1|Travail
+être débordé|to be swamped|Je suis débordé cette semaine.|B1|Travail
+prendre un congé|to take time off|Je prends un congé en août.|A2|Travail
+un entretien|an interview|J'ai un entretien d'embauche lundi.|B1|Travail
+le chef / la cheffe|the boss|Ma cheffe est très sympa.|A2|Travail
+une équipe|a team|Notre équipe est internationale.|A2|Travail
+faire une pause|to take a break|On fait une pause café ?|A2|Travail
+mettre à jour|to update|Je dois mettre à jour le rapport.|B1|Travail
+s'occuper de|to take care of|Je m'occupe de ce dossier.|B1|Travail
+un appartement|an apartment|J'habite dans un appartement.|A1|Logement
+le loyer|the rent|Le loyer est cher.|A2|Logement
+le propriétaire|the landlord|J'ai appelé le propriétaire.|A2|Logement
+déménager|to move (house)|Nous déménageons en novembre.|A2|Logement
+le quartier|the neighbourhood|J'aime mon quartier.|A2|Logement
+la cuisine|the kitchen / cooking|La cuisine est petite.|A1|Logement
+la chambre|the bedroom|La chambre est calme.|A1|Logement
+le voisin|the neighbour|Mon voisin est sympa.|A1|Logement
+les charges|service charges|Les charges sont comprises.|B1|Logement
+être en panne|to be broken down|Le chauffage est en panne.|B1|Logement
+la gare|the train station|La gare est loin ?|A1|Ville
+un arrêt de bus|a bus stop|L'arrêt de bus est en face.|A1|Ville
+prendre le tram|to take the tram|Je prends le tram tous les jours.|A1|Ville
+à pied|on foot|J'y vais à pied.|A1|Ville
+en voiture|by car|Il vient en voiture.|A1|Ville
+tout droit|straight ahead|Allez tout droit.|A1|Ville
+à gauche / à droite|left / right|Tournez à gauche.|A1|Ville
+près de|near|J'habite près de la gare.|A1|Ville
+loin de|far from|C'est loin d'ici ?|A1|Ville
+un bouchon|a traffic jam|Il y a des bouchons ce matin.|A2|Ville
+un billet|a ticket|Un billet pour Paris, s'il vous plaît.|A1|Ville
+rater le train|to miss the train|J'ai raté le train.|A2|Ville
+je pense que|I think that|Je pense que c'est une bonne idée.|A2|Opinions
+à mon avis|in my opinion|À mon avis, c'est trop cher.|A2|Opinions
+je suis d'accord|I agree|Je suis d'accord avec toi.|A2|Opinions
+je ne suis pas sûr|I'm not sure|Je ne suis pas sûr de comprendre.|A2|Opinions
+ça me plaît|I like it|Ce quartier me plaît beaucoup.|A2|Opinions
+ça m'énerve|it annoys me|Les bouchons, ça m'énerve.|B1|Opinions
+fatigué|tired|Je suis fatigué ce soir.|A1|Opinions
+content|happy / pleased|Je suis content de te voir.|A1|Opinions
+inquiet|worried|Elle est un peu inquiète.|A2|Opinions
+avoir hâte de|to look forward to|J'ai hâte de partir en vacances.|B1|Opinions
+ça dépend|it depends|Ça dépend du prix.|A2|Opinions
+j'ai l'impression que|I have the feeling that|J'ai l'impression qu'il va pleuvoir.|B1|Opinions
+il vaut mieux|it's better to|Il vaut mieux partir tôt.|B1|Opinions
+avoir raison|to be right|Tu as raison.|A2|Opinions
+avoir tort|to be wrong|J'avais tort.|A2|Opinions
+avoir mal à|to have a pain in|J'ai mal au dos.|A2|Santé
+prendre rendez-vous|to make an appointment|Je voudrais prendre rendez-vous.|A2|Santé
+une ordonnance|a prescription|Voici votre ordonnance.|A2|Santé
+être malade|to be sick|Je suis malade depuis hier.|A1|Santé
+se sentir mieux|to feel better|Je me sens mieux aujourd'hui.|A2|Santé
+combien ça coûte ?|how much is it?|Combien ça coûte ?|A1|Achats
+c'est trop cher|it's too expensive|C'est un peu trop cher pour moi.|A1|Achats
+en solde|on sale|Cette veste est en solde.|A2|Achats
+payer par carte|to pay by card|Je peux payer par carte ?|A1|Achats
+essayer|to try (on)|Je peux essayer ce pantalon ?|A2|Achats
+la taille|the size|Vous avez une taille plus grande ?|A2|Achats
+il fait beau|the weather is nice|Il fait beau aujourd'hui.|A1|Météo
+il pleut|it's raining|Il pleut encore !|A1|Météo
+il fait froid|it's cold|Il fait froid ce matin.|A1|Météo
+il fait chaud|it's hot|Il fait trop chaud au bureau.|A1|Météo
+un orage|a storm|Il y a eu un orage cette nuit.|A2|Météo
+du coup|so / as a result (spoken)|Il pleuvait, du coup je suis resté chez moi.|A2|Liaison
+en fait|actually|En fait, je préfère le thé.|A2|Liaison
+alors|so / then|Alors, on y va ?|A1|Liaison
+bref|anyway / in short|Bref, c'était une longue journée.|A2|Liaison
+quand même|still / all the same|C'était cher, mais c'était quand même bien.|B1|Liaison
+franchement|honestly|Franchement, c'était génial.|A2|Liaison
+par contre|on the other hand|Le quartier est calme, par contre il est loin.|A2|Liaison
+en plus|what's more|Il est sympa, et en plus il cuisine bien.|A2|Liaison
+c'est-à-dire|that is to say|Je pars tôt, c'est-à-dire à six heures.|B1|Liaison
+à part ça|apart from that|À part ça, tout va bien ?|B1|Liaison
+en tout cas|in any case|En tout cas, merci beaucoup.|B1|Liaison
+ben…|well… (hesitation)|Ben, je ne sais pas.|A2|Liaison
+tu vois ?|you see?|C'était compliqué, tu vois ?|A2|Liaison
+j'avoue|I admit (informal)|J'avoue, j'ai oublié.|B1|Liaison
+ça marche|that works / OK|Demain à dix heures ? Ça marche !|A2|Liaison
+pourtant|yet / however|Il est riche, pourtant il est malheureux.|B1|Liaison
+d'ailleurs|besides / by the way|D'ailleurs, tu as vu Marc ?|B1|Liaison
+au fait|by the way|Au fait, tu viens ce soir ?|A2|Liaison
+bon|right / OK then|Bon, je dois y aller.|A1|Liaison
+voilà|there you go / that's it|Voilà, c'est tout.|A1|Liaison
+se rendre compte de|to realise|Je me suis rendu compte de mon erreur.|B1|Expressions
+avoir l'habitude de|to be used to|J'ai l'habitude de me lever tôt.|B1|Expressions
+s'habituer à|to get used to|Je m'habitue à la vie ici.|B1|Expressions
+faire exprès|to do on purpose|Je ne l'ai pas fait exprès.|B1|Expressions
+tenir à|to care about / insist on|Je tiens à te remercier.|B2|Expressions
+il s'agit de|it's about|Il s'agit d'un problème technique.|B1|Expressions
+manquer à|to be missed by|Ma famille me manque.|B1|Expressions
+profiter de|to make the most of|Profite de ton week-end !|B1|Expressions
+se débrouiller|to manage / get by|Je me débrouille en français.|B1|Expressions
+avoir du mal à|to struggle to|J'ai du mal à comprendre l'accent.|B1|Expressions
+à la fois|at the same time / both|C'est à la fois drôle et triste.|B1|Expressions
+en revanche|on the other hand|En revanche, le prix est élevé.|B2|Expressions
+cependant|however|Cependant, il reste un problème.|B1|Expressions
+malgré|despite|Malgré la pluie, on est sortis.|B1|Expressions
+grâce à|thanks to|Grâce à toi, j'ai réussi.|B1|Expressions
+à cause de|because of|À cause des bouchons, je suis en retard.|A2|Expressions
+lorsque|when (formal)|Lorsque je suis arrivé, il était parti.|B2|Expressions
+tandis que|whereas / while|Il travaille tandis que je me repose.|B2|Expressions
+afin de|in order to|Je parle français afin de progresser.|B2|Expressions
+il faut que|it's necessary that (+ subj.)|Il faut que je parte.|B1|Expressions`;
+const VOCAB = VOCAB_RAW.split('\n').map((l,i)=>{const [fr,en,ex,level,theme]=l.split('|');return {id:'v'+i,fr,en,ex,level,theme};});
+
+/* ---------- grammar ladder ---------- */
+const UNITS = [
+{id:'pres-reg',level:'A1',title:'Présent — verbes réguliers',sub:'-er, -ir, -re',conj:{tenses:['present'],verbs:'REG'},
+ rule:`<p>Most verbs are regular. Remove the ending (<b>-er</b>, <b>-ir</b>, <b>-re</b>) and add:</p>
+<div class="tablewrap"><table><tr><th></th><th>parler</th><th>finir</th><th>attendre</th></tr>
+<tr><td>je</td><td>parl<b>e</b></td><td>fin<b>is</b></td><td>attend<b>s</b></td></tr>
+<tr><td>tu</td><td>parl<b>es</b></td><td>fin<b>is</b></td><td>attend<b>s</b></td></tr>
+<tr><td>il/elle/on</td><td>parl<b>e</b></td><td>fin<b>it</b></td><td>attend</td></tr>
+<tr><td>nous</td><td>parl<b>ons</b></td><td>fin<b>issons</b></td><td>attend<b>ons</b></td></tr>
+<tr><td>vous</td><td>parl<b>ez</b></td><td>fin<b>issez</b></td><td>attend<b>ez</b></td></tr>
+<tr><td>ils/elles</td><td>parl<b>ent</b></td><td>fin<b>issent</b></td><td>attend<b>ent</b></td></tr></table></div>
+<p>Spelling: <b>manger → nous mangeons</b>, <b>commencer → nous commençons</b> (to keep the soft sound).</p>
+<p>The -e, -es, -ent endings are silent: <i>je parle, tu parles, ils parlent</i> sound the same.</p>`,
+ ex:[['Je travaille à Luxembourg.','I work in Luxembourg.'],['Nous finissons à six heures.','We finish at six.'],['Ils attendent le bus.','They are waiting for the bus.']],mc:[]},
+
+{id:'pres-irr',level:'A1',title:'Présent — les irréguliers essentiels',sub:'être, avoir, aller, faire…',conj:{tenses:['present'],verbs:'IRR_CORE'},
+ rule:`<p>The 15 verbs below cover most of everyday speech. Learn them as sounds first.</p>
+<div class="tablewrap"><table><tr><th></th><th>être</th><th>avoir</th><th>aller</th><th>faire</th></tr>
+<tr><td>je</td><td>suis</td><td>ai</td><td>vais</td><td>fais</td></tr>
+<tr><td>tu</td><td>es</td><td>as</td><td>vas</td><td>fais</td></tr>
+<tr><td>il/elle</td><td>est</td><td>a</td><td>va</td><td>fait</td></tr>
+<tr><td>nous</td><td>sommes</td><td>avons</td><td>allons</td><td>faisons</td></tr>
+<tr><td>vous</td><td>êtes</td><td>avez</td><td>allez</td><td>faites</td></tr>
+<tr><td>ils/elles</td><td>sont</td><td>ont</td><td>vont</td><td>font</td></tr></table></div>
+<p>Also essential: <b>pouvoir</b> (je peux), <b>vouloir</b> (je veux), <b>devoir</b> (je dois), <b>savoir</b> (je sais), <b>venir</b> (je viens), <b>prendre</b> (je prends), <b>mettre</b> (je mets), <b>dire</b> (je dis), <b>voir</b> (je vois), <b>sortir</b> (je sors), <b>partir</b> (je pars).</p>
+<p>Use the <b>Conjugator</b> above to see any verb in full.</p>`,
+ ex:[['Je vais au bureau à pied.','I walk to the office.'],['Qu\'est-ce que tu fais ce soir ?','What are you doing tonight?'],['Nous pouvons commencer ?','Can we start?']],mc:[]},
+
+{id:'neg-q',level:'A1',title:'Négation et questions',sub:'ne…pas, est-ce que, inversion',conj:null,
+ rule:`<p><b>Negation</b> wraps the verb: <b>ne</b> + verb + <b>pas</b>. Before a vowel, ne → <b>n'</b>.</p>
+<ul><li>ne … pas (not), ne … plus (not anymore), ne … jamais (never), ne … rien (nothing), ne … personne (nobody)</li>
+<li>After a negation, <b>un / une / des / du / de la → de</b>: <i>Je n'ai pas <b>de</b> voiture.</i></li>
+<li>With reflexive verbs, ne goes before the pronoun: <i>Je <b>ne</b> me lève <b>pas</b> tôt.</i></li>
+<li>In speech, <b>ne</b> is often dropped: <i>Je sais pas.</i> Write it, but don't worry when you hear it missing.</li></ul>
+<p><b>Three ways to ask a question</b></p>
+<ul><li>Intonation (spoken): <i>Tu viens ce soir ?</i></li><li>Est-ce que: <i>Est-ce que tu viens ce soir ?</i></li><li>Inversion (formal): <i>Viens-tu ce soir ? Où habitez-vous ?</i></li></ul>`,
+ ex:[['Je ne bois plus de café.',"I don't drink coffee anymore."],['Est-ce que vous parlez anglais ?','Do you speak English?'],['Où habitez-vous ?','Where do you live?']],
+ mc:[["« I don't drink coffee anymore. »",["Je ne bois pas de café.","Je ne bois plus de café.","Je bois plus de café.","Je ne bois plus du café."],1,"ne…plus = not anymore; after a negation du → de."],
+ ["« I don't have a car. »",["Je n'ai pas une voiture.","Je n'ai pas de voiture.","Je ai pas de voiture.","Je n'ai de voiture pas."],1,"un / une → de after a negation."],
+ ["Formal question: « Where do you live? »",["Où tu habites ?","Où habitez-vous ?","Où vous habitez-vous ?","Où est-ce vous habitez ?"],1,"Inversion: verb-hyphen-subject."],
+ ["« I never eat meat. »",["Je ne mange jamais de viande.","Je mange jamais la viande.","Je ne mange pas jamais de viande.","Je jamais mange de viande."],0,"ne…jamais replaces ne…pas; de after negation."],
+ ["« I see nothing. »",["Je ne vois rien.","Je vois ne rien.","Je ne vois pas rien.","Je ne rien vois."],0,"ne…rien wraps the verb."],
+ ["Which question is correct?",["Est-ce que tu viens ce soir ?","Est-ce que viens-tu ce soir ?","Est-ce tu viens ce soir ?","Est-que tu viens ce soir ?"],0,"Est-ce que + normal word order."],
+ ["« I don't get up early. »",["Je ne me lève pas tôt.","Je me ne lève pas tôt.","Je ne lève me pas tôt.","Je ne me pas lève tôt."],0,"ne goes before the reflexive pronoun."]]},
+
+{id:'pc-avoir',level:'A2',title:'Passé composé avec avoir',sub:'j\'ai mangé, j\'ai pris…',conj:{tenses:['pc'],verbs:'PC_AVOIR'},
+ rule:`<p>Use the <b>passé composé</b> for finished actions: what you <i>did</i> yesterday, this morning, last weekend. It's the tense you need for talking about your day in class.</p>
+<p><b>avoir</b> (présent) + <b>past participle</b></p>
+<ul><li>-er → <b>-é</b>: parler → parlé, manger → mangé</li><li>-ir → <b>-i</b>: finir → fini, choisir → choisi</li><li>-re → <b>-u</b>: attendre → attendu, vendre → vendu</li></ul>
+<p>Irregular participles to learn by heart: avoir → <b>eu</b>, être → <b>été</b>, faire → <b>fait</b>, prendre → <b>pris</b>, mettre → <b>mis</b>, dire → <b>dit</b>, écrire → <b>écrit</b>, voir → <b>vu</b>, lire → <b>lu</b>, boire → <b>bu</b>, pouvoir → <b>pu</b>, vouloir → <b>voulu</b>, devoir → <b>dû</b>, savoir → <b>su</b>, ouvrir → <b>ouvert</b>.</p>
+<p>Negation wraps the auxiliary: <i>Je <b>n'</b>ai <b>pas</b> mangé.</i></p>`,
+ ex:[["Ce matin, j'ai pris le bus.",'This morning I took the bus.'],["Hier, nous avons regardé un film.",'Yesterday we watched a film.'],["Je n'ai pas fini le rapport.","I haven't finished the report."]],
+ mc:[["Past participle of « prendre »",["prendu","pris","prit","prendé"],1,"prendre → pris (also comprendre → compris, apprendre → appris)."],
+ ["« Hier, nous ___ un film. »",["avons regardé","sommes regardés","avons regarder","regardions hier"],0,"avoir + participle -é."],
+ ["Past participle of « faire »",["faisé","fait","fais","fai"],1,"faire → fait."],
+ ["« J'___ le bus ce matin. »",["ai pris","suis pris","ai prendu","ai prenait"],0,"prendre uses avoir; participle pris."],
+ ["Past participle of « voir »",["voyé","vu","vis","voit"],1,"voir → vu."],
+ ["« Tu ___ mon mail ? »",["as lu","as lit","es lu","as lisé"],0,"lire → lu, with avoir."],
+ ["Negative: « I didn't eat. »",["Je n'ai pas mangé.","Je n'ai mangé pas.","Je ne pas ai mangé.","Je n'ai pas manger."],0,"ne…pas wraps the auxiliary."]]},
+
+{id:'pc-etre',level:'A2',title:'Passé composé avec être',sub:'je suis allé(e), je me suis levé(e)',conj:{tenses:['pc'],verbs:'PC_ETRE'},
+ rule:`<p>About 15 verbs of <b>movement / change of state</b> use <b>être</b>, plus <b>all reflexive verbs</b>.</p>
+<p>Memory trick <b>DR &amp; MRS VANDERTRAMP</b>: devenir, revenir, monter, rester, sortir, venir, aller, naître, descendre, entrer, rentrer, tomber, retourner, arriver, mourir, partir.</p>
+<p>With être, the participle <b>agrees</b> with the subject like an adjective:</p>
+<div class="tablewrap"><table><tr><th>subject</th><th>aller</th></tr>
+<tr><td>je (man / woman)</td><td>je suis allé / allé<b>e</b></td></tr>
+<tr><td>elle</td><td>elle est allé<b>e</b></td></tr>
+<tr><td>nous</td><td>nous sommes allé<b>s</b> / allé<b>es</b></td></tr>
+<tr><td>elles</td><td>elles sont allé<b>es</b></td></tr></table></div>
+<p>Reflexive: <i>je <b>me suis</b> levé</i>, <i>elle <b>s'est</b> couchée</i>, <i>nous <b>nous sommes</b> dépêchés</i>.</p>
+<p>In the drills, for je / tu / nous / vous both forms are accepted.</p>`,
+ ex:[['Je suis arrivé au bureau à neuf heures.','I got to the office at nine.'],["Elle s'est levée tôt.",'She got up early.'],['Nous sommes rentrés tard.','We came home late.']],
+ mc:[["« Elle ___ au Luxembourg en 2020. »",["a arrivé","est arrivée","est arrivé","a arrivée"],1,"arriver uses être; agree with elle → -e."],
+ ["« Nous ___ à la maison. »",["sommes restés","avons restés","avons resté","sommes resté"],0,"rester uses être; plural → -s."],
+ ["« Je ___ tôt ce matin. » (se lever, man)",["me suis levé","ai levé","me suis lever","m'ai levé"],0,"Reflexive verbs use être."],
+ ["« Ils ___ en vacances hier. »",["ont partis","sont partis","sont parti","ont parti"],1,"partir uses être; plural → -s."],
+ ["« Elles ___ au cinéma. »",["sont allées","sont allés","ont allé","sont allée"],0,"Feminine plural → -es."],
+ ["Which verb takes être?",["manger","travailler","tomber","regarder"],2,"tomber is a DR & MRS VANDERTRAMP verb."],
+ ["« Tu ___ où ? » (naître)",["es né(e)","as né","es naît","as naître"],0,"naître → né, with être."]]},
+
+{id:'imparfait',level:'A2',title:"L'imparfait",sub:'descriptions, habitudes',conj:{tenses:['imparfait'],verbs:'MIX'},
+ rule:`<p>The <b>imparfait</b> describes the background: how things <i>were</i>, what you <i>used to do</i>, what <i>was happening</i>.</p>
+<p>Formation: take <b>nous</b> in the présent, remove <b>-ons</b>, add <b>-ais, -ais, -ait, -ions, -iez, -aient</b>.</p>
+<div class="tablewrap"><table><tr><th>verb</th><th>nous (présent)</th><th>imparfait</th></tr>
+<tr><td>parler</td><td>parl-ons</td><td>je parl<b>ais</b></td></tr>
+<tr><td>finir</td><td>finiss-ons</td><td>je finiss<b>ais</b></td></tr>
+<tr><td>faire</td><td>fais-ons</td><td>je fais<b>ais</b></td></tr>
+<tr><td>être</td><td>(exception)</td><td>j'<b>étais</b></td></tr></table></div>
+<p>Key uses: <b>c'était</b> (it was), <b>il faisait beau</b>, <b>il y avait</b> (there was), <b>j'étais fatigué</b>, <b>je voulais</b>.</p>`,
+ ex:[["C'était une longue journée.",'It was a long day.'],['Il faisait froid et il pleuvait.','It was cold and raining.'],["Quand j'étais petit, je jouais au foot.",'When I was little, I used to play football.']],
+ mc:[["« Quand j'étais petit, je ___ au foot. »",["jouais","ai joué","jouerai","joue"],0,"Habit in the past → imparfait."],
+ ["« Il ___ beau ce jour-là. »",["faisait","a fait","fera","fait"],0,"Weather description → imparfait."],
+ ["« être », je (imparfait)",["étais","suis","étés","serais"],0,"être is the only irregular stem: ét-."],
+ ["« Nous ___ à la cantine. » (manger)",["mangions","mangeons","mangeions","mangerions"],0,"No e before -ions: mangions."],
+ ["« finir », je (imparfait)",["finissais","finirais","finais","finissait"],0,"From nous finissons → finiss-ais."]]},
+
+{id:'pc-imp',level:'B1',title:'Passé composé ou imparfait ?',sub:'raconter une histoire',conj:null,
+ rule:`<p>When you tell your teacher about your day, you mix both tenses.</p>
+<div class="tablewrap"><table><tr><th>Passé composé — events</th><th>Imparfait — background</th></tr>
+<tr><td>Finished, one-off actions</td><td>Descriptions (weather, feelings, places)</td></tr>
+<tr><td>A sequence: d'abord… ensuite… enfin</td><td>Habits: tous les jours, souvent</td></tr>
+<tr><td>Sudden: soudain, tout à coup</td><td>Ongoing action interrupted: pendant que…</td></tr>
+<tr><td>A precise duration: pendant deux heures</td><td>État: j'étais, j'avais, il y avait</td></tr></table></div>
+<p>Picture a film: the <b>imparfait</b> is the set and the lighting, the <b>passé composé</b> is what the actors do.</p>
+<p class="ex">Il <b>pleuvait</b> (décor) quand je <b>suis sorti</b> (événement).</p>`,
+ ex:[['Je regardais la télé quand le téléphone a sonné.','I was watching TV when the phone rang.'],["Il faisait beau, alors nous sommes allés au parc.",'The weather was nice, so we went to the park.']],
+ mc:[["« Je ___ la télé quand le téléphone a sonné. »",["regardais","ai regardé"],0,"Ongoing action that gets interrupted."],
+ ["« Hier, je ___ à Metz. » (one trip)",["suis allé","allais"],0,"One finished event."],
+ ["« Quand j'étais jeune, nous ___ souvent à la mer. »",["allions","sommes allés"],0,"Habit (souvent)."],
+ ["« Soudain, il ___ à pleuvoir. »",["a commencé","commençait"],0,"Sudden event."],
+ ["« Il ___ froid et il y avait du vent. »",["faisait","a fait"],0,"Description of the weather."],
+ ["« Samedi, j'___ trois heures de sport. »",["ai fait","faisais"],0,"Finished action with a precise duration."],
+ ["« Elle ___ fatiguée, alors elle s'est couchée tôt. »",["était","a été"],0,"A state / feeling → imparfait."],
+ ["« Tous les matins, je ___ le bus de 7 h 30. »",["prenais","ai pris"],0,"Repeated habit."]]},
+
+{id:'futur',level:'A2',title:'Le futur',sub:'je vais partir, je partirai',conj:{tenses:['futur'],verbs:'MIX'},
+ rule:`<p><b>Futur proche</b> (spoken, near future): <b>aller</b> + infinitive. <i>Je <b>vais</b> travailler demain.</i></p>
+<p><b>Futur simple</b>: infinitive + <b>-ai, -as, -a, -ons, -ez, -ont</b> (drop the final -e of -re verbs).</p>
+<p class="ex">parler → je parler<b>ai</b> · prendre → je prendr<b>ai</b> · finir → nous finir<b>ons</b></p>
+<p>Irregular stems (same endings): être → <b>ser-</b>, avoir → <b>aur-</b>, aller → <b>ir-</b>, faire → <b>fer-</b>, pouvoir → <b>pourr-</b>, vouloir → <b>voudr-</b>, devoir → <b>devr-</b>, savoir → <b>saur-</b>, venir → <b>viendr-</b>, voir → <b>verr-</b>, envoyer → <b>enverr-</b>.</p>
+<p>After <b>quand</b> about the future, French uses the futur: <i>Quand j'<b>aurai</b> le temps, je t'appellerai.</i></p>`,
+ ex:[['Demain, je vais aller chez le médecin.',"Tomorrow I'm going to the doctor."],["L'année prochaine, nous déménagerons.",'Next year we will move.'],['Quand tu seras là, on mangera.',"When you're here, we'll eat."]],
+ mc:[["« Demain, je ___ chez le médecin. » (futur proche)",["vais aller","vais allé","vais à aller","irai aller"],0,"aller + infinitive."],
+ ["être, nous (futur)",["serons","étrons","serions","sommes"],0,"Stem ser-."],
+ ["« Quand j'___ le temps, je t'appellerai. »",["aurai","ai","avais","aurais"],0,"Futur after quand (future meaning)."],
+ ["pouvoir, tu (futur)",["pourras","pouvras","peux","pourrais"],0,"Stem pourr-."],
+ ["faire, ils (futur)",["feront","fairont","font","ferons"],0,"Stem fer-."],
+ ["« Si j'ai le temps, je ___. » (venir)",["viendrai","viendrais","venirai","venais"],0,"si + présent → futur."]]},
+
+{id:'pronoms',level:'B1',title:'Les pronoms',sub:'le, lui, y, en',conj:null,
+ rule:`<p>Pronouns go <b>before the verb</b> (before the auxiliary in the passé composé).</p>
+<div class="tablewrap"><table><tr><th>Replaces</th><th>Pronoun</th><th>Example</th></tr>
+<tr><td>direct object (no preposition)</td><td>le, la, l', les</td><td>Je vois Marie → Je <b>la</b> vois.</td></tr>
+<tr><td>à + person</td><td>lui, leur</td><td>Je parle à Paul → Je <b>lui</b> parle.</td></tr>
+<tr><td>à / en / chez + place</td><td>y</td><td>Je vais à Paris → J'<b>y</b> vais.</td></tr>
+<tr><td>de + thing, quantity, du/des</td><td>en</td><td>Je veux du café → J'<b>en</b> veux.</td></tr></table></div>
+<p>Order with two pronouns: <b>me/te/nous/vous → le/la/les → lui/leur → y → en</b>. <i>Il <b>me le</b> donne. Je <b>le lui</b> donne.</i></p>
+<p>Passé composé agreement: with a direct object pronoun before avoir, the participle agrees: <i>Les documents ? Je les ai envoyé<b>s</b>.</i></p>`,
+ ex:[["Tu connais Sophie ? — Oui, je la connais.",'Do you know Sophie? — Yes, I know her.'],["Tu vas au bureau ? — Oui, j'y vais.",'Are you going to the office? — Yes, I am.'],["Tu as des enfants ? — Oui, j'en ai deux.",'Do you have children? — Yes, I have two.']],
+ mc:[["« Tu vois Marie ? — Oui, je ___ vois. »",["la","lui","le","en"],0,"Direct object, feminine → la."],
+ ["« Tu parles à ton chef ? — Oui, je ___ parle. »",["lui","le","la","y"],0,"à + person → lui."],
+ ["« Tu vas à Paris ? — Oui, j'___ vais demain. »",["y","en","le","lui"],0,"à + place → y."],
+ ["« Tu veux du café ? — Oui, j'___ veux bien. »",["en","le","y","lui"],0,"du / de la / des → en."],
+ ["« Tu as envoyé les documents ? — Oui, je ___ ai envoyés. »",["les","leur","en","y"],0,"Direct object plural → les (and agreement -s)."],
+ ["« Tu téléphones à tes parents ? — Oui, je ___ téléphone. »",["leur","les","lui","y"],0,"à + several people → leur."],
+ ["« Il donne le livre à moi. »",["Il me le donne.","Il le me donne.","Il me donne le.","Il le donne me."],0,"Order: me before le."]]},
+
+{id:'cond',level:'B1',title:'Le conditionnel',sub:'je voudrais, si j\'avais…',conj:{tenses:['cond'],verbs:'MIX'},
+ rule:`<p>Formation: <b>futur stem</b> + <b>imparfait endings</b> (-ais, -ais, -ait, -ions, -iez, -aient).</p>
+<p class="ex">parler → je parler<b>ais</b> · être → je <b>serais</b> · pouvoir → tu <b>pourrais</b> · vouloir → je <b>voudrais</b></p>
+<p><b>Three uses</b></p>
+<ul><li>Politeness: <i>Je <b>voudrais</b> un café. <b>Pourriez</b>-vous m'aider ?</i></li>
+<li>Advice: <i>À ta place, je <b>prendrais</b> ce travail. Tu <b>devrais</b> te reposer.</i></li>
+<li>Hypothesis: <b>si + imparfait → conditionnel</b>: <i>Si j'<b>avais</b> le temps, je <b>lirais</b> plus.</i></li></ul>
+<p>Never put the conditionnel right after <b>si</b>.</p>`,
+ ex:[['Je voudrais réserver une table.',"I'd like to book a table."],['Si j\'étais riche, je voyagerais.','If I were rich, I would travel.'],['Tu devrais parler plus souvent.','You should speak more often.']],
+ mc:[["« Je ___ un café, s'il vous plaît. »",["voudrais","voudrai","veux voudrais","voulais"],0,"Politeness → conditionnel."],
+ ["« Si j'avais plus de temps, je ___ plus. »",["lirais","lirai","lis","lisais"],0,"si + imparfait → conditionnel."],
+ ["« Tu ___ m'aider ? » (polite)",["pourrais","pourras","pouvais","peux-tu"],0,"pouvoir → pourr- + ais."],
+ ["« À ta place, je ___ ce travail. »",["prendrais","prendrai","prenais","prends"],0,"Advice → conditionnel."],
+ ["aimer, nous (conditionnel)",["aimerions","aimerons","aimions","aimerais"],0,"aimer- + ions."],
+ ["« Si j'___ riche, j'achèterais une maison. »",["étais","serais","suis","serai"],0,"After si: imparfait, not conditionnel."]]},
+
+{id:'pqp',level:'B1',title:'Le plus-que-parfait',sub:"j'avais fini, j'étais parti",conj:{tenses:['pqp'],verbs:'MIX'},
+ rule:`<p>The past <b>before</b> another past. Auxiliary in the <b>imparfait</b> + participle.</p>
+<p class="ex">Quand je suis arrivé, le film <b>avait</b> déjà <b>commencé</b>.</p>
+<p>Same être / avoir choice and agreement as the passé composé: <i>Elle <b>était partie</b>.</i></p>
+<p>Very common in reported speech: <i>Il m'a dit qu'il <b>avait fini</b>.</i></p>`,
+ ex:[["J'avais oublié mes clés.",'I had forgotten my keys.'],["Nous étions déjà partis.",'We had already left.']],
+ mc:[["« Quand je suis arrivé, le film ___ déjà ___. »",["avait … commencé","a … commencé","était … commencé","avait … commençait"],0,"Earlier past → plus-que-parfait."],
+ ["« Elle ___ déjà ___ quand j'ai appelé. » (partir)",["était … partie","avait … parti","était … parti","a … partie"],0,"partir uses être; agreement -e."],
+ ["« Je ne savais pas que tu ___ malade. »",["avais été","as été","serais","seras"],0,"Earlier state in the past."],
+ ["« Nous ___ le restaurant la veille. »",["avions réservé","avons réservé","étions réservés","avions réserver"],0,"The day before → earlier past."],
+ ["« Il m'a dit qu'il ___ son travail. »",["avait fini","a fini","finira","finissait"],0,"Reported speech, earlier action."]]},
+
+{id:'relatifs',level:'B1',title:'Les pronoms relatifs',sub:'qui, que, où, dont',conj:null,
+ rule:`<ul><li><b>qui</b> = subject: <i>le collègue <b>qui</b> travaille avec moi</i></li>
+<li><b>que</b> = direct object: <i>le livre <b>que</b> je lis</i></li>
+<li><b>où</b> = place or time: <i>la ville <b>où</b> j'habite</i>, <i>le jour <b>où</b> je suis arrivé</i></li>
+<li><b>dont</b> = replaces de + …: <i>le projet <b>dont</b> je t'ai parlé</i> (parler <b>de</b>)</li></ul>
+<p><b>ce qui / ce que</b> = what: <i><b>Ce que</b> je veux, c'est progresser.</i></p>`,
+ ex:[['C\'est la ville où je suis né.','It\'s the town where I was born.'],['Le film dont tout le monde parle.','The film everyone is talking about.']],
+ mc:[["« C'est le collègue ___ travaille avec moi. »",["qui","que","dont","où"],0,"Subject → qui."],
+ ["« Le livre ___ je lis est génial. »",["que","qui","dont","où"],0,"Object → que."],
+ ["« La ville ___ j'habite est calme. »",["où","que","qui","dont"],0,"Place → où."],
+ ["« Le projet ___ je t'ai parlé. »",["dont","que","qui","où"],0,"parler DE → dont."],
+ ["« Le jour ___ je suis arrivé, il pleuvait. »",["où","que","quand","dont"],0,"Time → où."],
+ ["« C'est ce ___ je veux. »",["que","qui","dont","où"],0,"vouloir quelque chose → ce que."]]},
+
+{id:'subj',level:'B2',title:'Le subjonctif présent',sub:'il faut que je parte',conj:{tenses:['subj'],verbs:'MIX'},
+ rule:`<p>Formation: <b>ils</b> (présent) minus <b>-ent</b> + <b>-e, -es, -e, -ent</b>; <b>nous/vous</b> = imparfait forms.</p>
+<p class="ex">prendre → ils prenn-ent → que je prenn<b>e</b>, que nous pren<b>ions</b></p>
+<p>Irregular: être (que je <b>sois</b>), avoir (que j'<b>aie</b>), aller (que j'<b>aille</b>), faire (que je <b>fasse</b>), pouvoir (que je <b>puisse</b>), savoir (que je <b>sache</b>), vouloir (que je <b>veuille</b>).</p>
+<p><b>When?</b> After expressions of necessity, wish, emotion, doubt, and some conjunctions:</p>
+<ul><li>il faut que, je veux que, j'aimerais que</li><li>je suis content que, j'ai peur que</li><li>je doute que, je ne pense pas que</li><li>bien que, pour que, avant que, à condition que</li></ul>
+<p>But <b>je pense que / je crois que</b> (affirmative) take the indicatif.</p>`,
+ ex:[['Il faut que je parte.','I have to leave.'],['Je veux que tu viennes.','I want you to come.'],['Bien qu\'il soit tard, on continue.','Although it\'s late, we keep going.']],
+ mc:[["« Il faut que tu ___. » (venir)",["viennes","viens","viendras","venais"],0,"il faut que + subjonctif."],
+ ["« Je veux que vous ___ attention. » (faire)",["fassiez","faites","faisiez","ferez"],0,"faire → fass-."],
+ ["« Bien qu'il ___ tard, on continue. »",["soit","est","sera","était"],0,"bien que + subjonctif."],
+ ["« Je pense qu'il ___ raison. »",["a","ait"],0,"penser (affirmative) → indicatif."],
+ ["« Je ne pense pas qu'il ___ raison. »",["ait","a"],0,"Negative opinion → subjonctif."],
+ ["« Je suis content que tu ___ là. »",["sois","es","seras","étais"],0,"Emotion → subjonctif."],
+ ["« Avant que nous ___… » (partir)",["partions","partons","partirons","partîmes"],0,"avant que + subjonctif."]]}
+];
+
+/* ---------- speaking ---------- */
+const SPEAK_PROMPTS = {
+ A1:["Présente-toi : ton nom, ta ville, ton travail.","Décris ton appartement.","Qu'est-ce que tu manges le matin ?","Décris ta journée typique.","Parle de ta famille."],
+ A2:["Raconte ton dernier week-end.","Qu'est-ce que tu as fait hier soir ?","Parle de tes dernières vacances.","Décris ton travail et tes collègues.","Raconte ta matinée d'aujourd'hui."],
+ B1:["Comment était ta vie quand tu étais enfant ?","Raconte un problème que tu as eu et comment tu l'as résolu.","Quels sont tes projets pour l'année prochaine ?","Compare Luxembourg et ta ville d'origine.","Parle d'un livre ou d'un film que tu as aimé."],
+ B2:["Le télétravail : avantages et inconvénients ?","Si tu pouvais changer de métier, que ferais-tu ?","Faut-il apprendre plusieurs langues ? Pourquoi ?","Quel conseil donnerais-tu à un nouvel arrivant au Luxembourg ?","Les réseaux sociaux nous rapprochent-ils ?"],
+ C1:["La technologie nous rend-elle plus libres ?","Faut-il privilégier la carrière ou la qualité de vie ?","Quel est le rôle de l'humour dans le travail ?","Peut-on vraiment penser dans une langue étrangère ?"]
+};
+const SCENARIOS = [
+ {id:'cafe',t:'Au café',d:'Commander, demander l\'addition',role:'un serveur dans un café à Luxembourg-Ville'},
+ {id:'boul',t:'À la boulangerie',d:'Acheter du pain, des viennoiseries',role:'une boulangère sympathique'},
+ {id:'coll',t:'Machine à café',d:'Petite discussion avec un collègue',role:'un collègue francophone à la machine à café, curieux et bavard'},
+ {id:'med',t:'Chez le médecin',d:'Expliquer des symptômes',role:'un médecin généraliste'},
+ {id:'appart',t:"Agence immobilière",d:'Appeler pour un appartement',role:"un agent immobilier au téléphone"},
+ {id:'job',t:"Entretien d'embauche",d:'Se présenter, parler de son parcours',role:"une recruteuse lors d'un entretien d'embauche"},
+ {id:'weekend',t:'Le week-end',d:'Raconter son week-end à une amie',role:'une amie qui veut savoir ce que tu as fait ce week-end'},
+ {id:'libre',t:'Conversation libre',d:'Parler de tout et de rien',role:'un ami francophone patient'}
+];
+const JOURNAL_MODES = {
+ present:{label:'Présent',hint:'Describe a typical day, in the present.',starters:["Le matin, je me lève à…","Je prends mon petit-déjeuner…","Je vais au travail en…","À midi, je mange…","L'après-midi, je travaille sur…","Le soir, je…","Je me couche vers…"]},
+ pc:{label:'Passé composé',hint:'Tell what you did today (finished actions).',starters:["Ce matin, je me suis levé(e) à…","J'ai pris…","Je suis allé(e)…","À midi, j'ai mangé…","L'après-midi, j'ai travaillé sur…","Ensuite, j'ai…","Le soir, je suis rentré(e)…"]},
+ passe:{label:'Passé (PC + imparfait)',hint:'Mix events (passé composé) with descriptions (imparfait).',starters:["Ce matin, il faisait…","J'étais un peu…","Quand je suis arrivé(e) au bureau, …","Il y avait…","Pendant que je travaillais, …","C'était…","Finalement, …"]},
+ futur:{label:'Futur',hint:'Talk about tomorrow and your plans.',starters:["Demain, je vais…","Ce week-end, je voudrais…","Si j'ai le temps, je…","La semaine prochaine, je…","Quand j'aurai fini, je…"]},
+ libre:{label:'Libre',hint:'Write freely, any tense.',starters:["Aujourd'hui, …","Ce qui m'a surpris, c'est…","À mon avis, …","J'ai l'impression que…"]}
+};
+const LEVEL_JOURNAL = {A1:'present',A2:'pc',B1:'passe',B2:'passe',C1:'libre'};
+/* ================= UTILITIES ================= */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const dayKey=(d=new Date())=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const lvIdx=l=>Math.max(0,LEVELS.indexOf(l));
+const stripAcc=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'');
+const normAns=s=>String(s||'').toLowerCase().replace(/[’`´]/g,"'").replace(/[«»"“”]/g,'').replace(/ /g,' ').replace(/\s+([?!:;,.])/g,'$1').replace(/[—–-]\s/g,'').replace(/[.!?…]+$/,'').replace(/\s+/g,' ').trim();
+function compareAns(input,answers){
+  const a=normAns(input); if(!a) return 'bad';
+  const list=(Array.isArray(answers)?answers:[answers]).map(normAns);
+  if(list.includes(a)) return 'good';
+  if(list.map(stripAcc).includes(stripAcc(a))) return ST.strictAccents?'close':'accent';
+  return 'bad';
+}
+const frDate=(t=Date.now(),o={weekday:'long',day:'numeric',month:'long'})=>new Date(t).toLocaleDateString('fr-FR',o);
+
+const ICON={
+ today:'<svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>',
+ journee:'<svg viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4z"/><path d="M8 11h8M8 15h8M8 7h4"/></svg>',
+ textes:'<svg viewBox="0 0 24 24"><path d="M2 5c3-1.5 7-1.5 10 1 3-2.5 7-2.5 10-1v14c-3-1.5-7-1.5-10 1-3-2.5-7-2.5-10-1z"/><path d="M12 6v14"/></svg>',
+ parler:'<svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>',
+ mots:'<svg viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>',
+ grammaire:'<svg viewBox="0 0 24 24"><path d="M6 20V4M18 20V4M6 8h12M6 13h12M6 18h12"/></svg>',
+ carnet:'<svg viewBox="0 0 24 24"><path d="M5 3h13a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H5z"/><path d="M9 3v18M12.5 9l3 3M15.5 9l-3 3"/></svg>',
+ progres:'<svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+ play:'<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+ tri:'<svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>'
+};
+const spk=(text,title='Écouter')=>`<button class="iconbtn" type="button" data-say="${esc(text)}" aria-label="${esc(title)}" title="${esc(title)}">${ICON.play}</button>`;
+
+/* ================= CONJUGATION ENGINE ================= */
+const PERS=['je','tu','il','elle','nous','vous','ils','elles'];
+const PIDX={je:0,tu:1,il:2,elle:2,on:2,nous:3,vous:4,ils:5,elles:5};
+const IRR={
+ 'être':'suis es est sommes êtes sont','avoir':'ai as a avons avez ont','aller':'vais vas va allons allez vont',
+ 'faire':'fais fais fait faisons faites font','pouvoir':'peux peux peut pouvons pouvez peuvent','vouloir':'veux veux veut voulons voulez veulent',
+ 'devoir':'dois dois doit devons devez doivent','savoir':'sais sais sait savons savez savent','venir':'viens viens vient venons venez viennent',
+ 'prendre':'prends prends prend prenons prenez prennent','mettre':'mets mets met mettons mettez mettent','dire':'dis dis dit disons dites disent',
+ 'voir':'vois vois voit voyons voyez voient','sortir':'sors sors sort sortons sortez sortent','partir':'pars pars part partons partez partent',
+ 'boire':'bois bois boit buvons buvez boivent','lire':'lis lis lit lisons lisez lisent','écrire':'écris écris écrit écrivons écrivez écrivent',
+ 'connaître':'connais connais connaît connaissons connaissez connaissent','croire':'crois crois croit croyons croyez croient',
+ 'dormir':'dors dors dort dormons dormez dorment','ouvrir':'ouvre ouvres ouvre ouvrons ouvrez ouvrent','recevoir':'reçois reçois reçoit recevons recevez reçoivent',
+ 'vivre':'vis vis vit vivons vivez vivent','acheter':'achète achètes achète achetons achetez achètent','appeler':'appelle appelles appelle appelons appelez appellent',
+ 'préférer':'préfère préfères préfère préférons préférez préfèrent','envoyer':'envoie envoies envoie envoyons envoyez envoient',
+ 'courir':'cours cours court courons courez courent','conduire':'conduis conduis conduit conduisons conduisez conduisent',
+ 'naître':'nais nais naît naissons naissez naissent','mourir':'meurs meurs meurt mourons mourez meurent'
+};
+const DERIV={comprendre:['prendre','com'],apprendre:['prendre','ap'],devenir:['venir','de'],revenir:['venir','re'],tenir:['venir','t',1],obtenir:['venir','obt',1],permettre:['mettre','per'],promettre:['mettre','pro'],décrire:['écrire','d']};
+const PP={'être':'été','avoir':'eu','faire':'fait','pouvoir':'pu','vouloir':'voulu','devoir':'dû','savoir':'su','venir':'venu','prendre':'pris','mettre':'mis','dire':'dit','voir':'vu','boire':'bu','lire':'lu','écrire':'écrit','connaître':'connu','croire':'cru','ouvrir':'ouvert','recevoir':'reçu','vivre':'vécu','courir':'couru','conduire':'conduit','naître':'né','mourir':'mort','sortir':'sorti','partir':'parti','dormir':'dormi','aller':'allé'};
+const FUT={'être':'ser','avoir':'aur','aller':'ir','faire':'fer','pouvoir':'pourr','vouloir':'voudr','devoir':'devr','savoir':'saur','venir':'viendr','voir':'verr','envoyer':'enverr','recevoir':'recevr','courir':'courr','mourir':'mourr','acheter':'achèter','appeler':'appeller'};
+const SUBJ_IRR={'être':'sois sois soit soyons soyez soient','avoir':'aie aies ait ayons ayez aient','aller':'aille ailles aille allions alliez aillent','faire':'fasse fasses fasse fassions fassiez fassent','pouvoir':'puisse puisses puisse puissions puissiez puissent','savoir':'sache saches sache sachions sachiez sachent','vouloir':'veuille veuilles veuille voulions vouliez veuillent'};
+const ETRE_V=new Set(['aller','venir','arriver','partir','entrer','sortir','rester','tomber','rentrer','retourner','monter','descendre','naître','mourir','devenir','revenir']);
+const VERBS_REG=['parler','aimer','travailler','habiter','regarder','écouter','manger','commencer','chercher','trouver','donner','demander','penser','jouer','cuisiner','étudier','préparer','utiliser','oublier','finir','choisir','réussir','réfléchir','attendre','vendre','répondre','entendre','perdre'];
+const VERBS_IRR_CORE=['être','avoir','aller','faire','pouvoir','vouloir','devoir','savoir','venir','prendre','mettre','dire','voir','sortir','partir'];
+const VERBS_IRR_ALL=[...VERBS_IRR_CORE,'boire','lire','écrire','connaître','croire','dormir','ouvrir','recevoir','vivre','comprendre','apprendre','devenir','tenir','acheter','appeler','préférer','envoyer','courir','conduire'];
+const VERBS_PC_ETRE=['aller','venir','arriver','partir','entrer','sortir','rester','tomber','rentrer','monter','descendre','naître','devenir','revenir'];
+const VERBS_PC_AVOIR=['parler','manger','travailler','regarder','finir','choisir','attendre','répondre','avoir','être','faire','prendre','mettre','dire','voir','boire','lire','écrire','pouvoir','vouloir','devoir','ouvrir','recevoir','comprendre'];
+const VERB_SETS={REG:VERBS_REG,IRR_CORE:VERBS_IRR_CORE,PC_AVOIR:VERBS_PC_AVOIR,PC_ETRE:VERBS_PC_ETRE,MIX:[...VERBS_REG.slice(0,14),...VERBS_IRR_ALL]};
+const ALL_VERBS=[...new Set([...VERBS_REG,...VERBS_IRR_ALL,...VERBS_PC_ETRE,'retourner','mourir','obtenir','permettre','promettre','décrire'])].sort((a,b)=>a.localeCompare(b,'fr'));
+const TENSES={present:'présent',pc:'passé composé',imparfait:'imparfait',futur:'futur simple',cond:'conditionnel',subj:'subjonctif',pqp:'plus-que-parfait'};
+
+function present(v){
+  if(IRR[v]) return IRR[v].split(' ');
+  if(DERIV[v]){const [b,p,replaceFirst]=DERIV[v];return present(b).map(f=>replaceFirst?p+f.slice(1):p+f);}
+  if(v.endsWith('er')){const s=v.slice(0,-2);const f=[s+'e',s+'es',s+'e',s+'ons',s+'ez',s+'ent'];if(s.endsWith('g'))f[3]=s+'eons';if(s.endsWith('c'))f[3]=s.slice(0,-1)+'çons';return f;}
+  if(v.endsWith('ir')){const s=v.slice(0,-2);return [s+'is',s+'is',s+'it',s+'issons',s+'issez',s+'issent'];}
+  if(v.endsWith('re')){const s=v.slice(0,-2);return [s+'s',s+'s',s,s+'ons',s+'ez',s+'ent'];}
+  return null;
+}
+function imparfait(v){
+  const E=['ais','ais','ait','ions','iez','aient'];
+  let st=v==='être'?'ét':present(v)[3].replace(/ons$/,'');
+  return E.map(e=>{let s=st;if(e[0]==='i'){s=s.replace(/ge$/,'g').replace(/ç$/,'c');}return s+e;});
+}
+function futStem(v){
+  if(FUT[v]) return FUT[v];
+  if(DERIV[v]){const [b,p,r]=DERIV[v];const bs=futStem(b);return r?p+bs.slice(1):p+bs;}
+  return v.endsWith('re')?v.slice(0,-1):v;
+}
+const futur=v=>['ai','as','a','ons','ez','ont'].map(e=>futStem(v)+e);
+const cond=v=>['ais','ais','ait','ions','iez','aient'].map(e=>futStem(v)+e);
+function subj(v){
+  if(SUBJ_IRR[v]) return SUBJ_IRR[v].split(' ');
+  if(DERIV[v]){const [b,p,r]=DERIV[v];if(SUBJ_IRR[b])return subj(b).map(f=>r?p+f.slice(1):p+f);}
+  const p=present(v),im=imparfait(v),s=p[5].replace(/ent$/,'');
+  return [s+'e',s+'es',s+'e',im[3],im[4],s+'ent'];
+}
+function participle(v){
+  if(PP[v]) return PP[v];
+  if(DERIV[v]){const [b,p,r]=DERIV[v];const bp=participle(b);return r?p+bp.slice(1):p+bp;}
+  if(v.endsWith('er')) return v.slice(0,-2)+'é';
+  if(v.endsWith('ir')) return v.slice(0,-2)+'i';
+  if(v.endsWith('re')) return v.slice(0,-2)+'u';
+  return v;
+}
+function agreeForms(pp,person){
+  const f=pp+'e',mp=pp+(pp.endsWith('s')?'':'s'),fp=pp+'es';
+  switch(person){case 'je':case 'tu':return [pp,f];case 'il':return [pp];case 'elle':return [f];case 'nous':return [mp,fp];case 'vous':return [pp,f,mp,fp];case 'ils':return [mp];case 'elles':return [fp];}
+  return [pp];
+}
+function compound(v,person,auxTense){
+  const i=PIDX[person],etre=ETRE_V.has(v),aux=etre?'être':'avoir';
+  const auxF=(auxTense==='imparfait'?imparfait(aux):present(aux))[i];
+  const pp=participle(v);
+  const pps=etre?agreeForms(pp,person):[pp];
+  return pps.map(p=>auxF+' '+p);
+}
+function conjugate(v,tense,person){
+  const i=PIDX[person];
+  switch(tense){
+    case 'present':return [present(v)[i]];
+    case 'imparfait':return [imparfait(v)[i]];
+    case 'futur':return [futur(v)[i]];
+    case 'cond':return [cond(v)[i]];
+    case 'subj':return [subj(v)[i]];
+    case 'pc':return compound(v,person,'present');
+    case 'pqp':return compound(v,person,'imparfait');
+  }
+}
+function subjLabel(person,form,tense){
+  const vowel=/^[aeiouhyéèêàâîôû]/i.test(form);
+  let s=person;
+  if(person==='je'&&vowel) s="j'";
+  if(tense==='subj'){ s=(person==='je')?(vowel?"que j'":'que je'):(/^(il|elle|ils|elles)$/.test(person)?"qu'"+person:'que '+person); }
+  return s;
+}
+function conjTable(v){
+  const persons=['je','tu','il','nous','vous','ils'];
+  const rows=t=>persons.map(p=>{const f=conjugate(v,t,p)[0];const lab=subjLabel(p,f,t);return `<li>${esc(lab)}${lab.endsWith("'")?'':' '}<b>${esc(f)}</b></li>`;}).join('');
+  return Object.keys(TENSES).map(t=>`<div class="card"><div class="eyebrow">${TENSES[t]}</div><ol>${rows(t)}</ol></div>`).join('');
+}
+function makeConjItem(verbs,tenses){
+  const v=pick(verbs),t=pick(tenses);
+  let person=pick(PERS);
+  const answers=conjugate(v,t,person);
+  const lab=subjLabel(person,answers[0],t);
+  return {type:'conj',verb:v,tense:t,person,answers,label:lab};
+}
+
+/* ================= STATE & SYNC ================= */
+const LS_KEY='cahier.state.v1',LS_TEXTS='cahier.texts.v1';
+function lsGet(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function defaultState(){return {v:1,name:'Sa',level:'A2',mode:'adaptive',levelSince:0,levelLog:[{t:Date.now(),level:'A2',why:'start'}],
+  rate:0.9,voice:'',strictAccents:false,newPerDay:10,wordDir:'fr',wordTheme:'all',
+  srs:{},customVocab:[],results:[],activity:{},journal:[],mistakes:[],textsRead:{},dict:{},unitScores:{},updatedAt:0};}
+function migrate(s){const d=defaultState();const o=Object.assign(d,s||{});['srs','activity','textsRead','dict','unitScores'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={};});['customVocab','results','journal','mistakes','levelLog'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[];});return o;}
+let ST=migrate(lsGet(LS_KEY));
+let USER_TEXTS=lsGet(LS_TEXTS)||[];
+
+const Sync={col:null,ready:false,timer:null,busy:false,
+  async init(){
+    try{
+      if(!window.claude||!window.claude.use) return;
+      const [db,user]=await Promise.all([claude.use('db'),claude.use('user')]);
+      if(!db||!user) return;
+      const id=await user.id(); if(!id) return;
+      this.col=db.collection('data/users/'+id);
+      const snap=await this.col.get();
+      let remote=null;const rtexts=[];
+      snap.docs.forEach(d=>{if(!d.exists)return;if(d.id==='state')remote=d.data();else if(d.id.startsWith('t_'))rtexts.push(d.data());});
+      this.ready=true;
+      if(remote&&(remote.updatedAt||0)>(ST.updatedAt||0)){ST=migrate(JSON.parse(JSON.stringify(remote)));lsSet(LS_KEY,ST);}
+      else if(ST.updatedAt) this.pushState();
+      const map=new Map(USER_TEXTS.map(t=>[t.id,t]));
+      rtexts.forEach(t=>{const l=map.get(t.id);if(!l||(t.updatedAt||0)>(l.updatedAt||0))map.set(t.id,JSON.parse(JSON.stringify(t)));});
+      const localOnly=USER_TEXTS.filter(t=>!rtexts.some(r=>r.id===t.id));
+      USER_TEXTS=[...map.values()].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+      lsSet(LS_TEXTS,USER_TEXTS);
+      for(const t of localOnly) await this.saveText(t);
+      render(true);
+    }catch(e){console.warn('sync',e);}
+  },
+  pushState(){
+    if(!this.ready||!this.col) return;
+    clearTimeout(this.timer);
+    this.timer=setTimeout(async()=>{
+      if(this.busy){this.pushState();return;}
+      this.busy=true;
+      try{await this.col.doc('state').set(JSON.parse(JSON.stringify(ST)));}catch(e){console.warn('save',e);}
+      this.busy=false;
+    },1500);
+  },
+  async saveText(t){if(!this.ready||!this.col)return;try{await this.col.doc('t_'+t.id).set(JSON.parse(JSON.stringify(t)));}catch(e){console.warn(e);}},
+  async deleteText(id){if(!this.ready||!this.col)return;try{await this.col.doc('t_'+id).delete();}catch(e){console.warn(e);}}
+};
+function save(){ST.updatedAt=Date.now();lsSet(LS_KEY,ST);Sync.pushState();}
+function saveUserText(t){t.updatedAt=Date.now();const i=USER_TEXTS.findIndex(x=>x.id===t.id);if(i>=0)USER_TEXTS[i]=t;else USER_TEXTS.unshift(t);lsSet(LS_TEXTS,USER_TEXTS);Sync.saveText(t);}
+function deleteUserText(id){USER_TEXTS=USER_TEXTS.filter(t=>t.id!==id);lsSet(LS_TEXTS,USER_TEXTS);Sync.deleteText(id);}
+
+function act(k,n=1){const d=dayKey();ST.activity[d]=ST.activity[d]||{};ST.activity[d][k]=(ST.activity[d][k]||0)+n;save();}
+const todayAct=()=>ST.activity[dayKey()]||{};
+function streak(){
+  let n=0;const d=new Date();
+  const has=dt=>{const a=ST.activity[dayKey(dt)];return a&&Object.values(a).some(v=>v>0);};
+  if(!has(d)) d.setDate(d.getDate()-1);
+  while(has(d)){n++;d.setDate(d.getDate()-1);}
+  return n;
+}
+function record(ok,src){
+  ST.results.push({t:Date.now(),ok:ok?1:0,lv:ST.level,src});
+  if(ST.results.length>300) ST.results.splice(0,ST.results.length-300);
+  checkLevel();save();
+}
+function levelWindow(){return ST.results.filter(r=>r.lv===ST.level&&r.t>(ST.levelSince||0)).slice(-40);}
+function accuracy(arr){return arr.length?arr.reduce((a,r)=>a+r.ok,0)/arr.length:0;}
+const LEVEL_NEED=30;
+function checkLevel(){
+  if(ST.mode!=='adaptive') return;
+  const w=levelWindow();if(w.length<LEVEL_NEED) return;
+  const acc=accuracy(w),i=lvIdx(ST.level);
+  if(acc>=0.85&&i<LEVELS.length-1){setLevel(LEVELS[i+1],'up');toast(`Bravo ! You've moved up to ${ST.level}.`,true);}
+  else if(acc<0.5&&i>0){setLevel(LEVELS[i-1],'down');toast(`Back to ${ST.level} for a bit to consolidate.`);}
+}
+function setLevel(l,why){if(l===ST.level)return;ST.level=l;ST.levelSince=Date.now();ST.levelLog.push({t:Date.now(),level:l,why});save();paintChrome();}
+function addMistake(m){
+  if(!m||!m.wrong||!m.right) return;
+  if(normAns(m.wrong)===normAns(m.right)) return;
+  if(ST.mistakes.some(x=>normAns(x.wrong)===normAns(m.wrong)&&normAns(x.right)===normAns(m.right))) return;
+  ST.mistakes.unshift({id:uid(),t:Date.now(),fixed:0,...m});
+  if(ST.mistakes.length>250) ST.mistakes.length=250;
+}
+
+/* ================= AI (Claude) ================= */
+const AI={fn:null,state:'loading',images:null,
+  async init(){
+    try{
+      if(!window.claude||!window.claude.use){this.state='off';return;}
+      const s=await claude.use('sample');
+      if(!s){this.state='off';paintAI();return;}
+      this.fn=s;this.state='on';
+      try{const l=await s.limits();this.images=l&&l.images?l.images:null;}catch(e){}
+    }catch(e){this.state='off';}
+    paintAI();
+  },
+  on(){return this.state==='on';},
+  json(p,o={}){if(!this.fn)return Promise.reject({code:'unavailable'});return this.fn.json(p,o);},
+  text(p,o={}){if(!this.fn)return Promise.reject({code:'unavailable'});return this.fn(p,o);}
+};
+function aiMsg(e){
+  const c=e&&e.code;
+  if(c==='not_granted'||c==='sampling_disabled'||c==='not_declared'||c==='capability_disabled'){AI.state='denied';paintAI();return 'Claude access is off for this page, so AI features are paused. Reload the page to be asked again.';}
+  return ({rate_limited:'Too many requests right now. Wait a minute, then try again.',invalid_json:'The answer came back in an unexpected format. Try again.',refused:'Claude declined this request. Try rephrasing it.',session_expired:'Your Claude session expired. Sign in again, then retry.',prompt_too_large:'That text is too long. Try a shorter part.',unavailable:'AI features need this page to be open in Claude.',image_rejected:"That image couldn't be read. Try a clearer JPG or PNG photo.",images_unavailable:"Photos can't be sent from this view. Paste the text instead.",cancelled:'Stopped.',empty_completion:'No answer came back. Try again.'})[c]||'Something went wrong reaching Claude. Try again.';
+}
+function aiGate(){
+  if(AI.state==='loading') return `<div class="note">Connecting to Claude…</div>`;
+  if(AI.state!=='on') return `<div class="note warn">This feature uses Claude and isn't available right now. ${AI.state==='denied'?'Reload the page to allow access.':'Open this page inside Claude to use it.'}</div>`;
+  return '';
+}
+function paintAI(){$$('[data-ai-gate]').forEach(el=>{el.innerHTML=aiGate();});$$('[data-needs-ai]').forEach(b=>{b.disabled=!AI.on();});}
+const thinking=(t='Claude is thinking…')=>`<div class="thinking"><span class="spinner"></span>${esc(t)}</div>`;
+
+/* ================= SPEECH ================= */
+const TTS={ok:typeof window.speechSynthesis!=='undefined',voices:[],btn:null,
+  init(){if(!this.ok)return;const load=()=>{try{this.voices=speechSynthesis.getVoices().filter(v=>/^fr/i.test(v.lang));}catch(e){}};load();try{speechSynthesis.addEventListener('voiceschanged',load);}catch(e){}},
+  voice(){const v=this.voices;return v.find(x=>x.name===ST.voice)||v.find(x=>/fr[-_]FR/i.test(x.lang)&&/(google|premium|enhanced|natural|amélie|audrey|thomas|denise|henri)/i.test(x.name))||v.find(x=>/fr[-_]FR/i.test(x.lang))||v[0]||null;},
+  speak(text,{rate,onend,btn}={}){
+    if(!this.ok){toast('Read-aloud is not available in this browser.');onend&&onend();return;}
+    this.stop();
+    const clean=String(text).replace(/[—«»"“”]/g,' ').replace(/\(e\)/g,'').replace(/…/g,'.');
+    const u=new SpeechSynthesisUtterance(clean);
+    u.lang='fr-FR';const v=this.voice();if(v)u.voice=v;u.rate=rate||ST.rate;
+    if(btn){this.btn=btn;btn.classList.add('speaking');}
+    const done=()=>{if(btn)btn.classList.remove('speaking');if(this.cur===u){this.cur=null;onend&&onend();}};
+    u.onend=done;u.onerror=done;this.cur=u;
+    setTimeout(()=>{try{speechSynthesis.speak(u);}catch(e){done();}},40);
+  },
+  stop(){if(!this.ok)return;this.cur=null;try{speechSynthesis.cancel();}catch(e){}$$('.iconbtn.speaking').forEach(b=>b.classList.remove('speaking'));}
+};
+
+/* ================= UI HELPERS ================= */
+function toast(msg,good){const t=document.createElement('div');t.className='toast'+(good?' good':'');t.textContent=msg;$('#toast').appendChild(t);setTimeout(()=>t.remove(),3800);}
+let modalClose=null;
+function openModal(html,mount){
+  const m=$('#modal');m.innerHTML=`<div class="sheet" role="dialog" aria-modal="true">${html}</div>`;m.hidden=false;
+  const close=()=>{m.hidden=true;m.innerHTML='';modalClose=null;TTS.stop();};
+  modalClose=close;
+  m.onclick=e=>{if(e.target===m)close();};
+  $$('[data-close]',m).forEach(b=>b.onclick=close);
+  mount&&mount(m.firstElementChild,close);
+  return close;
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(modalClose)modalClose();hidePop();}});
+function hidePop(){const p=$('#pop');p.hidden=true;p.innerHTML='';}
+function showPop(anchor,html){
+  const p=$('#pop');p.innerHTML=html;p.hidden=false;
+  const r=anchor.getBoundingClientRect(),pw=p.offsetWidth,ph=p.offsetHeight;
+  let x=Math.min(Math.max(12,r.left+r.width/2-pw/2),window.innerWidth-pw-12);
+  let y=r.bottom+8;if(y+ph>window.innerHeight-12)y=Math.max(12,r.top-ph-8);
+  p.style.left=x+'px';p.style.top=y+'px';
+}
+document.addEventListener('click',e=>{
+  const say=e.target.closest('[data-say]');
+  if(say){e.preventDefault();if(say.classList.contains('speaking')){TTS.stop();return;}TTS.speak(say.getAttribute('data-say'),{btn:say,rate:say.dataset.rate?+say.dataset.rate:undefined});return;}
+  const g=e.target.closest('[data-go]');
+  if(g){e.preventDefault();go(g.dataset.go,g.dataset.arg?JSON.parse(g.dataset.arg):{});return;}
+  const p=$('#pop');
+  if(!p.hidden&&!p.contains(e.target)&&!e.target.closest('.w'))hidePop();
+});
+/* accent bar (desktop keyboards) */
+const ACCENTS=['é','è','ê','ë','à','â','ç','ù','û','î','ï','ô','œ','É','À','Ç','«','»'];
+(function(){
+  const bar=$('#accentbar');
+  bar.innerHTML=ACCENTS.map(c=>`<button type="button" tabindex="-1">${c}</button>`).join('');
+  bar.addEventListener('mousedown',e=>e.preventDefault());
+  bar.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const el=document.activeElement;if(!el||!('selectionStart' in el))return;const s=el.selectionStart,en=el.selectionEnd;el.setRangeText(b.textContent,s,en,'end');el.dispatchEvent(new Event('input',{bubbles:true}));});
+  const fine=window.matchMedia&&matchMedia('(pointer:fine)').matches;
+  document.addEventListener('focusin',e=>{if(fine&&e.target.matches('input[type=text],textarea')&&!e.target.dataset.noaccent)bar.hidden=false;});
+  document.addEventListener('focusout',()=>setTimeout(()=>{const a=document.activeElement;if(!a||!a.matches('input[type=text],textarea'))bar.hidden=true;},80));
+})();
+/* selection → translate */
+(function(){
+  const btn=$('#selbtn');
+  const check=()=>{
+    const sel=window.getSelection();const txt=sel?String(sel).trim():'';
+    if(!txt||txt.length<2||txt.length>1500){btn.hidden=true;return;}
+    const node=sel.anchorNode&&(sel.anchorNode.nodeType===1?sel.anchorNode:sel.anchorNode.parentElement);
+    if(!node||!node.closest('.reader,.corr,.bubble,.translatable')){btn.hidden=true;return;}
+    const r=sel.getRangeAt(0).getBoundingClientRect();
+    btn.hidden=false;
+    btn.style.left=Math.min(Math.max(12,r.left+r.width/2-80),window.innerWidth-180)+'px';
+    btn.style.top=Math.max(12,r.top-44)+'px';
+    btn.dataset.text=txt;
+  };
+  document.addEventListener('mouseup',()=>setTimeout(check,10));
+  document.addEventListener('touchend',()=>setTimeout(check,250));
+  document.addEventListener('selectionchange',()=>{const s=window.getSelection();if(!s||!String(s).trim())btn.hidden=true;});
+  btn.addEventListener('mousedown',e=>e.preventDefault());
+  btn.addEventListener('click',()=>{btn.hidden=true;openTranslate(btn.dataset.text,true);});
+})();
+
+/* ================= TRANSLATE ================= */
+function openTranslate(text='',auto=false){
+  openModal(`<div class="stack">
+    <div class="row between"><h2>Traduire</h2><button class="btn ghost sm" data-close type="button">Fermer</button></div>
+    <div data-ai-gate>${aiGate()}</div>
+    <div><label class="lbl" for="tr-in">Text (French or English)</label><textarea id="tr-in" rows="4" placeholder="Paste or type anything…">${esc(text)}</textarea></div>
+    <div class="row between"><div class="seg" id="tr-dir"><button type="button" data-d="auto" aria-pressed="true">Auto</button><button type="button" data-d="fr-en" aria-pressed="false">FR → EN</button><button type="button" data-d="en-fr" aria-pressed="false">EN → FR</button></div>
+    <button class="btn primary" id="tr-go" type="button" data-needs-ai ${AI.on()?'':'disabled'}>Traduire</button></div>
+    <div id="tr-out"></div></div>`,(sheet)=>{
+    let dir='auto';
+    $$('#tr-dir button',sheet).forEach(b=>b.onclick=()=>{dir=b.dataset.d;$$('#tr-dir button',sheet).forEach(x=>x.setAttribute('aria-pressed',x===b));});
+    const run=async()=>{
+      const t=$('#tr-in',sheet).value.trim();if(!t)return;
+      const out=$('#tr-out',sheet);out.innerHTML=thinking('Translating…');
+      try{
+        const r=await AI.json(`Translate for a learner of French (level ${ST.level}). Direction: ${dir==='auto'?'detect the language; French → English, anything else → French':dir==='fr-en'?'French → English':'English → French'}.
+Text:
+"""${t.slice(0,6000)}"""
+Reply with only JSON: {"from":"fr"|"en","translation":"...","notes":["up to 3 short notes in English about idioms, false friends or grammar worth knowing"]}`,{modelTier:'quick'});
+        const fr=r.from==='fr'?t:r.translation;
+        out.innerHTML=`<div class="card flat stack translatable"><div class="row between"><span class="eyebrow">${r.from==='fr'?'English':'Français'}</span>${spk(fr,'Écouter le français')}</div>
+          <p style="font-family:var(--f-read);font-size:1.08rem;white-space:pre-wrap">${esc(r.translation)}</p>
+          ${(r.notes||[]).length?`<ul class="small muted" style="margin:0;padding-left:18px">${r.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`:''}
+          ${fr.length<80?`<div><button class="btn sm" id="tr-save" type="button">+ Add to my words</button></div>`:''}</div>`;
+        const sv=$('#tr-save',sheet);
+        if(sv)sv.onclick=()=>{addCustomWord(r.from==='fr'?t:r.translation,r.from==='fr'?r.translation:t,'');sv.disabled=true;sv.textContent='Added ✓';};
+      }catch(e){out.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;}
+    };
+    $('#tr-go',sheet).onclick=run;
+    if(auto&&text&&AI.on())run();
+  });
+}
+function addCustomWord(fr,en,ex,theme='Mes mots'){
+  fr=String(fr).trim();if(!fr)return;
+  if([...VOCAB,...ST.customVocab].some(w=>normAns(w.fr)===normAns(fr))){toast('Already in your words.');return;}
+  ST.customVocab.push({id:'c'+uid(),fr,en:String(en||'').trim(),ex:ex||'',level:ST.level,theme,custom:1,added:Date.now()});
+  save();toast('Added to your words ✓',true);
+}
+/* ================= DERIVED DATA ================= */
+const allWords=()=>[...ST.customVocab,...VOCAB];
+const dueWords=()=>{const n=Date.now();return allWords().filter(w=>ST.srs[w.id]&&ST.srs[w.id].due<=n);};
+const newPool=()=>{const lv=lvIdx(ST.level);return allWords().filter(w=>!ST.srs[w.id]&&(w.custom||lvIdx(w.level)<=lv)&&(ST.wordTheme==='all'||w.theme===ST.wordTheme));};
+const newLeftToday=()=>Math.min(newPool().length,Math.max(0,ST.newPerDay-(todayAct().newWords||0)));
+const learnedCount=()=>Object.values(ST.srs).filter(c=>c.reps>=2).length;
+const unitMastery=u=>(ST.unitScores[u.id]&&ST.unitScores[u.id].best)||0;
+const nextUnit=()=>UNITS.find(u=>lvIdx(u.level)<=lvIdx(ST.level)&&unitMastery(u)<80)||UNITS.find(u=>unitMastery(u)<80);
+function normText(t){
+  if(t.s) return {id:t.id,level:t.level,title:t.title,focus:t.focus,builtin:true,
+    sentences:t.s.map(([fr,en])=>({fr,en})),glossary:t.g.map(x=>{const [fr,en]=x.split('|');return {fr,en};}),
+    drills:[...t.d.map(([instruction,source,answer])=>({instruction,source,answer})),...((ST.extraDrills&&ST.extraDrills[t.id])||[])],questions:t.q.map(([q,options,answer])=>({q,options,answer}))};
+  return {builtin:false,sentences:[],glossary:[],drills:[],questions:[],...t};
+}
+const allTexts=()=>[...USER_TEXTS.map(normText),...BUILTIN_TEXTS.map(normText)];
+const suggestText=()=>{const ts=allTexts().filter(t=>t.level===ST.level);return ts.find(t=>!ST.textsRead[t.id])||ts[0]||allTexts()[0];};
+
+/* ================= ROUTER ================= */
+const ROUTES=[{id:'today',t:"Aujourd'hui",tab:1},{id:'journee',t:'Ma journée',s:'Journée',tab:1},{id:'textes',t:'Textes',tab:1},{id:'parler',t:'Parler',tab:1},{id:'mots',t:'Mots',tab:1},{id:'grammaire',t:'Grammaire',s:'Gramm.',tab:1},{id:'carnet',t:"Carnet d'erreurs"},{id:'progres',t:'Progrès'}];
+let route='today',params={};
+function go(r,p={}){TTS.stop();hidePop();clearInterval(TIMER.h);TIMER.run=false;READ.playing=false;route=ROUTES.some(x=>x.id===r)?r:'today';params=p||{};try{if(location.hash!=='#'+route)history.replaceState(null,'','#'+route);}catch(e){}render();window.scrollTo(0,0);}
+function paintChrome(){
+  const cur=r=>r.id===route?'aria-current="page"':'';
+  $('#sidenav').innerHTML=ROUTES.map(r=>`<button type="button" data-go="${r.id}" ${cur(r)}>${ICON[r.id]}<span>${esc(r.t)}</span>${r.id==='carnet'&&ST.mistakes.length?`<span class="pill" style="margin-left:auto">${ST.mistakes.length}</span>`:''}</button>`).join('');
+  $('#tabbar').innerHTML=ROUTES.filter(r=>r.tab).map(r=>`<button type="button" data-go="${r.id}" ${cur(r)}>${ICON[r.id]}<span>${esc(r.s||r.t)}</span></button>`).join('');
+  const chip=`<b>${ST.level}</b><span>${ST.mode==='adaptive'?'adaptatif':'manuel'}</span>`;
+  $('#lvchip-side').innerHTML=chip;$('#lvchip-top').innerHTML=chip;
+}
+$('#lvchip-side').onclick=$('#lvchip-top').onclick=()=>go('progres');
+$('#settings-side').onclick=$('#settings-top').onclick=()=>openSettings();
+function render(soft){
+  paintChrome();
+  if(soft){const a=document.activeElement;if((a&&a.matches('input,textarea'))||params.session||params.drill||CHAT.active)return;}
+  const v=$('#view');
+  (VIEWS[route]||VIEWS.today)(v);
+  paintAI();
+}
+
+/* ================= TODAY ================= */
+function viewToday(v){
+  const a=todayAct(),due=dueWords().length,newLeft=newLeftToday(),unit=nextUnit(),txt=suggestText(),mode=LEVEL_JOURNAL[ST.level];
+  const tasks=[
+    {t:'Ma journée',m:`Tell your day (${JOURNAL_MODES[mode].label})`,done:(a.journal||0)>=1,go:'journee'},
+    {t:'Mots',m:(due||newLeft)?`${due} to review · ${newLeft} new`:'Nothing due',done:(a.reviews||0)>=15||(!due&&!newLeft),go:'mots'},
+    {t:'Un texte',m:txt?`Read “${txt.title}”`:'Read a text',done:(a.texts||0)>=1,go:'textes',arg:txt?{id:txt.id}:{}},
+    {t:'Grammaire',m:unit?`Next step: ${unit.title}`:'10 exercises',done:(a.drills||0)>=10,go:'grammaire',arg:unit?{unit:unit.id}:{}},
+    {t:'Shadowing',m:'Repeat 5 sentences out loud',done:(a.shadow||0)>=5,go:'parler',arg:{tab:'shadow'}},
+    {t:'Parler',m:'60 seconds, or a conversation',done:((a.speak||0)+(a.chat||0))>=1,go:'parler',arg:{tab:'timer'}}
+  ];
+  const nd=tasks.filter(t=>t.done).length;
+  const recent=ST.results.slice(-30);
+  v.innerHTML=`<div class="stack-lg">
+  <div class="hello"><div class="stack" style="gap:6px"><div class="date">${esc(frDate())}</div><h1>Bonjour, ${esc(ST.name||'toi')} !</h1>
+    <p class="muted">About 20 minutes a day. Do the plan in any order.</p></div>
+    <div style="min-width:200px;flex:0 1 260px"><div class="row between small"><span class="muted">Plan du jour</span><b class="num">${nd}/6</b></div><div class="progress" style="margin-top:6px"><i style="width:${nd/6*100}%"></i></div></div></div>
+  <div class="plan">${tasks.map(t=>`<button type="button" class="task ${t.done?'done':''}" data-go="${t.go}" ${t.arg?`data-arg='${esc(JSON.stringify(t.arg))}'`:''}><span class="chk"></span><span class="stack" style="gap:2px"><h3>${esc(t.t)}</h3><span class="meta">${esc(t.m)}</span></span></button>`).join('')}</div>
+  <div class="stats">
+    <div class="stat"><div class="v num">${streak()}</div><div class="k">Day streak</div></div>
+    <div class="stat"><div class="v num">${learnedCount()}</div><div class="k">Words learned</div></div>
+    <div class="stat"><div class="v num">${recent.length?Math.round(accuracy(recent)*100)+'%':'—'}</div><div class="k">Accuracy (last 30)</div></div>
+    <div class="stat"><div class="v num">${Object.keys(ST.textsRead).length}</div><div class="k">Texts read</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card stack"><div class="row between"><h3>Traduire</h3><span class="pill">FR ⇄ EN</span></div>
+      <textarea id="qt" rows="3" placeholder="Paste a sentence from class, a message, anything…" style="min-height:80px"></textarea>
+      <div class="row"><button class="btn primary" id="qt-go" type="button">Traduire</button><span class="small muted">Tip: select text anywhere in the app to translate it.</span></div></div>
+    <div class="card stack"><h3>Ton niveau</h3>${levelProgressHtml()}
+      <div class="row"><button class="btn sm" data-go="progres" type="button">Progress &amp; level</button><button class="btn sm" data-go="carnet" type="button">Mistake notebook (${ST.mistakes.length})</button></div></div>
+  </div></div>`;
+  $('#qt-go').onclick=()=>openTranslate($('#qt').value,true);
+}
+function levelProgressHtml(){
+  const w=levelWindow(),acc=accuracy(w),i=lvIdx(ST.level);
+  const nextL=LEVELS[i+1];
+  return `<div class="row" style="gap:14px;align-items:baseline"><span style="font-family:var(--f-display);font-size:2.2rem;line-height:1">${ST.level}</span><span class="muted">${LEVEL_NAMES[ST.level]}</span></div>
+  ${ST.mode==='adaptive'&&nextL?`<div class="small muted">Toward ${nextL}: ${Math.min(w.length,LEVEL_NEED)}/${LEVEL_NEED} answers at this level${w.length?`, ${Math.round(acc*100)}% correct (85% needed)`:''}.</div><div class="progress"><i style="width:${Math.min(100,w.length/LEVEL_NEED*100)}%"></i></div>`:
+  `<div class="small muted">${ST.mode==='adaptive'?'Top level reached.':'Manual mode: you choose the level.'}</div>`}`;
+}
+
+/* ================= CORRECTION (shared) ================= */
+async function correctText(text,modeKey,context=''){
+  const m=JOURNAL_MODES[modeKey]||JOURNAL_MODES.libre;
+  return AI.json(`You are a warm, precise French teacher. Your student is at CEFR level ${ST.level}. ${context||'They are telling you about their day, like at the start of a private lesson.'}
+Target tense focus: ${m.label} (${m.hint})
+Student text:
+"""${text.slice(0,5000)}"""
+Reply with only JSON:
+{"corrected":"the full text with minimal corrections, keeping the student's meaning and words",
+"errors":[{"wrong":"exact wrong fragment from the student text","right":"corrected fragment","why":"short explanation in English naming the rule"}],
+"natural":"how a native speaker would say the same thing, slightly richer than level ${ST.level}, max 120 words",
+"score":0-100,
+"tip":"one concrete tip in English for next time",
+"followup":"one natural follow-up question in French the teacher would ask"}
+List at most 12 errors, most important first. Ignore missing capital letters. If the text is perfect, errors is [].`);
+}
+function correctionHtml(r){
+  const sc=Math.round(r.score||0);
+  const cls=sc>=85?'ok':sc>=60?'warn':'red';
+  return `<div class="stack">
+   <div class="row between"><h3>Correction</h3><span class="pill ${cls}">${sc}/100</span></div>
+   <div class="seyes corr translatable"><div class="row between" style="gap:8px;align-items:flex-start"><span style="flex:1">${esc(r.corrected||'')}</span>${spk(r.corrected||'','Écouter la version corrigée')}</div></div>
+   ${(r.errors||[]).length?`<div class="card flat"><div class="eyebrow" style="margin-bottom:4px">What to fix</div>${r.errors.map(e=>`<div class="err"><div class="pair"><s>${esc(e.wrong)}</s> → <b>${esc(e.right)}</b></div><div class="small muted">${esc(e.why)}</div></div>`).join('')}</div>`:`<div class="note">No mistakes. Parfait !</div>`}
+   ${r.natural?`<div class="card flat stack translatable"><div class="row between"><div class="eyebrow">Like a native speaker</div>${spk(r.natural,'Écouter')}</div><p style="font-family:var(--f-read);font-size:1.05rem">${esc(r.natural)}</p><div><button class="btn sm" type="button" data-shadow-text="${esc(r.natural)}">Shadow this version</button></div></div>`:''}
+   ${r.tip?`<div class="note"><b>Tip:</b> ${esc(r.tip)}</div>`:''}
+   ${r.followup?`<div class="panel row between" style="gap:10px"><span><span class="eyebrow">Your teacher asks</span><br><span style="font-family:var(--f-read);font-size:1.05rem">${esc(r.followup)}</span></span>${spk(r.followup)}</div>`:''}
+  </div>`;
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-shadow-text]');if(!b)return;const sents=splitSentences(b.dataset.shadowText);SHADOW.custom=sents;go('parler',{tab:'shadow'});});
+function applyCorrection(r,src){
+  (r.errors||[]).forEach(e=>addMistake({src,wrong:e.wrong,right:e.right,why:e.why}));
+  record((r.score||0)>=75,src);
+}
+function splitSentences(t){return String(t).replace(/\s+/g,' ').match(/[^.!?…]+[.!?…]*["»]?/g)?.map(s=>s.trim()).filter(s=>s.length>1)||[];}
+
+/* ================= MA JOURNÉE ================= */
+function viewJournee(v){
+  const mode=params.mode||ST.journalMode||LEVEL_JOURNAL[ST.level];
+  const M=JOURNAL_MODES[mode];
+  let draft='';try{draft=localStorage.getItem('cahier.jdraft')||'';}catch(e){}
+  v.innerHTML=`<div class="stack-lg">
+  <div class="stack" style="gap:6px"><div class="eyebrow">Like the start of your lesson</div><h1>Ma journée</h1>
+  <p class="muted">Tell your day in French. Write it, get corrected, then read the corrected version out loud. Tomorrow, try to say it without writing.</p></div>
+  <div class="stack">
+   <div class="seg" id="jm">${Object.entries(JOURNAL_MODES).map(([k,m])=>`<button type="button" data-m="${k}" aria-pressed="${k===mode}">${esc(m.label)}</button>`).join('')}</div>
+   <p class="small muted">${esc(M.hint)} Suggested for ${ST.level}: <b>${esc(JOURNAL_MODES[LEVEL_JOURNAL[ST.level]].label)}</b>.</p>
+   <div class="row" style="gap:6px">${M.starters.map(s=>`<button class="btn sm" type="button" data-start="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+   <textarea id="jtext" rows="8" placeholder="Aujourd'hui…">${esc(draft)}</textarea>
+   <div class="row between"><span class="small muted" id="jcount"></span><span class="small muted">On your phone, tap the keyboard's microphone to dictate.</span></div>
+   <div data-ai-gate>${aiGate()}</div>
+   <div class="row"><button class="btn primary" id="jgo" type="button" data-needs-ai>Corriger</button><button class="btn ghost" id="jclear" type="button">Clear</button></div>
+   <div id="jres"></div>
+  </div>
+  <div class="stack"><h2>Previous days</h2>${ST.journal.length?`<div class="list">${ST.journal.slice(0,20).map(j=>`<div class="li"><div class="grow"><div class="small muted">${esc(frDate(j.t,{weekday:'short',day:'numeric',month:'short'}))} · ${esc((JOURNAL_MODES[j.mode]||{}).label||j.mode)}</div><div style="font-family:var(--f-read);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(j.corrected||j.text)}</div></div><span class="pill ${j.score>=85?'ok':j.score>=60?'warn':'red'}">${j.score??'—'}</span><button class="btn sm" type="button" data-jopen="${j.id}">Open</button></div>`).join('')}</div>`:`<div class="empty">Your entries will appear here.</div>`}</div>
+  </div>`;
+  const ta=$('#jtext');
+  const count=()=>{const n=(ta.value.match(/\S+/g)||[]).length;$('#jcount').textContent=n+' words';try{localStorage.setItem('cahier.jdraft',ta.value);}catch(e){}};
+  ta.oninput=count;count();
+  $$('#jm button').forEach(b=>b.onclick=()=>{ST.journalMode=b.dataset.m;save();params.mode=b.dataset.m;viewJournee(v);paintAI();});
+  $$('[data-start]').forEach(b=>b.onclick=()=>{const s=b.dataset.start.replace(/…$/,' ');ta.value=(ta.value.trim()?ta.value.trim()+' ':'')+s;ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);count();});
+  $('#jclear').onclick=()=>{ta.value='';count();$('#jres').innerHTML='';};
+  $('#jgo').onclick=async()=>{
+    const text=ta.value.trim();if((text.match(/\S+/g)||[]).length<3){toast('Write at least a sentence first.');return;}
+    const btn=$('#jgo');btn.disabled=true;$('#jres').innerHTML=thinking('Your teacher is reading…');
+    try{
+      const r=await correctText(text,mode);
+      $('#jres').innerHTML=correctionHtml(r);
+      applyCorrection(r,'journal');
+      ST.journal.unshift({id:uid(),t:Date.now(),mode,text,corrected:r.corrected,natural:r.natural,score:Math.round(r.score||0),errors:(r.errors||[]).slice(0,12),tip:r.tip,followup:r.followup});
+      if(ST.journal.length>40) ST.journal.length=40;
+      act('journal');
+      try{localStorage.removeItem('cahier.jdraft');}catch(e){}
+    }catch(e){$('#jres').innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;}
+    btn.disabled=!AI.on();
+  };
+  $$('[data-jopen]').forEach(b=>b.onclick=()=>{const j=ST.journal.find(x=>x.id===b.dataset.jopen);if(!j)return;
+    openModal(`<div class="stack"><div class="row between"><h2>${esc(frDate(j.t))}</h2><button class="btn ghost sm" data-close type="button">Close</button></div>
+      <div class="panel"><div class="eyebrow">You wrote</div><p style="font-family:var(--f-read)">${esc(j.text)}</p></div>${correctionHtml(j)}</div>`);});
+}
+
+/* ================= TEXTES ================= */
+const FUNC={le:'the',la:'the',les:'the',l:"the (l')",un:'a / one',une:'a / one',des:'some / of the',de:'of / from',d:"of (d')",du:'some / of the',au:'to the / at the',aux:'to the',à:'to / at / in',et:'and',ou:'or',où:'where',mais:'but',donc:'so',car:'because',je:'I',j:"I (j')",tu:'you',il:'he / it',elle:'she / it',on:'we / one / people',nous:'we / us',vous:'you',ils:'they',elles:'they',me:'me / myself',m:"me (m')",te:'you / yourself',t:"you (t')",se:'himself / herself / themselves',s:"oneself (s') / if",lui:'him / to him / to her',leur:'their / to them',en:'in / some / of it',y:'there / to it',dans:'in',sur:'on',sous:'under',avec:'with',sans:'without',pour:'for / in order to',par:'by / per',pas:'not',ne:'(negation)',n:"(negation, n')",que:'that / what / than',qu:"that (qu')",qui:'who / which',ce:'this / it',c:"it (c')",cet:'this',cette:'this',ces:'these',est:'is',sont:'are',a:'has',ont:'have',mon:'my',ma:'my',mes:'my',ton:'your',ta:'your',tes:'your',son:'his / her',sa:'his / her',ses:'his / her',notre:'our',nos:'our',votre:'your',vos:'your',très:'very',plus:'more / no longer',moins:'less',tout:'all / everything',tous:'all',toute:'all',quand:'when',si:'if / so',comme:'like / as',chez:'at (someone’s place)',aussi:'also',bien:'well',peu:'little',beaucoup:'a lot',déjà:'already',encore:'still / again',avant:'before',après:'after',pendant:'during',depuis:'since / for',vers:'towards / around'};
+function tokenHtml(s){
+  const re=/[A-Za-zÀ-ÖØ-öø-ÿœŒæÆ]+(?:-[A-Za-zÀ-ÖØ-öø-ÿœŒæÆ]+)*/g;let out='',last=0,m;
+  while((m=re.exec(s))){out+=esc(s.slice(last,m.index))+`<span class="w" data-w="${esc(m[0])}">${esc(m[0])}</span>`;last=m.index+m[0].length;}
+  return out+esc(s.slice(last));
+}
+function localLookup(word,text){
+  const w=normAns(word);
+  const toks=s=>normAns(s).split(/[^a-zà-öø-ÿœæ]+/i).filter(Boolean);
+  if(FUNC[w]) return {fr:w,en:FUNC[w],note:'Common short word'};
+  if(text){const g=text.glossary.find(g=>toks(g.fr).includes(w)&&!FUNC[w]);if(g)return {fr:g.fr,en:g.en};}
+  const v=allWords().find(x=>normAns(x.fr)===w)||allWords().find(x=>toks(x.fr).includes(w));if(v)return {fr:v.fr,en:v.en};
+  if(ST.dict[w]) return ST.dict[w];
+  return null;
+}
+function viewTextes(v){ if(params.id) return viewReader(v); return viewLibrary(v); }
+function viewLibrary(v){
+  const f=params.filter||'lvl';
+  let list=allTexts();
+  if(f==='lvl') list=list.filter(t=>Math.abs(lvIdx(t.level)-lvIdx(ST.level))<=1).sort((a,b)=>Math.abs(lvIdx(a.level)-lvIdx(ST.level))-Math.abs(lvIdx(b.level)-lvIdx(ST.level)));
+  else if(f==='mine') list=list.filter(t=>!t.builtin);
+  else if(LEVELS.includes(f)) list=list.filter(t=>t.level===f);
+  const src=t=>t.builtin?'':t.source==='prof'?'<span class="pill red">From my teacher</span>':'<span class="pill">Generated</span>';
+  v.innerHTML=`<div class="stack-lg">
+   <div class="row between" style="align-items:flex-end"><div class="stack" style="gap:6px"><div class="eyebrow">Read · listen · transform</div><h1>Textes</h1>
+    <p class="muted">Tap any word to translate it. Then do the class exercises: change the subject, change the tense.</p></div>
+    <div class="row"><button class="btn primary" id="add-prof" type="button">+ Add my teacher's text</button><button class="btn" id="gen-story" type="button">New story</button></div></div>
+   <div class="seg" id="tf">${[['lvl','Around my level'],['mine','My texts'],['all','All'],...LEVELS.map(l=>[l,l])].map(([k,l])=>`<button type="button" data-f="${k}" aria-pressed="${k===f}">${l}</button>`).join('')}</div>
+   ${list.length?`<div class="grid3">${list.map(t=>`<button type="button" class="textcard" data-go="textes" data-arg='${esc(JSON.stringify({id:t.id}))}'>
+     ${ST.textsRead[t.id]?'<span class="pill ok read">Read ✓</span>':''}
+     <div class="row" style="gap:6px"><span class="pill lv">${esc(t.level)}</span>${src(t)}</div>
+     <h3>${esc(t.title)}</h3><div class="small muted">${esc(t.focus||'')}</div>
+     <div class="ex">${esc((t.sentences[0]||{}).fr||'')}</div></button>`).join('')}</div>`:`<div class="empty">No texts here yet. Add your teacher's text or generate a story.</div>`}
+  </div>`;
+  $$('#tf button').forEach(b=>b.onclick=()=>go('textes',{filter:b.dataset.f}));
+  $('#add-prof').onclick=openAddText;
+  $('#gen-story').onclick=openGenStory;
+}
+function textSchema(level){
+  return `Reply with only JSON:
+{"title":"short French title","level":"${level||'A1|A2|B1|B2|C1'}","focus":"main grammar point, e.g. Passé composé",
+"sentences":[{"fr":"one French sentence","en":"natural English translation"}],
+"glossary":[{"fr":"useful word or expression in dictionary form","en":"English"}],
+"drills":[{"instruction":"English instruction, e.g. Replace « je » with « nous » / Put it in the passé composé","source":"a sentence from the text","answer":"the transformed sentence"}],
+"questions":[{"q":"comprehension question in French","options":["4 short options in French"],"answer":0}]}
+Glossary: 8-12 items. Drills: 6 items mixing subject replacements (je/tu/il/elle/nous/vous/ils) and tense changes suited to the level, like a private teacher would do in class. Questions: 3 items, answer is the index of the correct option.`;
+}
+function openAddText(){
+  const imgOk=AI.on()&&AI.images;
+  openModal(`<div class="stack">
+   <div class="row between"><h2>Add your teacher's text</h2><button class="btn ghost sm" data-close type="button">Cancel</button></div>
+   <p class="small muted">Claude splits it into sentences, translates each one, picks the key vocabulary and writes class-style drills. The original text stays exactly as your teacher wrote it.</p>
+   <div data-ai-gate>${aiGate()}</div>
+   <div><label class="lbl" for="at-title">Title (optional)</label><input type="text" id="at-title" placeholder="e.g. Cours du 24 septembre"></div>
+   <div><label class="lbl" for="at-text">Paste the text</label><textarea id="at-text" rows="8" placeholder="Collez le texte ici…"></textarea></div>
+   ${imgOk?`<div><label class="lbl" for="at-img">…or add a photo of the handout</label><input type="file" id="at-img" accept="${esc((AI.images.mediaTypes||['image/jpeg','image/png']).join(','))}" ${AI.images.maxCount>1?'multiple':''}></div>`:''}
+   <div class="row"><button class="btn primary" id="at-go" type="button" data-needs-ai ${AI.on()?'':'disabled'}>Prepare with Claude</button><button class="btn" id="at-plain" type="button">Save without AI</button></div>
+   <div id="at-out"></div></div>`,(sheet,close)=>{
+    $('#at-plain',sheet).onclick=()=>{
+      const text=$('#at-text',sheet).value.trim();if(!text){toast('Paste the text first.');return;}
+      const t={id:uid(),source:'prof',createdAt:Date.now(),level:ST.level,title:$('#at-title',sheet).value.trim()||'Texte du '+frDate(Date.now(),{day:'numeric',month:'long'}),focus:'Texte du cours',sentences:splitSentences(text).map(fr=>({fr,en:''})),glossary:[],drills:[],questions:[]};
+      saveUserText(t);close();go('textes',{id:t.id});
+    };
+    $('#at-go',sheet).onclick=async()=>{
+      const text=$('#at-text',sheet).value.trim();const f=$('#at-img',sheet);const files=f&&f.files&&f.files.length?[...f.files].slice(0,(AI.images&&AI.images.maxCount)||1):null;
+      if(!text&&!files){toast('Paste the text or add a photo.');return;}
+      const out=$('#at-out',sheet);const b=$('#at-go',sheet);b.disabled=true;out.innerHTML=thinking(files?'Reading the photo and preparing the lesson…':'Preparing the lesson…');
+      try{
+        const r=await AI.json(`A French learner (level ${ST.level}) brings a text from their private French lesson.${files?' The text is in the attached photo(s): transcribe the French text exactly first.':''}
+${text?`Text:\n"""${text.slice(0,7000)}"""`:''}
+Keep the French sentences exactly as written (fix only obvious OCR errors), in order, one per item. Estimate the CEFR level of the text.
+${textSchema()}`,files?{images:files}:{});
+        if(!r||!Array.isArray(r.sentences)||!r.sentences.length) throw {code:'invalid_json'};
+        const t={id:uid(),source:'prof',createdAt:Date.now(),...cleanText(r),title:$('#at-title',sheet).value.trim()||r.title||'Texte du cours'};
+        saveUserText(t);close();toast('Text ready ✓',true);go('textes',{id:t.id});
+      }catch(e){out.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;b.disabled=false;}
+    };
+  });
+}
+function cleanText(r){
+  return {level:LEVELS.includes(r.level)?r.level:ST.level,title:String(r.title||'Texte'),focus:String(r.focus||''),
+    sentences:(r.sentences||[]).filter(s=>s&&s.fr).map(s=>({fr:String(s.fr),en:String(s.en||'')})),
+    glossary:(r.glossary||[]).filter(g=>g&&g.fr).map(g=>({fr:String(g.fr),en:String(g.en||'')})),
+    drills:(r.drills||[]).filter(d=>d&&d.source&&d.answer).map(d=>({instruction:String(d.instruction||'Transform'),source:String(d.source),answer:String(d.answer)})),
+    questions:(r.questions||[]).filter(q=>q&&Array.isArray(q.options)&&q.options.length>1).map(q=>({q:String(q.q),options:q.options.map(String),answer:Math.max(0,Math.min(q.options.length-1,+q.answer||0))}))};
+}
+const STORY_TOPICS=['Au travail','Au supermarché','Chez le coiffeur','Un week-end à la campagne','Un rendez-vous raté','À la banque','Une fête d\'anniversaire','Au restaurant','Un voyage en train','Le sport','Les voisins','Un appel téléphonique'];
+function openGenStory(){
+  openModal(`<div class="stack">
+   <div class="row between"><h2>New story</h2><button class="btn ghost sm" data-close type="button">Cancel</button></div>
+   <div data-ai-gate>${aiGate()}</div>
+   <div><label class="lbl" for="gs-topic">Topic</label><input type="text" id="gs-topic" placeholder="e.g. Un problème avec le propriétaire"></div>
+   <div class="row" style="gap:6px">${STORY_TOPICS.map(t=>`<button class="btn sm" type="button" data-topic="${esc(t)}">${esc(t)}</button>`).join('')}</div>
+   <div class="grid2" style="gap:10px">
+    <div><label class="lbl" for="gs-level">Level</label><select id="gs-level">${LEVELS.map(l=>`<option ${l===ST.level?'selected':''}>${l}</option>`).join('')}</select></div>
+    <div><label class="lbl" for="gs-tense">Grammar focus</label><select id="gs-tense"><option>Présent</option><option ${lvIdx(ST.level)===1?'selected':''}>Passé composé</option><option ${lvIdx(ST.level)>=2?'selected':''}>Passé composé et imparfait</option><option>Futur</option><option>Conditionnel</option><option>Subjonctif</option><option>Pronoms (le, lui, y, en)</option><option>Mélange</option></select></div>
+    <div><label class="lbl" for="gs-len">Length</label><select id="gs-len"><option value="7">Short (7 sentences)</option><option value="12">Medium (12 sentences)</option></select></div>
+    <div><label class="lbl" for="gs-style">Style</label><select id="gs-style"><option>Everyday story</option><option>Dialogue</option><option>Email / message</option><option>News-style article</option></select></div>
+   </div>
+   <div class="row"><button class="btn primary" id="gs-go" type="button" data-needs-ai ${AI.on()?'':'disabled'}>Generate</button></div><div id="gs-out"></div></div>`,(sheet,close)=>{
+    $$('[data-topic]',sheet).forEach(b=>b.onclick=()=>{$('#gs-topic',sheet).value=b.dataset.topic;});
+    $('#gs-go',sheet).onclick=async()=>{
+      const topic=$('#gs-topic',sheet).value.trim()||pick(STORY_TOPICS),lvl=$('#gs-level',sheet).value,tense=$('#gs-tense',sheet).value,n=$('#gs-len',sheet).value,style=$('#gs-style',sheet).value;
+      const out=$('#gs-out',sheet),b=$('#gs-go',sheet);b.disabled=true;out.innerHTML=thinking('Writing your story…');
+      try{
+        const r=await AI.json(`Write a very practical, everyday French text for a learner living in Luxembourg. Topic: ${topic}. CEFR level: ${lvl} (use only vocabulary and grammar suitable for ${lvl}). Grammar focus: ${tense}. Style: ${style}. Exactly ${n} sentences, using high-frequency words people really use in daily life.
+${textSchema(lvl)}`,{cache:false});
+        if(!r||!Array.isArray(r.sentences)||!r.sentences.length) throw {code:'invalid_json'};
+        const t={id:uid(),source:'ai',createdAt:Date.now(),...cleanText(r)};
+        saveUserText(t);close();go('textes',{id:t.id});
+      }catch(e){out.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;b.disabled=false;}
+    };
+  });
+}
+let READ={playing:false,idx:0};
+function viewReader(v){
+  const t=allTexts().find(x=>x.id===params.id);
+  if(!t){go('textes');return;}
+  const tab=params.tab||'drills';
+  const showTr=!!ST.showTr;
+  v.innerHTML=`<div class="stack-lg">
+  <div class="stack" style="gap:8px"><button class="btn ghost sm" style="align-self:flex-start" data-go="textes" type="button">← All texts</button>
+   <div class="row" style="gap:6px"><span class="pill lv">${esc(t.level)}</span>${t.focus?`<span class="pill">${esc(t.focus)}</span>`:''}${!t.builtin&&t.source==='prof'?'<span class="pill red">From my teacher</span>':''}</div>
+   <h1>${esc(t.title)}</h1></div>
+  <div class="row between">
+   <div class="row"><button class="btn primary" id="rd-play" type="button">▶ Read aloud</button>
+    <div class="seg" id="rd-rate">${[[0.7,'Slow'],[0.9,'Normal'],[1.05,'Fast']].map(([r,l])=>`<button type="button" data-r="${r}" aria-pressed="${Math.abs(ST.rate-r)<0.01}">${l}</button>`).join('')}</div></div>
+   <div class="row"><button class="btn sm" id="rd-tr" type="button">${showTr?'Hide':'Show'} translation</button><button class="btn sm" id="rd-hide" type="button">${params.listen?'Show text':'Listening mode'}</button></div>
+  </div>
+  <div class="seyes reader" id="rd">${t.sentences.map((s,i)=>`<span class="sent" data-i="${i}"><button class="play" type="button" data-si="${i}" aria-label="Play sentence">${ICON.tri}</button><span class="fr" ${params.listen?'style="filter:blur(6px)"':''}>${tokenHtml(s.fr)}</span>${showTr&&s.en?`<span class="tr">${esc(s.en)}</span>`:''}</span>`).join('')}</div>
+  <p class="small muted">Tap a word for its meaning · select several words to translate them · ▸ plays one sentence.</p>
+  <div class="stack">
+   <div class="tabs" role="tablist">${[['drills','Transform'],['free','Free practice'],['quiz','Questions'],['retell','Retell'],['vocab','Vocabulary']].map(([k,l])=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${k===tab}">${l}</button>`).join('')}</div>
+   <div id="rd-tab"></div>
+  </div>
+  <div class="row between"><button class="btn ${ST.textsRead[t.id]?'':'primary'}" id="rd-done" type="button">${ST.textsRead[t.id]?'Read ✓':"I've finished this text"}</button>
+   ${!t.builtin?`<button class="btn ghost danger sm" id="rd-del" type="button">Delete text</button>`:''}</div>
+  </div>`;
+  const sents=$$('#rd .sent');
+  const stopAll=()=>{READ.playing=false;TTS.stop();sents.forEach(s=>s.classList.remove('active'));$('#rd-play').textContent='▶ Read aloud';};
+  const playFrom=i=>{
+    if(!document.body.contains(sents[0]))return;
+    if(i>=t.sentences.length){stopAll();return;}
+    READ.playing=true;$('#rd-play').textContent='■ Stop';
+    sents.forEach(s=>s.classList.toggle('active',+s.dataset.i===i));
+    TTS.speak(t.sentences[i].fr,{onend:()=>{if(READ.playing)playFrom(i+1);}});
+  };
+  $('#rd-play').onclick=()=>READ.playing?stopAll():playFrom(0);
+  $$('#rd [data-si]').forEach(b=>b.onclick=e=>{e.stopPropagation();READ.playing=false;const i=+b.dataset.si;sents.forEach(s=>s.classList.toggle('active',+s.dataset.i===i));TTS.speak(t.sentences[i].fr,{onend:()=>sents[i].classList.remove('active')});});
+  $$('#rd-rate button').forEach(b=>b.onclick=()=>{ST.rate=+b.dataset.r;save();$$('#rd-rate button').forEach(x=>x.setAttribute('aria-pressed',x===b));});
+  $('#rd-tr').onclick=()=>{ST.showTr=!ST.showTr;save();viewReader(v);paintAI();};
+  $('#rd-hide').onclick=()=>{params.listen=!params.listen;viewReader(v);paintAI();};
+  $('#rd-done').onclick=()=>{if(!ST.textsRead[t.id]){ST.textsRead[t.id]=Date.now();act('texts');toast('Nice work ✓',true);}viewReader(v);paintAI();};
+  const del=$('#rd-del');
+  if(del)del.onclick=()=>{if(del.dataset.sure){deleteUserText(t.id);go('textes',{filter:'mine'});}else{del.dataset.sure=1;del.textContent='Tap again to delete';}};
+  $('#rd').addEventListener('click',e=>{
+    const w=e.target.closest('.w');if(!w)return;
+    const sel=window.getSelection();if(sel&&String(sel).trim().length>1)return;
+    const si=+w.closest('.sent').dataset.i;wordPop(w,w.dataset.w,t.sentences[si],t);
+  });
+  $$('.tabs button').forEach(b=>b.onclick=()=>{params.tab=b.dataset.tab;$$('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));renderReaderTab(t);});
+  renderReaderTab(t);
+}
+async function wordPop(el,word,sent,text){
+  const loc=localLookup(word,text);
+  const body=(r)=>`<div class="row between" style="gap:8px"><span class="pw">${esc(word)}</span>${spk(word)}</div>
+   ${r?`${r.lemma&&normAns(r.lemma)!==normAns(word)?`<div class="small muted">from <b>${esc(r.lemma)}</b>${r.pos?' · '+esc(r.pos):''}</div>`:r.fr&&normAns(r.fr)!==normAns(word)?`<div class="small muted">in <b>${esc(r.fr)}</b></div>`:''}
+   <div style="font-size:1.02rem;margin-top:4px">${esc(r.en)}</div>${r.note?`<div class="small muted" style="margin-top:4px">${esc(r.note)}</div>`:''}`:''}
+   <div id="pop-extra"></div>
+   <div class="row" style="margin-top:10px;gap:6px">${r?`<button class="btn sm" id="pop-add" type="button">+ My words</button>`:''}${sent.en?`<button class="btn sm" id="pop-sent" type="button">Translate sentence</button>`:''}</div>`;
+  const wire=(r)=>{
+    const a=$('#pop-add');if(a)a.onclick=()=>{addCustomWord(r.lemma||r.fr||word,r.en,sent.fr);a.disabled=true;a.textContent='Added ✓';};
+    const s=$('#pop-sent');if(s)s.onclick=()=>{$('#pop-extra').innerHTML=`<div class="note" style="margin-top:8px">${esc(sent.en)}</div>`;s.remove();};
+  };
+  if(loc){showPop(el,body(loc));wire(loc);return;}
+  if(!AI.on()){showPop(el,body(null)+`<div class="small muted">No saved translation for this word.</div>`);wire(null);return;}
+  showPop(el,`<div class="row between"><span class="pw">${esc(word)}</span>${spk(word)}</div>${thinking('Looking it up…')}`);
+  try{
+    const r=await AI.json(`French word "${word}" in this sentence: "${sent.fr}". Reply with only JSON: {"lemma":"dictionary form","pos":"verb / noun / adjective / …","en":"English meaning in this context","note":"for verbs: tense and person, e.g. 'passé composé of prendre, je'; otherwise a short usage note (max 12 words)"}`,{modelTier:'quick'});
+    const w=normAns(word);ST.dict[w]={lemma:r.lemma,pos:r.pos,en:r.en,note:r.note,fr:r.lemma};
+    const keys=Object.keys(ST.dict);if(keys.length>400)delete ST.dict[keys[0]];
+    save();
+    if(!$('#pop').hidden){showPop(el,body(ST.dict[w]));wire(ST.dict[w]);}
+  }catch(e){if(!$('#pop').hidden)showPop(el,`<span class="pw">${esc(word)}</span><div class="note warn" style="margin-top:8px">${esc(aiMsg(e))}</div>`);}
+}
+const FREE_INSTR=['Replace the subject with « nous »','Replace the subject with « je »','Replace the subject with « il »','Replace the subject with « elle »','Replace the subject with « vous »','Replace the subject with « ils »','Put it in the passé composé','Put it in the imparfait','Put it in the futur proche','Put it in the futur simple','Put it in the conditionnel','Make it negative','Turn it into a question (inversion)'];
+function drillCard(d,i){
+  return `<div class="card flat drill" data-d="${i}"><div class="eyebrow">${esc(d.instruction)}</div>
+   <div class="row" style="gap:8px;align-items:flex-start"><span class="prompt-big translatable" style="flex:1;font-size:1.12rem">${esc(d.source)}</span>${spk(d.source)}</div>
+   <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Write the new sentence" id="dr-${i}">
+   <div class="row"><button class="btn sm primary" data-check="${i}" type="button">Check</button><button class="btn sm ghost" data-show="${i}" type="button">Show answer</button></div><div class="fb"></div></div>`;
+}
+function renderReaderTab(t){
+  const box=$('#rd-tab');const tab=params.tab||'drills';
+  if(tab==='drills'){
+    box.innerHTML=`<div class="stack" style="margin-top:14px">${t.drills.length?t.drills.map(drillCard).join(''):'<div class="empty">No drills for this text yet.</div>'}
+     <div data-ai-gate>${aiGate()}</div><div><button class="btn" id="more-drills" type="button" data-needs-ai>More drills with Claude</button></div></div>`;
+    $$('[data-check]',box).forEach(b=>b.onclick=()=>checkDrill(t,+b.dataset.check,box));
+    $$('[data-show]',box).forEach(b=>b.onclick=()=>{const i=+b.dataset.show,c=$(`[data-d="${i}"]`,box);$('.fb',c).innerHTML=`<div class="feedback close">Answer: <span class="ans">${esc(t.drills[i].answer)}</span> ${spk(t.drills[i].answer)}</div>`;});
+    $$('input[id^="dr-"]',box).forEach(inp=>inp.addEventListener('keydown',e=>{if(e.key==='Enter')checkDrill(t,+inp.id.slice(3),box);}));
+    $('#more-drills').onclick=async()=>{
+      const b=$('#more-drills');b.disabled=true;b.innerHTML='<span class="spinner"></span> Writing drills…';
+      try{
+        const r=await AI.json(`French text (level ${t.level}):\n"""${t.sentences.map(s=>s.fr).join(' ')}"""\nWrite 6 NEW transformation drills like a private French teacher does in class, based on sentences of this text: subject replacements (je/tu/il/elle/nous/vous/ils, with all agreements) and tense changes (présent, passé composé, imparfait, futur, conditionnel) suited to level ${ST.level}. Avoid these existing ones: ${t.drills.map(d=>d.instruction+': '+d.source).join(' | ').slice(0,1500)}\nReply with only JSON: {"drills":[{"instruction":"English instruction","source":"sentence","answer":"transformed sentence"}]}`,{cache:false});
+        const nd=(r.drills||[]).filter(d=>d.source&&d.answer).map(d=>({instruction:String(d.instruction),source:String(d.source),answer:String(d.answer)}));
+        if(!nd.length) throw {code:'invalid_json'};
+        if(t.builtin){ST.extraDrills=ST.extraDrills||{};ST.extraDrills[t.id]=[...(ST.extraDrills[t.id]||[]),...nd].slice(-24);save();}
+        else{const ut=USER_TEXTS.find(x=>x.id===t.id);ut.drills=[...(ut.drills||[]),...nd];saveUserText(ut);}
+        t.drills.push(...nd);renderReaderTab(t);paintAI();
+      }catch(e){toast(aiMsg(e));b.disabled=false;b.textContent='More drills with Claude';}
+    };
+  }else if(tab==='free'){
+    box.innerHTML=`<div class="stack" style="margin-top:14px"><p class="small muted">Exactly like in class: pick any sentence, pick a change, write it. Claude checks it and explains.</p>
+     <div data-ai-gate>${aiGate()}</div>
+     <div><label class="lbl" for="fp-s">Sentence</label><select id="fp-s">${t.sentences.map((s,i)=>`<option value="${i}">${esc(s.fr)}</option>`).join('')}</select></div>
+     <div><label class="lbl" for="fp-i">Change</label><select id="fp-i">${FREE_INSTR.map(x=>`<option>${esc(x)}</option>`).join('')}</select></div>
+     <div class="row"><button class="btn sm" id="fp-rand" type="button">Surprise me</button></div>
+     <input type="text" id="fp-a" placeholder="Your new sentence" autocomplete="off" spellcheck="false">
+     <div class="row"><button class="btn primary" id="fp-go" type="button" data-needs-ai>Check with Claude</button></div><div id="fp-out"></div></div>`;
+    $('#fp-rand').onclick=()=>{$('#fp-s').value=Math.floor(Math.random()*t.sentences.length);$('#fp-i').selectedIndex=Math.floor(Math.random()*FREE_INSTR.length);$('#fp-a').value='';$('#fp-out').innerHTML='';};
+    const run=async()=>{
+      const s=t.sentences[+$('#fp-s').value].fr,ins=$('#fp-i').value,a=$('#fp-a').value.trim();if(!a){toast('Write your sentence first.');return;}
+      const out=$('#fp-out');out.innerHTML=thinking('Checking…');
+      try{
+        const r=await AI.json(`French exercise. Original: "${s}". Instruction: ${ins}. Student answer: "${a}". Check it strictly (verb forms, agreements, pronouns, word order) but accept any correct variant. Reply with only JSON: {"correct":true|false,"answer":"a correct version","why":"short explanation in English of mistakes, or what was good"}`);
+        out.innerHTML=`<div class="feedback ${r.correct?'good':'bad'}">${r.correct?'Correct !':'Not quite.'} ${esc(r.why||'')}<br>${r.correct?'':'Correct version: '}<span class="ans">${esc(r.answer||'')}</span> ${spk(r.answer||'')}</div>`;
+        record(!!r.correct,'texte');act('drills');
+        if(!r.correct) addMistake({src:'texte',wrong:a,right:r.answer,why:ins+' — '+(r.why||'')});save();
+      }catch(e){out.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;}
+    };
+    $('#fp-go').onclick=run;$('#fp-a').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+  }else if(tab==='quiz'){
+    box.innerHTML=`<div class="stack" style="margin-top:14px">${t.questions.length?t.questions.map((q,i)=>`<div class="card flat stack" data-q="${i}"><div class="row between"><b style="font-family:var(--f-read);font-weight:500;font-size:1.05rem">${esc(q.q)}</b>${spk(q.q)}</div><div class="choices">${q.options.map((o,j)=>`<button class="choice" type="button" data-o="${j}">${esc(o)}</button>`).join('')}</div></div>`).join(''):'<div class="empty">No questions for this text.</div>'}</div>`;
+    $$('[data-q]',box).forEach(c=>{const q=t.questions[+c.dataset.q];$$('.choice',c).forEach(b=>b.onclick=()=>{const ok=+b.dataset.o===q.answer;$$('.choice',c).forEach(x=>{x.disabled=true;if(+x.dataset.o===q.answer)x.classList.add('right');});if(!ok)b.classList.add('wrong');record(ok,'texte');});});
+  }else if(tab==='retell'){
+    box.innerHTML=`<div class="stack" style="margin-top:14px"><p class="small muted">Retell the text in your own words, as if telling a friend. Use the past tense. This is the best way to reuse the new words.</p>
+     <div data-ai-gate>${aiGate()}</div><textarea id="rt-a" rows="6" placeholder="Dans ce texte, …"></textarea>
+     <div class="row"><button class="btn primary" id="rt-go" type="button" data-needs-ai>Correct</button></div><div id="rt-out"></div></div>`;
+    $('#rt-go').onclick=async()=>{
+      const a=$('#rt-a').value.trim();if(!a){toast('Write your version first.');return;}
+      const out=$('#rt-out');out.innerHTML=thinking();
+      try{const r=await correctText(a,'passe',`The student is retelling this text in their own words: """${t.sentences.map(s=>s.fr).join(' ').slice(0,3000)}""". Also check the facts match the text.`);out.innerHTML=correctionHtml(r);applyCorrection(r,'texte');act('drills');}
+      catch(e){out.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;}
+    };
+  }else{
+    box.innerHTML=`<div style="margin-top:14px">${t.glossary.length?`<div class="list">${t.glossary.map((g,i)=>`<div class="li">${spk(g.fr)}<div class="grow"><div class="fr">${esc(g.fr)}</div><div class="small muted">${esc(g.en)}</div></div><button class="btn sm" type="button" data-add="${i}">+ My words</button></div>`).join('')}</div><div class="row" style="margin-top:10px"><button class="btn" id="add-all" type="button">Add all to my review deck</button></div>`:'<div class="empty">No vocabulary list for this text. Tap words in the text to look them up.</div>'}</div>`;
+    const ex=g=>(t.sentences.find(s=>normAns(s.fr).includes(normAns(g.fr).split(' ').pop()))||{}).fr||'';
+    $$('[data-add]',box).forEach(b=>b.onclick=()=>{const g=t.glossary[+b.dataset.add];addCustomWord(g.fr,g.en,ex(g),t.title);b.disabled=true;b.textContent='Added ✓';});
+    const aa=$('#add-all',box);if(aa)aa.onclick=()=>{let n=0;t.glossary.forEach(g=>{if(![...VOCAB,...ST.customVocab].some(w=>normAns(w.fr)===normAns(g.fr))){ST.customVocab.push({id:'c'+uid(),fr:g.fr,en:g.en,ex:ex(g),level:t.level,theme:t.title,custom:1,added:Date.now()});n++;}});save();toast(n?`${n} words added ✓`:'Already in your words.',!!n);};
+  }
+}
+function checkDrill(t,i,box){
+  const d=t.drills[i],c=$(`[data-d="${i}"]`,box),val=$(`#dr-${i}`,box).value;
+  if(!val.trim())return;
+  const res=compareAns(val,d.answer);const fb=$('.fb',c);
+  if(res==='good'||res==='accent'){fb.innerHTML=`<div class="feedback good">Correct !${res==='accent'?' Watch the accents:':''} <span class="ans">${esc(d.answer)}</span> ${spk(d.answer)}</div>`;record(true,'texte');}
+  else{
+    fb.innerHTML=`<div class="feedback bad">Expected: <span class="ans">${esc(d.answer)}</span> ${spk(d.answer)}</div>${AI.on()?`<button class="btn sm ghost" type="button" data-alt>I think mine is also correct — ask Claude</button>`:''}`;
+    record(false,'texte');addMistake({src:'texte',wrong:val,right:d.answer,why:d.instruction+': '+d.source});save();
+    const alt=$('[data-alt]',fb);
+    if(alt)alt.onclick=async()=>{alt.disabled=true;alt.innerHTML='<span class="spinner"></span> Checking…';
+      try{const r=await AI.json(`Original: "${d.source}". Instruction: ${d.instruction}. Expected: "${d.answer}". Student: "${val}". Is the student's version also correct French that follows the instruction? Reply with only JSON: {"correct":true|false,"why":"short English explanation"}`);
+        alt.outerHTML=`<div class="feedback ${r.correct?'good':'bad'}">${r.correct?'Yes, yours works too. ':''}${esc(r.why||'')}</div>`;
+        if(r.correct){ST.results[ST.results.length-1].ok=1;ST.mistakes=ST.mistakes.filter(m=>normAns(m.wrong)!==normAns(val));save();}
+      }catch(e){alt.outerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;}};
+  }
+  act('drills');
+}
+
+/* ================= PARLER ================= */
+const CHAT={active:false,sc:null,turns:[],items:[],ctl:null};
+const SHADOW={custom:null,list:[],i:0,revealed:false,hard:[]};
+const TIMER={t:60,left:60,run:false,h:null,prompt:null};
+function viewParler(v){
+  const tab=params.tab||'chat';
+  v.innerHTML=`<div class="stack-lg"><div class="stack" style="gap:6px"><div class="eyebrow">Fluency comes from speaking</div><h1>Parler</h1></div>
+   <div class="tabs" role="tablist">${[['chat','Conversation'],['shadow','Shadowing'],['timer','60 seconds'],['glue','Linking words']].map(([k,l])=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${k===tab}">${l}</button>`).join('')}</div>
+   <div id="pz"></div></div>`;
+  $$('.tabs button',v).forEach(b=>b.onclick=()=>{TTS.stop();clearInterval(TIMER.h);TIMER.run=false;params.tab=b.dataset.tab;$$('.tabs button',v).forEach(x=>x.setAttribute('aria-selected',x===b));paintParler();});
+  paintParler();
+}
+function paintParler(){const tab=params.tab||'chat';const box=$('#pz');({chat:paintChat,shadow:paintShadow,timer:paintTimer,glue:paintGlue})[tab](box);paintAI();}
+/* chat */
+function chatRules(sc){return `Tu joues le rôle suivant : ${sc.role}. Tu parles avec un apprenant de français de niveau ${ST.level} qui vit au Luxembourg.
+Règles :
+- Réponds en 1 à 3 phrases courtes, avec un vocabulaire et une grammaire de niveau ${ST.level}. Sois naturel et chaleureux.
+- Termine presque toujours par une question pour faire parler l'apprenant.
+- Format obligatoire de CHAQUE réponse :
+CORRECTION: OK   (si le dernier message de l'apprenant est correct, ou si c'est le début)
+ou
+CORRECTION: <sa phrase corrigée> (<explication très courte en anglais>)
+---
+<ta réplique en français>`;}
+function parseChat(txt){
+  const parts=txt.split(/\n?\s*-{3,}\s*\n?/);
+  if(parts.length<2){return {fix:null,reply:/^CORRECTION/i.test(txt.trim())?'':txt.trim()};}
+  const fix=parts[0].replace(/^\s*CORRECTION\s*:\s*/i,'').trim();
+  return {fix:/^ok\.?$/i.test(fix)?'OK':fix,reply:parts.slice(1).join('\n').trim()};
+}
+function paintChat(box){
+  if(!CHAT.active){
+    box.innerHTML=`<div class="stack"><p class="muted">Role-play real situations. Your partner answers at your level and gently corrects each message. Reply by typing, or use your phone's dictation.</p><div data-ai-gate>${aiGate()}</div>
+    <div class="grid3">${SCENARIOS.map(s=>`<button type="button" class="textcard" data-sc="${s.id}"><h3>${esc(s.t)}</h3><div class="small muted">${esc(s.d)}</div></button>`).join('')}</div></div>`;
+    $$('[data-sc]',box).forEach(b=>b.onclick=()=>{if(!AI.on()){toast(aiMsg({code:'unavailable'}));return;}CHAT.active=true;CHAT.sc=SCENARIOS.find(s=>s.id===b.dataset.sc);CHAT.turns=[];CHAT.items=[];paintChat(box);chatSend(null,box);});
+    return;
+  }
+  box.innerHTML=`<div class="stack"><div class="row between"><div><div class="eyebrow">Role-play</div><h3>${esc(CHAT.sc.t)}</h3></div><div class="row"><label class="small row" style="gap:6px"><input type="checkbox" id="ch-auto" ${ST.chatAuto!==false?'checked':''}> Read replies aloud</label><button class="btn sm" id="ch-end" type="button">End</button></div></div>
+   <div class="card chat" id="ch-log"></div>
+   <div class="row" style="flex-wrap:nowrap;align-items:flex-end"><textarea id="ch-in" rows="2" style="min-height:52px" placeholder="Écris ta réponse…"></textarea><button class="btn primary" id="ch-send" type="button">Send</button></div>
+   <div class="row"><button class="btn sm ghost" id="ch-help" type="button">I don't know what to say</button></div><div id="ch-hint"></div></div>`;
+  paintChatLog();
+  const inp=$('#ch-in');
+  $('#ch-auto').onchange=e=>{ST.chatAuto=e.target.checked;save();};
+  $('#ch-end').onclick=()=>{if(CHAT.ctl)CHAT.ctl.abort();CHAT.active=false;TTS.stop();paintChat(box);};
+  $('#ch-send').onclick=()=>{const m=inp.value.trim();if(!m)return;inp.value='';chatSend(m,box);};
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('#ch-send').click();}});
+  $('#ch-help').onclick=async()=>{
+    const h=$('#ch-hint');h.innerHTML=thinking('Finding ideas…');
+    try{const r=await AI.json(`Conversation (French, learner level ${ST.level}). Last message from the partner: "${(CHAT.items.filter(x=>x.who==='ai').pop()||{}).text||''}". Suggest 3 short, natural answers the learner could give, at level ${ST.level}. Reply with only JSON: {"answers":[{"fr":"...","en":"..."}]}`,{modelTier:'quick',cache:false});
+      h.innerHTML=`<div class="list">${(r.answers||[]).map(a=>`<div class="li">${spk(a.fr)}<div class="grow"><div class="fr">${esc(a.fr)}</div><div class="small muted">${esc(a.en)}</div></div><button class="btn sm" type="button" data-use="${esc(a.fr)}">Use</button></div>`).join('')}</div>`;
+      $$('[data-use]',h).forEach(b=>b.onclick=()=>{inp.value=b.dataset.use;inp.focus();h.innerHTML='';});
+    }catch(e){h.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;}
+  };
+}
+function paintChatLog(){
+  const log=$('#ch-log');if(!log)return;
+  log.innerHTML=CHAT.items.map(it=>it.who==='me'?`<div class="bubble me">${esc(it.text)}</div>${it.fix?`<div class="fix ${it.fix==='OK'?'okay':''}">${it.fix==='OK'?'✓ Correct':'✎ '+esc(it.fix)}</div>`:''}`:`<div class="row" style="align-items:flex-end;gap:6px"><div class="bubble ai">${it.text?esc(it.text):'<span class="spinner"></span>'}</div>${it.text?spk(it.text):''}</div>`).join('');
+  log.scrollTop=log.scrollHeight;
+}
+async function chatSend(msg,box){
+  if(msg){CHAT.turns.push({role:'user',content:msg});CHAT.items.push({who:'me',text:msg});}
+  else CHAT.turns.push({role:'user',content:'(Commence la conversation maintenant, dans ton rôle.)'});
+  const ai={who:'ai',text:''};CHAT.items.push(ai);paintChatLog();
+  const send=$('#ch-send');if(send)send.disabled=true;
+  const input=[{role:'user',content:chatRules(CHAT.sc)},...CHAT.turns.slice(-16)];
+  if(input[1]&&input[1].role==='assistant')input.splice(1,1);
+  CHAT.ctl=new AbortController();
+  try{
+    const r=await AI.text(input,{cache:false,signal:CHAT.ctl.signal,modelTier:'quick',onText:({text})=>{const p=parseChat(text);if(p.reply){ai.text=p.reply;paintChatLog();}}});
+    const p=parseChat(r.text);ai.text=p.reply||r.text;
+    CHAT.turns.push({role:'assistant',content:r.text});
+    if(msg){const me=CHAT.items[CHAT.items.length-2];me.fix=p.fix||'OK';
+      const ok=me.fix==='OK';record(ok,'chat');
+      if(!ok){const right=me.fix.replace(/\s*\([^)]*\)\s*$/,'').trim();const why=(me.fix.match(/\(([^)]*)\)\s*$/)||[])[1]||'';addMistake({src:'chat',wrong:msg,right,why});save();}
+      act('chat');}
+    paintChatLog();
+    if(ST.chatAuto!==false&&route==='parler') TTS.speak(ai.text);
+  }catch(e){ai.text='('+aiMsg(e)+')';paintChatLog();}
+  if(send)send.disabled=false;
+  const inp=$('#ch-in');if(inp)inp.focus();
+}
+/* shadowing */
+function shadowPool(){
+  const lv=lvIdx(ST.level);
+  const fromTexts=allTexts().filter(t=>lvIdx(t.level)<=lv+1&&lvIdx(t.level)>=lv-1).flatMap(t=>t.sentences.filter(s=>s.fr.length<140).map(s=>({fr:s.fr.replace(/^—\s*/,''),en:s.en})));
+  const fromWords=allWords().filter(w=>w.ex&&lvIdx(w.level)<=lv).map(w=>({fr:w.ex,en:''}));
+  return [...fromTexts,...fromWords];
+}
+function newShadow(){
+  if(SHADOW.custom){SHADOW.list=SHADOW.custom.map(fr=>({fr,en:''}));SHADOW.custom=null;}
+  else SHADOW.list=shuffle(shadowPool()).slice(0,8);
+  SHADOW.i=0;SHADOW.revealed=false;SHADOW.hard=[];
+}
+function paintShadow(box){
+  if(SHADOW.custom||!SHADOW.list.length) newShadow();
+  if(SHADOW.i>=SHADOW.list.length) return paintShadowEnd(box);
+  const s=SHADOW.list[SHADOW.i];
+  box.innerHTML=`<div class="stack">
+   <p class="muted">1. Listen. 2. Repeat out loud straight away, copying the rhythm and melody. 3. Reveal and compare. Recording yourself with your phone's voice memo helps a lot.</p>
+   <div class="row between small"><span class="muted">Sentence ${SHADOW.i+1} / ${SHADOW.list.length}</span><button class="btn sm ghost" id="sh-new" type="button">New set</button></div>
+   <div class="progress"><i style="width:${SHADOW.i/SHADOW.list.length*100}%"></i></div>
+   <div class="seyes" style="min-height:150px;display:flex;flex-direction:column;justify-content:center;gap:4px"><div class="reader" style="${SHADOW.revealed?'':'filter:blur(7px);user-select:none'}">${esc(s.fr)}</div>${SHADOW.revealed&&s.en?`<div class="tr">${esc(s.en)}</div>`:''}</div>
+   <div class="row"><button class="btn primary" type="button" data-say="${esc(s.fr)}">▶ Listen</button><button class="btn" type="button" data-say="${esc(s.fr)}" data-rate="0.65">Slow</button>
+    ${SHADOW.revealed?'':`<button class="btn" id="sh-rev" type="button">I repeated it: reveal</button>`}</div>
+   ${SHADOW.revealed?`<div class="stack" style="gap:6px"><span class="small muted">How did it go?</span><div class="row"><button class="btn" data-sh="2" type="button">Easy</button><button class="btn" data-sh="1" type="button">OK</button><button class="btn" data-sh="0" type="button">Hard: repeat it later</button></div></div>`:''}
+  </div>`;
+  $('#sh-new').onclick=()=>{newShadow();paintShadow(box);};
+  const rv=$('#sh-rev');if(rv)rv.onclick=()=>{SHADOW.revealed=true;paintShadow(box);TTS.speak(s.fr);};
+  $$('[data-sh]',box).forEach(b=>b.onclick=()=>{const g=+b.dataset.sh;if(g===0&&!s.again){SHADOW.list.push({...s,again:1});}act('shadow');SHADOW.i++;SHADOW.revealed=false;paintShadow(box);if(SHADOW.i<SHADOW.list.length)setTimeout(()=>TTS.speak(SHADOW.list[SHADOW.i].fr),200);});
+}
+function paintShadowEnd(box){
+  box.innerHTML=`<div class="card stack" style="text-align:center;align-items:center;padding:30px"><h2>Bien joué !</h2><p class="muted">${SHADOW.list.length} sentences repeated out loud.</p><button class="btn primary" id="sh-again" type="button">Another set</button></div>`;
+  $('#sh-again').onclick=()=>{newShadow();paintShadow(box);};
+}
+/* 60 seconds */
+function paintTimer(box){
+  const lp=SPEAK_PROMPTS[ST.level]||SPEAK_PROMPTS.A2;
+  if(!TIMER.prompt||!lp.includes(TIMER.prompt)) TIMER.prompt=pick(lp);
+  const starters={A1:['Je m\'appelle…','J\'habite…','Le matin, je…','J\'aime…'],A2:['Le week-end dernier, je suis…','D\'abord, j\'ai…','Ensuite, …','C\'était…'],B1:['Quand j\'étais…','À mon avis, …','Par contre, …','Du coup, …'],B2:['D\'un côté… de l\'autre…','Je dirais que…','Il faut que…','Pourtant, …'],C1:['Force est de constater que…','Quoi qu\'il en soit, …','Il n\'empêche que…','Cela dit, …']}[ST.level];
+  box.innerHTML=`<div class="stack">
+   <p class="muted">Speak without stopping for 60 seconds. Mistakes are fine. The goal is to keep talking: use linking words while you look for the next idea.</p>
+   <div class="panel row between"><span style="font-family:var(--f-read);font-size:1.2rem">${esc(TIMER.prompt)}</span><span class="row" style="gap:6px">${spk(TIMER.prompt)}<button class="btn sm" id="tm-other" type="button">Another topic</button></span></div>
+   <div class="row" style="gap:6px">${starters.map(s=>`<span class="pill">${esc(s)}</span>`).join('')}</div>
+   <div class="timer" id="tm" style="--p:${(1-TIMER.left/TIMER.t)*100}%"><div class="num" id="tm-n">${TIMER.left}</div></div>
+   <div class="row" style="justify-content:center"><button class="btn primary" id="tm-go" type="button">${TIMER.run?'Pause':TIMER.left<TIMER.t&&TIMER.left>0?'Resume':'Start'}</button><button class="btn" id="tm-reset" type="button">Reset</button>
+    <div class="seg" id="tm-len">${[60,90,120].map(n=>`<button type="button" data-n="${n}" aria-pressed="${TIMER.t===n}">${n}s</button>`).join('')}</div></div>
+   <hr class="sep"><div class="stack"><h3>Get feedback</h3><p class="small muted">Afterwards, write down (or dictate) what you said. Claude corrects it and shows how a native speaker would say it.</p>
+   <div data-ai-gate>${aiGate()}</div><textarea id="tm-txt" rows="4" placeholder="Ce que j'ai dit…"></textarea><div class="row"><button class="btn" id="tm-fix" type="button" data-needs-ai>Correct</button></div><div id="tm-out"></div></div></div>`;
+  const tick=()=>{TIMER.left--;const n=$('#tm-n');if(n){n.textContent=TIMER.left;$('#tm').style.setProperty('--p',(1-TIMER.left/TIMER.t)*100+'%');}
+    if(TIMER.left<=0){clearInterval(TIMER.h);TIMER.run=false;act('speak');toast('Time! Great effort.',true);if($('#tm-go'))$('#tm-go').textContent='Start';TIMER.left=TIMER.t;}};
+  $('#tm-go').onclick=()=>{if(TIMER.run){clearInterval(TIMER.h);TIMER.run=false;$('#tm-go').textContent='Resume';}else{TIMER.run=true;TIMER.h=setInterval(tick,1000);$('#tm-go').textContent='Pause';}};
+  $('#tm-reset').onclick=()=>{clearInterval(TIMER.h);TIMER.run=false;TIMER.left=TIMER.t;paintTimer(box);};
+  $('#tm-other').onclick=()=>{TIMER.prompt=pick(lp.filter(p=>p!==TIMER.prompt));paintTimer(box);};
+  $$('#tm-len button').forEach(b=>b.onclick=()=>{clearInterval(TIMER.h);TIMER.run=false;TIMER.t=TIMER.left=+b.dataset.n;paintTimer(box);});
+  $('#tm-fix').onclick=async()=>{const a=$('#tm-txt').value.trim();if(!a)return;const out=$('#tm-out');out.innerHTML=thinking();
+    try{const r=await correctText(a,'libre',`This is a transcript of the student speaking for one minute about: "${TIMER.prompt}". Focus on spoken naturalness.`);out.innerHTML=correctionHtml(r);applyCorrection(r,'parler');}catch(e){out.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;}};
+}
+function paintGlue(box){
+  const glue=VOCAB.filter(w=>w.theme==='Liaison');
+  box.innerHTML=`<div class="stack"><p class="muted">These little words make you sound fluent and buy you time to think. Use two or three in every conversation.</p>
+   <div class="list">${glue.map(w=>`<div class="li">${spk(w.ex)}<div class="grow"><div class="fr">${esc(w.fr)} <span class="small muted" style="font-family:var(--f-ui)">· ${esc(w.en)}</span></div><div class="small muted" style="font-family:var(--f-read);font-style:italic">${esc(w.ex)}</div></div><span class="pill lv">${w.level}</span></div>`).join('')}</div>
+   <div><button class="btn primary" id="gl-add" type="button">Add them all to my reviews</button></div></div>`;
+  $('#gl-add').onclick=()=>{let n=0;glue.forEach(w=>{if(!ST.srs[w.id]){ST.srs[w.id]={due:Date.now(),iv:0,ef:2.5,reps:0,lapses:0};n++;}});save();toast(n?`${n} words added to today's reviews ✓`:'Already in your reviews.',!!n);};
+}
+
+/* ================= MOTS (spaced repetition) ================= */
+const DAY=86400000;
+const SESS={q:[],i:0,flipped:false,done:0};
+function schedule(c,g){
+  const n=Date.now();c={iv:0,ef:2.5,reps:0,lapses:0,...(c||{})};
+  if(g===0){c.reps=0;c.lapses++;c.ef=Math.max(1.3,c.ef-0.2);c.iv=0;c.due=n+60000;return c;}
+  if(c.reps===0){c.iv=g===1?0.007:g===2?1:4;}
+  else if(c.reps===1&&c.iv<1){c.iv=g===1?1:g===2?2:5;}
+  else{c.iv=g===1?Math.max(1,c.iv*1.2):g===2?c.iv*c.ef:c.iv*c.ef*1.35;}
+  if(g===1)c.ef=Math.max(1.3,c.ef-0.15);if(g===3)c.ef+=0.15;
+  c.reps++;c.due=n+c.iv*DAY;return c;
+}
+const ivLabel=iv=>iv<0.01?'10 min':iv<1?Math.round(iv*24)+' h':iv<30?Math.round(iv)+' d':Math.round(iv/30)+' mo';
+function viewMots(v){
+  if(params.session) return paintSession(v);
+  const due=dueWords().length,nl=newLeftToday();
+  const themes=[...new Set(allWords().map(w=>w.theme))];
+  const th=params.theme||'all';
+  const list=allWords().filter(w=>th==='all'||w.theme===th);
+  const st=w=>{const c=ST.srs[w.id];if(!c)return '<span class="pill">New</span>';if(c.reps>=2&&c.iv>=7)return '<span class="pill ok">Known</span>';return '<span class="pill warn">Learning</span>';};
+  v.innerHTML=`<div class="stack-lg">
+  <div class="stack" style="gap:6px"><div class="eyebrow">Spaced repetition</div><h1>Mots</h1><p class="muted">High-frequency words and phrases, always inside a sentence. Each word comes back just before you'd forget it.</p></div>
+  <div class="stats"><div class="stat"><div class="v num">${due}</div><div class="k">To review</div></div><div class="stat"><div class="v num">${nl}</div><div class="k">New today</div></div><div class="stat"><div class="v num">${learnedCount()}</div><div class="k">Learned</div></div><div class="stat"><div class="v num">${allWords().length}</div><div class="k">In the deck</div></div></div>
+  <div class="card raised stack">
+   <div class="row between"><h2>${due+nl?`Session: ${Math.min(due,60)+nl} cards`:'Nothing due'}</h2>
+    <div class="seg" id="wd"><button type="button" data-d="fr" aria-pressed="${ST.wordDir!=='en'}">FR → EN</button><button type="button" data-d="en" aria-pressed="${ST.wordDir==='en'}">EN → FR</button></div></div>
+   <div class="grid2" style="gap:10px"><div><label class="lbl" for="w-theme">New words from</label><select id="w-theme"><option value="all">All topics</option>${themes.map(t=>`<option ${ST.wordTheme===t?'selected':''}>${esc(t)}</option>`).join('')}</select></div>
+    <div><label class="lbl" for="w-new">New words per day</label><select id="w-new">${[5,10,15,20,30].map(n=>`<option ${ST.newPerDay===n?'selected':''}>${n}</option>`).join('')}</select></div></div>
+   <div class="row"><button class="btn primary" id="w-start" type="button" ${due+nl?'':'disabled'}>Start</button>${!due&&!nl?'<span class="small muted">Come back tomorrow, or add more new words per day.</span>':''}</div>
+  </div>
+  <div class="card stack"><h3>More words with Claude</h3><p class="small muted">Get 15 useful words and phrases on any topic, at your level (${ST.level}).</p><div data-ai-gate>${aiGate()}</div>
+   <div class="row" style="flex-wrap:nowrap"><input type="text" id="w-topic" placeholder="e.g. à la banque, réunions, cuisine…"><button class="btn" id="w-gen" type="button" data-needs-ai>Generate</button></div><div id="w-out"></div></div>
+  <div class="stack"><div class="row between"><h2>All words</h2><select id="w-filter" style="width:auto"><option value="all">All topics</option>${themes.map(t=>`<option ${th===t?'selected':''}>${esc(t)}</option>`).join('')}</select></div>
+   <div class="list">${list.slice(0,250).map(w=>`<div class="li">${spk(w.ex||w.fr)}<div class="grow"><div class="fr">${esc(w.fr)}</div><div class="small muted">${esc(w.en)}</div></div><span class="pill lv">${esc(w.level)}</span>${st(w)}</div>`).join('')}</div></div>
+  </div>`;
+  $$('#wd button').forEach(b=>b.onclick=()=>{ST.wordDir=b.dataset.d;save();$$('#wd button').forEach(x=>x.setAttribute('aria-pressed',x===b));});
+  $('#w-theme').onchange=e=>{ST.wordTheme=e.target.value;save();viewMots(v);paintAI();};
+  $('#w-new').onchange=e=>{ST.newPerDay=+e.target.value;save();viewMots(v);paintAI();};
+  $('#w-filter').onchange=e=>go('mots',{theme:e.target.value});
+  $('#w-start').onclick=()=>{
+    const dueL=shuffle(dueWords()).slice(0,60);const nw=newPool().sort((a,b)=>(b.custom||0)-(a.custom||0)).slice(0,newLeftToday());
+    SESS.q=[...dueL.map(w=>w.id),...nw.map(w=>w.id)];
+    const mixed=[];let a=SESS.q.slice(0,dueL.length),b=SESS.q.slice(dueL.length);while(a.length||b.length){if(a.length)mixed.push(a.shift());if(a.length)mixed.push(a.shift());if(b.length)mixed.push(b.shift());}
+    SESS.q=mixed;SESS.i=0;SESS.flipped=false;SESS.done=0;go('mots',{session:1});
+  };
+  $('#w-gen').onclick=async()=>{
+    const topic=$('#w-topic').value.trim();if(!topic){toast('Type a topic first.');return;}
+    const out=$('#w-out');out.innerHTML=thinking('Choosing useful words…');
+    try{
+      const r=await AI.json(`Give 15 of the most useful French words and set phrases for the topic "${topic}", for a learner at level ${ST.level} living in Luxembourg. Prefer what people really say. Reply with only JSON: {"words":[{"fr":"word or phrase (with article for nouns)","en":"English","ex":"short natural example sentence in French"}]}`,{cache:false});
+      const have=new Set(allWords().map(w=>normAns(w.fr)));
+      const nw=(r.words||[]).filter(w=>w.fr&&!have.has(normAns(w.fr))).map(w=>({id:'c'+uid(),fr:String(w.fr),en:String(w.en||''),ex:String(w.ex||''),level:ST.level,theme:topic,custom:1,added:Date.now()}));
+      ST.customVocab.push(...nw);save();
+      out.innerHTML=`<div class="note">${nw.length} new words added under “${esc(topic)}”. They'll come up in your next sessions.</div>`;
+    }catch(e){out.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;}
+  };
+}
+function paintSession(v){
+  const id=SESS.q[SESS.i];const w=allWords().find(x=>x.id===id);
+  if(!w){
+    v.innerHTML=`<div class="card stack" style="align-items:center;text-align:center;padding:36px"><h2>Session finished</h2><p class="muted">${SESS.done} cards reviewed. À demain !</p><button class="btn primary" data-go="mots" type="button">Back to words</button></div>`;
+    return;
+  }
+  const c=ST.srs[id];const isNew=!c;const en=ST.wordDir==='en';
+  const labels=[0,1,2,3].map(g=>g===0?'10 min':ivLabel(schedule(c,g).iv));
+  const front=en?`<div class="big" style="font-family:var(--f-ui);font-size:1.6rem">${esc(w.en)}</div>`:`<div class="big">${esc(w.fr)}</div>`;
+  v.innerHTML=`<div class="stack">
+   <div class="row between"><button class="btn ghost sm" data-go="mots" type="button">← Stop</button><span class="small muted num">${SESS.i+1} / ${SESS.q.length}</span></div>
+   <div class="progress"><i style="width:${SESS.i/SESS.q.length*100}%"></i></div>
+   <div class="card raised flash">${isNew?'<span class="pill warn">New word</span>':''}${front}
+    ${SESS.flipped?`<hr class="sep" style="width:60%">${en?`<div class="big">${esc(w.fr)}</div>`:`<div style="font-size:1.3rem">${esc(w.en)}</div>`}${w.ex?`<div class="exs">${esc(w.ex)}</div>`:''}<div class="row">${spk(w.fr,'Écouter le mot')}${w.ex?`<button class="btn sm" type="button" data-say="${esc(w.ex)}">▶ Example</button>`:''}</div>`:
+    (en?'':`<div class="row">${spk(w.fr)}</div>`)}
+   </div>
+   ${SESS.flipped?`<div class="rate"><button class="btn" data-g="0" type="button">Again<small>${labels[0]}</small></button><button class="btn" data-g="1" type="button">Hard<small>${labels[1]}</small></button><button class="btn primary" data-g="2" type="button">Good<small style="color:inherit;opacity:.8">${labels[2]}</small></button><button class="btn" data-g="3" type="button">Easy<small>${labels[3]}</small></button></div>`:
+   `<button class="btn primary" id="fl" type="button" style="padding:12px">Show answer</button>`}
+   <p class="small muted" style="text-align:center">Say the answer out loud before you flip. Keys: space = flip, 1–4 = rate.</p></div>`;
+  if(!SESS.flipped&&!en) TTS.speak(w.fr);
+  const flip=()=>{SESS.flipped=true;paintSession(v);if(en)TTS.speak(w.fr);};
+  const fl=$('#fl');if(fl)fl.onclick=flip;
+  const rate=g=>{
+    ST.srs[id]=schedule(c,g);
+    if(isNew)act('newWords');act('reviews');record(g>0,'mots');
+    if(g===0){SESS.q.splice(Math.min(SESS.q.length,SESS.i+4),0,id);}
+    SESS.i++;SESS.done++;SESS.flipped=false;paintSession(v);
+  };
+  $$('[data-g]',v).forEach(b=>b.onclick=()=>rate(+b.dataset.g));
+  SESS.key=e=>{if(route!=='mots'||!params.session||e.target.matches('input,textarea,select'))return;if(e.key===' '&&!SESS.flipped){e.preventDefault();flip();}else if(SESS.flipped&&/^[1-4]$/.test(e.key))rate(+e.key-1);};
+}
+document.addEventListener('keydown',e=>{if(SESS.key)SESS.key(e);});
+
+/* ================= GRAMMAIRE ================= */
+let DRILL=null;
+function viewGrammaire(v){
+  if(params.drill&&DRILL) return paintDrill(v);
+  if(params.unit) return viewUnit(v);
+  const nx=nextUnit();
+  v.innerHTML=`<div class="stack-lg">
+  <div class="stack" style="gap:6px"><div class="eyebrow">The tense ladder</div><h1>Grammaire</h1><p class="muted">In the order you need it for speaking. Each step has a one-screen rule and quick drills. Aim for 80% before moving on.</p></div>
+  <div class="card stack"><h3>Conjugator</h3><div class="row" style="flex-wrap:nowrap"><input type="text" id="cj-v" list="cj-list" placeholder="Type a verb: prendre, aller, finir…" value="${esc(params.verb||'')}"><datalist id="cj-list">${ALL_VERBS.map(x=>`<option value="${esc(x)}">`).join('')}</datalist><button class="btn primary" id="cj-go" type="button">Conjugate</button></div><div id="cj-out"></div></div>
+  <div class="ladder">${UNITS.map((u,i)=>{const m=unitMastery(u);return `<button type="button" class="rung ${nx&&nx.id===u.id?'next':''}" data-go="grammaire" data-arg='${esc(JSON.stringify({unit:u.id}))}'>
+    <span class="step num">${i+1}</span><span class="stack" style="gap:2px;min-width:0"><span class="row" style="gap:8px"><h3>${esc(u.title)}</h3><span class="pill lv">${u.level}</span>${nx&&nx.id===u.id?'<span class="pill red">Next step</span>':''}</span><span class="small muted">${esc(u.sub)}</span></span>
+    <span class="mast"><span class="small muted num">${m?m+'%':'—'}</span><div class="progress" style="margin-top:4px"><i style="width:${m}%;${m>=80?'background:var(--ok)':''}"></i></div></span></button>`;}).join('')}</div></div>`;
+  const run=()=>{const verb=normAns($('#cj-v').value);if(!verb)return;const out=$('#cj-out');
+    if(!/(er|ir|re|oir)$/.test(verb)){out.innerHTML='<div class="note">Type the infinitive (ending in -er, -ir or -re).</div>';return;}
+    try{out.innerHTML=`${ALL_VERBS.includes(verb)?'':'<div class="note" style="margin-bottom:10px">This verb isn\'t in the checked list. Forms follow the regular pattern and may be wrong if it\'s irregular.</div>'}<div class="row" style="margin-bottom:10px"><span style="font-family:var(--f-read);font-size:1.3rem">${esc(verb)}</span>${spk(verb)}<span class="small muted">auxiliary: ${ETRE_V.has(verb)?'être':'avoir'} · participle: ${esc(participle(verb))}</span></div><div class="conjtable">${conjTable(verb)}</div>`;}catch(e){out.innerHTML='<div class="note warn">Couldn\'t conjugate that verb.</div>';}};
+  $('#cj-go').onclick=run;$('#cj-v').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+  if(params.verb)run();
+}
+function viewUnit(v){
+  const u=UNITS.find(x=>x.id===params.unit);if(!u){go('grammaire');return;}
+  const m=unitMastery(u);
+  v.innerHTML=`<div class="stack-lg">
+   <div class="stack" style="gap:8px"><button class="btn ghost sm" style="align-self:flex-start" data-go="grammaire" type="button">← The ladder</button>
+    <div class="row" style="gap:6px"><span class="pill lv">${u.level}</span>${m?`<span class="pill ${m>=80?'ok':'warn'}">Best: ${m}%</span>`:''}</div><h1>${esc(u.title)}</h1></div>
+   <div class="card rule">${u.rule}<div class="eyebrow" style="margin:14px 0 4px">Examples</div>${u.ex.map(([fr,en])=>`<div class="ex">${spk(fr)}<span><span class="translatable">${esc(fr)}</span> <em>${esc(en)}</em></span></div>`).join('')}</div>
+   <div class="stack"><h2>Practise</h2><div class="row">
+    ${u.conj?`<button class="btn primary" data-start="conj" type="button">Conjugation · 10</button>`:''}
+    ${u.mc.length?`<button class="btn ${u.conj?'':'primary'}" data-start="mc" type="button">Quiz · ${u.mc.length}</button>`:''}
+    ${u.conj&&u.mc.length?`<button class="btn" data-start="mix" type="button">Mixed · 12</button>`:''}
+    <button class="btn" data-start="ai" type="button" data-needs-ai>New exercises with Claude</button></div><div data-ai-gate>${aiGate()}</div><div id="u-out"></div></div></div>`;
+  $$('[data-start]',v).forEach(b=>b.onclick=async()=>{
+    const k=b.dataset.start;let items=[];
+    const conjItems=n=>Array.from({length:n},()=>makeConjItem(VERB_SETS[u.conj.verbs],u.conj.tenses));
+    const mcItems=()=>shuffle(u.mc).map(([q,options,a,why])=>({type:'mc',q,options,a,why}));
+    if(k==='conj')items=conjItems(10);
+    else if(k==='mc')items=mcItems();
+    else if(k==='mix')items=shuffle([...conjItems(6),...mcItems().slice(0,6)]);
+    else{
+      const out=$('#u-out');b.disabled=true;out.innerHTML=thinking('Writing exercises…');
+      try{
+        const r=await AI.json(`Create 10 French grammar exercises on "${u.title}" (${u.sub}) for a learner at level ${ST.level}. Use everyday adult-life situations (work, city, home, shopping). Mix two types:
+- {"type":"fill","q":"sentence with ___ for the gap and the hint in brackets, e.g. Hier, je ___ (aller) au marché.","answer":"exact words for the gap","alt":["other acceptable answers"],"why":"short English explanation"}
+- {"type":"mc","q":"question or sentence with ___","options":["3 or 4 options"],"a":index_of_correct,"why":"short English explanation"}
+Reply with only JSON: {"items":[...]}`,{cache:false});
+        items=(r.items||[]).filter(x=>x&&x.q&&(x.type==='mc'?Array.isArray(x.options):x.answer)).map(x=>x.type==='mc'?{type:'mc',q:String(x.q),options:x.options.map(String),a:+x.a||0,why:String(x.why||'')}:{type:'fill',q:String(x.q),answers:[String(x.answer),...(x.alt||[]).map(String)],why:String(x.why||'')});
+        if(!items.length) throw {code:'invalid_json'};
+        out.innerHTML='';
+      }catch(e){out.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;b.disabled=false;return;}
+    }
+    DRILL={unit:u.id,items,i:0,score:0,answered:false,wrong:[]};go('grammaire',{unit:u.id,drill:1});
+  });
+}
+function paintDrill(v){
+  const u=UNITS.find(x=>x.id===DRILL.unit);const it=DRILL.items[DRILL.i];
+  if(!it){
+    const pct=Math.round(DRILL.score/DRILL.items.length*100);
+    const us=ST.unitScores[u.id]||{best:0,n:0};us.best=Math.max(us.best||0,pct);us.last=pct;us.n=(us.n||0)+1;ST.unitScores[u.id]=us;save();
+    v.innerHTML=`<div class="card stack" style="align-items:center;text-align:center;padding:34px"><div class="eyebrow">${esc(u.title)}</div><h1 class="num">${pct}%</h1><p class="muted">${DRILL.score} / ${DRILL.items.length} correct. ${pct>=80?'Step mastered. On to the next one!':'Do another round. Aim for 80%.'}</p>
+      ${DRILL.wrong.length?`<div class="list" style="width:100%;text-align:left">${DRILL.wrong.map(w=>`<div class="li"><div class="grow"><div class="small muted">${esc(w.q)}</div><div class="fr">${esc(w.a)}</div></div></div>`).join('')}</div>`:''}
+      <div class="row"><button class="btn primary" data-go="grammaire" data-arg='${esc(JSON.stringify({unit:u.id}))}' type="button">Back to the rule</button><button class="btn" data-go="grammaire" type="button">The ladder</button></div></div>`;
+    DRILL=null;return;
+  }
+  let body='';
+  if(it.type==='conj') body=`<div class="eyebrow">${esc(TENSES[it.tense])} · ${esc(it.verb)}</div><div class="prompt-big">${esc(it.label)}${it.label.endsWith("'")?'':' '}<span class="blank">&nbsp;</span> <span class="muted" style="font-size:.9rem">(${esc(it.verb)})</span></div>
+    <input type="text" id="dr-in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${it.tense==='pc'||it.tense==='pqp'?'auxiliary + participle':'verb form'}">`;
+  else if(it.type==='fill') body=`<div class="prompt-big">${esc(it.q)}</div><input type="text" id="dr-in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Missing word(s)">`;
+  else body=`<div class="prompt-big">${esc(it.q)}</div><div class="choices">${it.options.map((o,j)=>`<button class="choice" type="button" data-o="${j}">${esc(o)}</button>`).join('')}</div>`;
+  v.innerHTML=`<div class="stack"><div class="row between"><button class="btn ghost sm" data-go="grammaire" data-arg='${esc(JSON.stringify({unit:u.id}))}' type="button">← Stop</button><span class="small muted num">${DRILL.i+1} / ${DRILL.items.length} · ${DRILL.score} ✓</span></div>
+   <div class="progress"><i style="width:${DRILL.i/DRILL.items.length*100}%"></i></div>
+   <div class="card raised drill">${body}<div id="dr-fb"></div>${it.type!=='mc'?`<div class="row"><button class="btn primary" id="dr-ok" type="button">Check</button></div>`:''}</div></div>`;
+  const fb=$('#dr-fb');
+  const next=()=>{DRILL.i++;DRILL.answered=false;paintDrill(v);};
+  const finish=(ok,shown,why,qtext,user)=>{
+    DRILL.answered=true;if(ok)DRILL.score++;else DRILL.wrong.push({q:qtext,a:shown});
+    record(ok,'grammaire');act('drills');
+    if(!ok&&user) addMistake({src:'grammaire',wrong:user,right:shown,why:(why?why+' ':'')+'('+qtext+')'});
+    fb.innerHTML+=`<div class="row" style="margin-top:10px"><button class="btn primary" id="dr-next" type="button">Next →</button></div>`;
+    const nb=$('#dr-next');nb.onclick=next;nb.focus();
+    const okb=$('#dr-ok');if(okb)okb.remove();
+  };
+  if(it.type==='mc'){
+    $$('.choice',v).forEach(b=>b.onclick=()=>{if(DRILL.answered)return;const ok=+b.dataset.o===it.a;$$('.choice',v).forEach(x=>{x.disabled=true;if(+x.dataset.o===it.a)x.classList.add('right');});if(!ok)b.classList.add('wrong');
+      fb.innerHTML=`<div class="feedback ${ok?'good':'bad'}">${ok?'Correct ! ':''}${esc(it.why||'')}</div>`;
+      finish(ok,it.options[it.a],it.why,it.q,ok?null:it.options[+b.dataset.o]);});
+  }else{
+    const inp=$('#dr-in');inp.focus();
+    const check=()=>{if(DRILL.answered){next();return;}const val=inp.value;if(!val.trim())return;
+      let user=val.replace(/^\s*(que\s+|qu')?(je\s+|j'|tu\s+|il\s+|elle\s+|on\s+|nous\s+|vous\s+|ils\s+|elles\s+)/i,'');
+      const answers=it.answers;const res=compareAns(user,answers);const shown=it.type==='conj'?`${it.label}${it.label.endsWith("'")?'':' '}${answers.join(' / ')}`:answers[0];
+      const ok=res==='good'||res==='accent';
+      fb.innerHTML=`<div class="feedback ${ok?(res==='accent'?'close':'good'):'bad'}">${ok?(res==='accent'?'Correct, but watch the accents: ':'Correct ! '):'Answer: '}<span class="ans">${esc(shown)}</span> ${spk(it.type==='conj'?shown.split(' / ')[0]:shown)}${it.why?`<div class="small" style="margin-top:4px">${esc(it.why)}</div>`:''}</div>`;
+      inp.disabled=true;finish(ok,shown,it.why||'',it.type==='conj'?`${it.verb}, ${TENSES[it.tense]}, ${it.person}`:it.q,ok?null:val);
+    };
+    $('#dr-ok').onclick=check;inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+  }
+}
+
+/* ================= CARNET ================= */
+let MREV=null;
+function viewCarnet(v){
+  if(params.review&&MREV) return paintMrev(v);
+  const f=params.f||'all';
+  const src={all:'All',journal:'Ma journée',texte:'Texts',grammaire:'Grammar',chat:'Conversation',parler:'Speaking'};
+  const list=ST.mistakes.filter(m=>f==='all'||m.src===f);
+  v.innerHTML=`<div class="stack-lg">
+   <div class="stack" style="gap:6px"><div class="eyebrow">Every mistake is a lesson</div><h1>Carnet d'erreurs</h1><p class="muted">Every mistake you make lands here. Review them: write the correct version. Once you get one right twice, it leaves the notebook.</p></div>
+   <div class="row between"><div class="seg" id="mf">${Object.entries(src).map(([k,l])=>`<button type="button" data-f="${k}" aria-pressed="${k===f}">${l}</button>`).join('')}</div>
+    <button class="btn primary" id="m-rev" type="button" ${list.length?'':'disabled'}>Review ${Math.min(10,list.length)} mistakes</button></div>
+   ${list.length?`<div class="list">${list.map(m=>`<div class="li" style="align-items:flex-start"><div class="grow stack" style="gap:3px"><div class="err" style="padding:0"><div class="pair"><s>${esc(m.wrong)}</s> → <b>${esc(m.right)}</b></div></div>${m.why?`<div class="small muted">${esc(m.why)}</div>`:''}<div class="tiny muted">${esc(src[m.src]||m.src)} · ${esc(frDate(m.t,{day:'numeric',month:'short'}))}${m.fixed?` · ${m.fixed}/2 ✓`:''}</div></div>${spk(m.right)}<button class="iconbtn" type="button" data-del="${m.id}" aria-label="Delete">✕</button></div>`).join('')}</div>`:`<div class="empty">No mistakes here. Your corrections from Ma journée, the texts, grammar and conversations will appear here.</div>`}
+  </div>`;
+  $$('#mf button').forEach(b=>b.onclick=()=>go('carnet',{f:b.dataset.f}));
+  $$('[data-del]').forEach(b=>b.onclick=()=>{ST.mistakes=ST.mistakes.filter(m=>m.id!==b.dataset.del);save();viewCarnet(v);paintChrome();});
+  $('#m-rev').onclick=()=>{MREV={list:shuffle(list).slice(0,10),i:0,ok:0,answered:false};go('carnet',{review:1,f});};
+}
+function paintMrev(v){
+  const m=MREV.list[MREV.i];
+  if(!m){v.innerHTML=`<div class="card stack" style="align-items:center;text-align:center;padding:34px"><h2>Review done</h2><p class="muted">${MREV.ok} / ${MREV.list.length} correct.</p><button class="btn primary" data-go="carnet" type="button">Back to the notebook</button></div>`;MREV=null;paintChrome();return;}
+  v.innerHTML=`<div class="stack"><div class="row between"><button class="btn ghost sm" data-go="carnet" type="button">← Stop</button><span class="small muted num">${MREV.i+1} / ${MREV.list.length}</span></div>
+   <div class="card raised drill"><div class="eyebrow">Correct this</div><div class="prompt-big" style="color:var(--red)">${esc(m.wrong)}</div>${m.why?`<div class="small muted">Hint: ${esc(m.why)}</div>`:''}
+   <input type="text" id="mr-in" autocomplete="off" spellcheck="false" placeholder="Write the correct version"><div id="mr-fb"></div><div class="row"><button class="btn primary" id="mr-ok" type="button">Check</button></div></div></div>`;
+  const inp=$('#mr-in');inp.focus();
+  const check=()=>{
+    if(MREV.answered){MREV.i++;MREV.answered=false;paintMrev(v);return;}
+    const val=inp.value;if(!val.trim())return;
+    const r=compareAns(val,m.right);const ok=r==='good'||r==='accent';
+    MREV.answered=true;if(ok){MREV.ok++;m.fixed=(m.fixed||0)+1;if(m.fixed>=2)ST.mistakes=ST.mistakes.filter(x=>x.id!==m.id);}
+    record(ok,'carnet');save();
+    $('#mr-fb').innerHTML=`<div class="feedback ${ok?'good':'bad'}">${ok?'Correct ! ':'Answer: '}<span class="ans">${esc(m.right)}</span> ${spk(m.right)}</div>`;
+    $('#mr-ok').textContent='Next →';inp.disabled=true;$('#mr-ok').focus();
+  };
+  $('#mr-ok').onclick=check;inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+}
+
+/* ================= PROGRÈS ================= */
+function viewProgres(v){
+  const days=[];for(let i=29;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const a=ST.activity[dayKey(d)]||{};const n=Object.values(a).reduce((x,y)=>x+y,0);days.push({d,n});}
+  const lvCls=n=>n===0?'':n<10?'l1':n<30?'l2':'l3';
+  const all=ST.results;
+  v.innerHTML=`<div class="stack-lg">
+  <div class="stack" style="gap:6px"><div class="eyebrow">Where you are</div><h1>Progrès</h1></div>
+  <div class="grid2">
+   <div class="card stack"><h3>Level</h3>${levelProgressHtml()}
+    <div><label class="lbl">Mode</label><div class="seg" id="pm"><button type="button" data-m="adaptive" aria-pressed="${ST.mode==='adaptive'}">Adaptive</button><button type="button" data-m="manual" aria-pressed="${ST.mode==='manual'}">Manual</button></div>
+    <p class="small muted" style="margin-top:6px">${ST.mode==='adaptive'?'The app moves you up after 30 answers at 85%+, and back down below 50%. You can still switch level yourself any time.':'You choose the level. Content, stories and corrections follow it.'}</p></div>
+    <div><label class="lbl">Switch level</label><div class="seg" id="pl">${LEVELS.map(l=>`<button type="button" data-l="${l}" aria-pressed="${l===ST.level}">${l}</button>`).join('')}</div></div></div>
+   <div class="card stack"><h3>Last 30 days</h3><div class="heat">${days.map(x=>`<i class="${lvCls(x.n)}" title="${esc(frDate(x.d,{day:'numeric',month:'short'}))}: ${x.n}"></i>`).join('')}</div>
+    <div class="row between tiny muted"><span>${esc(frDate(days[0].d,{day:'numeric',month:'short'}))}</span><span>today</span></div>
+    <div class="stats" style="grid-template-columns:repeat(2,1fr)"><div class="stat"><div class="v num">${streak()}</div><div class="k">Day streak</div></div><div class="stat"><div class="v num">${all.length?Math.round(accuracy(all.slice(-100))*100)+'%':'—'}</div><div class="k">Accuracy (last 100)</div></div></div></div>
+  </div>
+  <div class="stats"><div class="stat"><div class="v num">${learnedCount()}</div><div class="k">Words learned</div></div><div class="stat"><div class="v num">${Object.keys(ST.textsRead).length}</div><div class="k">Texts read</div></div><div class="stat"><div class="v num">${ST.journal.length}</div><div class="k">Journal entries</div></div><div class="stat"><div class="v num">${all.length}</div><div class="k">Answers</div></div></div>
+  <div class="grid2">
+   <div class="card stack"><h3>Grammar</h3><div class="stack" style="gap:8px">${UNITS.map(u=>{const m=unitMastery(u);return `<div><div class="row between small"><span>${esc(u.title)}</span><span class="num muted">${m?m+'%':'—'}</span></div><div class="progress"><i style="width:${m}%;${m>=80?'background:var(--ok)':''}"></i></div></div>`;}).join('')}</div></div>
+   <div class="card stack"><h3>Level history</h3><div class="list">${[...ST.levelLog].reverse().slice(0,12).map(l=>`<div class="li"><span class="pill lv">${esc(l.level)}</span><span class="grow small">${l.why==='up'?'Moved up':l.why==='down'?'Moved down':l.why==='start'?'Start':'Changed by you'}</span><span class="tiny muted">${esc(frDate(l.t,{day:'numeric',month:'short',year:'numeric'}))}</span></div>`).join('')}</div>
+    <p class="small muted">${Sync.ready?'Progress is saved to your Claude account and follows you across devices.':'Progress is saved in this browser.'}</p></div>
+  </div></div>`;
+  $$('#pm button').forEach(b=>b.onclick=()=>{ST.mode=b.dataset.m;if(ST.mode==='adaptive')ST.levelSince=Date.now();save();paintChrome();viewProgres(v);});
+  $$('#pl button').forEach(b=>b.onclick=()=>{setLevel(b.dataset.l,'manual');viewProgres(v);});
+}
+
+/* ================= SETTINGS ================= */
+function openSettings(){
+  const voices=TTS.voices;
+  openModal(`<div class="stack">
+   <div class="row between"><h2>Réglages</h2><button class="btn ghost sm" data-close type="button">Done</button></div>
+   <div><label class="lbl" for="s-name">Your name</label><input type="text" id="s-name" value="${esc(ST.name)}" data-noaccent="1"></div>
+   <div><label class="lbl" for="s-voice">French voice</label>${voices.length?`<div class="row" style="flex-wrap:nowrap"><select id="s-voice"><option value="">Automatic</option>${voices.map(x=>`<option ${x.name===ST.voice?'selected':''} value="${esc(x.name)}">${esc(x.name)} (${esc(x.lang)})</option>`).join('')}</select><button class="btn" id="s-test" type="button">Test</button></div><p class="tiny muted" style="margin-top:4px">Voices come from your device. On iPhone and Mac, better French voices can be downloaded in the system's speech settings.</p>`:`<div class="note">${TTS.ok?'No French voice found on this device yet. Your system may still read French with its default voice.':'Read-aloud is not available in this browser.'}</div>`}</div>
+   <div><label class="lbl" for="s-rate">Reading speed: <span id="s-rv">${ST.rate}</span></label><input type="range" id="s-rate" min="0.5" max="1.3" step="0.05" value="${ST.rate}" style="width:100%"></div>
+   <label class="row small" style="gap:8px"><input type="checkbox" id="s-acc" ${ST.strictAccents?'checked':''}> Count missing accents as mistakes</label>
+   <hr class="sep">
+   <div class="stack" style="gap:6px"><b>Start over</b><p class="small muted">Deletes your progress, words, journal and mistakes. Your saved texts are kept.</p><div><button class="btn danger" id="s-reset" type="button">Reset progress</button></div></div>
+  </div>`,(sheet)=>{
+    $('#s-name',sheet).oninput=e=>{ST.name=e.target.value.trim()||'toi';save();};
+    const sv=$('#s-voice',sheet);if(sv)sv.onchange=e=>{ST.voice=e.target.value;save();};
+    const st=$('#s-test',sheet);if(st)st.onclick=()=>TTS.speak("Bonjour ! Aujourd'hui, j'ai pris le tram et je suis allé au bureau.");
+    $('#s-rate',sheet).oninput=e=>{ST.rate=+e.target.value;$('#s-rv',sheet).textContent=ST.rate;save();};
+    $('#s-acc',sheet).onchange=e=>{ST.strictAccents=e.target.checked;save();};
+    const r=$('#s-reset',sheet);r.onclick=()=>{if(!r.dataset.sure){r.dataset.sure=1;r.textContent='Tap again to confirm';return;}const keep={name:ST.name,voice:ST.voice,rate:ST.rate};ST=migrate({...defaultState(),...keep,updatedAt:Date.now()});save();modalClose&&modalClose();go('today');toast('Progress reset.');};
+  });
+}
+
+/* ================= BOOT ================= */
+const VIEWS={today:viewToday,journee:viewJournee,textes:viewTextes,parler:viewParler,mots:viewMots,grammaire:viewGrammaire,carnet:viewCarnet,progres:viewProgres};
+(function boot(){
+  const h=(location.hash||'').replace('#','');
+  if(ROUTES.some(r=>r.id===h)) route=h;
+  TTS.init();
+  render();
+  AI.init();
+  Sync.init();
+})();
+
+</script>
+</body>
+</html>
