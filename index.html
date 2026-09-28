@@ -278,6 +278,8 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:0}
 .conjtable .card{padding:12px 14px}
 .conjtable ol{list-style:none;margin:6px 0 0;padding:0;font-family:var(--f-read);font-size:.95rem;line-height:1.7}
 .conjtable ol b{font-weight:500;color:var(--blue)}
+.conjf{border:0;background:none;padding:1px 4px;margin-left:-4px;border-radius:5px;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.conjf:hover,.conjf.speaking{background:var(--blue-soft)}
 
 /* ---------- chat ---------- */
 .chat{display:flex;flex-direction:column;gap:10px;min-height:240px}
@@ -987,11 +989,11 @@ const IRR={
  'vivre':'vis vis vit vivons vivez vivent','acheter':'achète achètes achète achetons achetez achètent','appeler':'appelle appelles appelle appelons appelez appellent',
  'préférer':'préfère préfères préfère préférons préférez préfèrent','envoyer':'envoie envoies envoie envoyons envoyez envoient',
  'courir':'cours cours court courons courez courent','conduire':'conduis conduis conduit conduisons conduisez conduisent',
- 'naître':'nais nais naît naissons naissez naissent','mourir':'meurs meurs meurt mourons mourez meurent'
+ 'naître':'nais nais naît naissons naissez naissent','lever':'lève lèves lève levons levez lèvent','promener':'promène promènes promène promenons promenez promènent','emmener':'emmène emmènes emmène emmenons emmenez emmènent','payer':'paie paies paie payons payez paient','essayer':'essaie essaies essaie essayons essayez essaient','répéter':'répète répètes répète répétons répétez répètent','espérer':'espère espères espère espérons espérez espèrent','mourir':'meurs meurs meurt mourons mourez meurent'
 };
-const DERIV={comprendre:['prendre','com'],apprendre:['prendre','ap'],devenir:['venir','de'],revenir:['venir','re'],tenir:['venir','t',1],obtenir:['venir','obt',1],permettre:['mettre','per'],promettre:['mettre','pro'],décrire:['écrire','d']};
+const DERIV={comprendre:['prendre','com'],apprendre:['prendre','ap'],devenir:['venir','de'],revenir:['venir','re'],tenir:['venir','t',1],obtenir:['venir','obt',1],permettre:['mettre','per'],promettre:['mettre','pro'],décrire:['écrire','d'],souvenir:['venir','sou'],prévenir:['venir','pré'],reprendre:['prendre','re'],surprendre:['prendre','sur'],remettre:['mettre','re']};
 const PP={'être':'été','avoir':'eu','faire':'fait','pouvoir':'pu','vouloir':'voulu','devoir':'dû','savoir':'su','venir':'venu','prendre':'pris','mettre':'mis','dire':'dit','voir':'vu','boire':'bu','lire':'lu','écrire':'écrit','connaître':'connu','croire':'cru','ouvrir':'ouvert','recevoir':'reçu','vivre':'vécu','courir':'couru','conduire':'conduit','naître':'né','mourir':'mort','sortir':'sorti','partir':'parti','dormir':'dormi','aller':'allé'};
-const FUT={'être':'ser','avoir':'aur','aller':'ir','faire':'fer','pouvoir':'pourr','vouloir':'voudr','devoir':'devr','savoir':'saur','venir':'viendr','voir':'verr','envoyer':'enverr','recevoir':'recevr','courir':'courr','mourir':'mourr','acheter':'achèter','appeler':'appeller'};
+const FUT={'lever':'lèver','promener':'promèner','emmener':'emmèner','payer':'paier','essayer':'essaier','être':'ser','avoir':'aur','aller':'ir','faire':'fer','pouvoir':'pourr','vouloir':'voudr','devoir':'devr','savoir':'saur','venir':'viendr','voir':'verr','envoyer':'enverr','recevoir':'recevr','courir':'courr','mourir':'mourr','acheter':'achèter','appeler':'appeller'};
 const SUBJ_IRR={'être':'sois sois soit soyons soyez soient','avoir':'aie aies ait ayons ayez aient','aller':'aille ailles aille allions alliez aillent','faire':'fasse fasses fasse fassions fassiez fassent','pouvoir':'puisse puisses puisse puissions puissiez puissent','savoir':'sache saches sache sachions sachiez sachent','vouloir':'veuille veuilles veuille voulions vouliez veuillent'};
 const ETRE_V=new Set(['aller','venir','arriver','partir','entrer','sortir','rester','tomber','rentrer','retourner','monter','descendre','naître','mourir','devenir','revenir']);
 const VERBS_REG=['parler','aimer','travailler','habiter','regarder','écouter','manger','commencer','chercher','trouver','donner','demander','penser','jouer','cuisiner','étudier','préparer','utiliser','oublier','finir','choisir','réussir','réfléchir','attendre','vendre','répondre','entendre','perdre'];
@@ -1000,7 +1002,7 @@ const VERBS_IRR_ALL=[...VERBS_IRR_CORE,'boire','lire','écrire','connaître','cr
 const VERBS_PC_ETRE=['aller','venir','arriver','partir','entrer','sortir','rester','tomber','rentrer','monter','descendre','naître','devenir','revenir'];
 const VERBS_PC_AVOIR=['parler','manger','travailler','regarder','finir','choisir','attendre','répondre','avoir','être','faire','prendre','mettre','dire','voir','boire','lire','écrire','pouvoir','vouloir','devoir','ouvrir','recevoir','comprendre'];
 const VERB_SETS={REG:VERBS_REG,IRR_CORE:VERBS_IRR_CORE,PC_AVOIR:VERBS_PC_AVOIR,PC_ETRE:VERBS_PC_ETRE,MIX:[...VERBS_REG.slice(0,14),...VERBS_IRR_ALL]};
-const ALL_VERBS=[...new Set([...VERBS_REG,...VERBS_IRR_ALL,...VERBS_PC_ETRE,'retourner','mourir','obtenir','permettre','promettre','décrire'])].sort((a,b)=>a.localeCompare(b,'fr'));
+const ALL_VERBS=[...new Set([...VERBS_REG,...VERBS_IRR_ALL,...VERBS_PC_ETRE,'retourner','mourir','obtenir','permettre','promettre','décrire','lever','promener','emmener','payer','essayer','répéter','espérer','souvenir','prévenir','reprendre','surprendre','remettre','laver','reposer','habiller','réveiller','coucher','dépêcher','amuser','occuper','rencontrer','marcher','visiter','inviter','arrêter','continuer','expliquer','fermer','gagner','garder','laisser','montrer','passer','porter','raconter','rappeler','rêver','sembler','tourner','voyager','changer','nager','partager','ranger','bouger','avancer','placer','remplir','grandir','maigrir','vieillir','rendre','descendre','défendre','dormir'])].sort((a,b)=>a.localeCompare(b,'fr'));
 const TENSES={present:'présent',pc:'passé composé',imparfait:'imparfait',futur:'futur simple',cond:'conditionnel',subj:'subjonctif',pqp:'plus-que-parfait'};
 
 function present(v){
@@ -1049,7 +1051,10 @@ function compound(v,person,auxTense){
   const pps=etre?agreeForms(pp,person):[pp];
   return pps.map(p=>auxF+' '+p);
 }
-function conjugate(v,tense,person){
+function conjugateCore(v,tense,person){
+  const tb=ST&&ST.verbTables&&ST.verbTables[v];const i0=PIDX[person];
+  if(tb&&tb[tense]&&tb[tense][i0]) return [tb[tense][i0]];
+  if(tb&&(tense==='pc'||tense==='pqp')&&tb.aux&&tb.pp){const af=(tense==='pc'?present(tb.aux):imparfait(tb.aux))[i0];return (tb.aux==='être'?agreeForms(tb.pp,person):[tb.pp]).map(x=>af+' '+x);}
   const i=PIDX[person];
   switch(tense){
     case 'present':return [present(v)[i]];
@@ -1068,9 +1073,19 @@ function subjLabel(person,form,tense){
   if(tense==='subj'){ s=(person==='je')?(vowel?"que j'":'que je'):(/^(il|elle|ils|elles)$/.test(person)?"qu'"+person:'que '+person); }
   return s;
 }
+const REFL=['me','te','se','nous','vous','se'];
+const reflPron=(i,next)=>([0,1,2,5].includes(i)&&/^[aeiouyhéèêàâîôû]/i.test(next))?REFL[i][0]+"'":REFL[i]+' ';
+function conjugate(v,tense,person){
+  v=String(v).trim().toLowerCase().replace(/’/g,"'");
+  const m=v.match(/^(?:se |s')(.+)$/);
+  if(m){const base=m[1],i=PIDX[person];
+    if(tense==='pc'||tense==='pqp'){const aux=(tense==='pc'?present('être'):imparfait('être'))[i];const tb=ST.verbTables&&ST.verbTables[base];return agreeForms((tb&&tb.pp)||participle(base),person).map(pp=>reflPron(i,aux)+aux+' '+pp);}
+    return conjugateCore(base,tense,person).map(f=>reflPron(i,f)+f);}
+  return conjugateCore(v,tense,person);
+}
 function conjTable(v){
   const persons=['je','tu','il','nous','vous','ils'];
-  const rows=t=>persons.map(p=>{const f=conjugate(v,t,p)[0];const lab=subjLabel(p,f,t);return `<li>${esc(lab)}${lab.endsWith("'")?'':' '}<b>${esc(f)}</b></li>`;}).join('');
+  const rows=t=>persons.map(p=>{const f=conjugate(v,t,p)[0];const lab=subjLabel(p,f,t);const full=lab+(lab.endsWith("'")?'':' ')+f;return `<li><button type="button" class="conjf" data-say="${esc(full.replace(/\(e\)/g,''))}">${esc(lab)}${lab.endsWith("'")?'':' '}<b>${esc(f)}</b></button></li>`;}).join('');
   return Object.keys(TENSES).map(t=>`<div class="card"><div class="eyebrow">${TENSES[t]}</div><ol>${rows(t)}</ol></div>`).join('');
 }
 function makeConjItem(verbs,tenses){
@@ -1515,8 +1530,9 @@ async function openAddWord(o={}){
      <p class="tiny muted" style="margin-top:6px">Apple Translate: select the word in the text, tap <b>Translate</b>, then <b>Copy Translation</b>, and tap <b>Paste</b> here. Or tap <b>Copy</b> above and paste the word into the Translate app.</p></div>
    <div><label class="lbl" for="aw-ex">Example sentence</label><textarea id="aw-ex" rows="2" style="min-height:64px">${esc(edit?edit.ex:o.ex||'')}</textarea></div>
    <div><label class="lbl" for="aw-note">Note (optional)</label><input type="text" id="aw-note" value="${esc(edit?edit.note||'':'')}" placeholder="e.g. feminine · irregular verb · heard at work" autocomplete="off" data-noaccent="1"></div>
+   ${edit?'':listSelectHtml(o.list)}
    <div class="row"><button class="btn primary" id="aw-save" type="button">${edit?'Save changes':'Save to notebook'}</button><span class="small muted" id="aw-msg"></span></div></div>`,async(sheet,close)=>{
-    const fr=$('#aw-fr',sheet),en=$('#aw-en',sheet);
+    const fr=$('#aw-fr',sheet),en=$('#aw-en',sheet);wireListSelect(sheet);
     $('#aw-say',sheet).onclick=e=>TTS.speak(fr.value,{btn:e.currentTarget});
     $('#aw-copy',sheet).onclick=()=>copyText(fr.value,fr);
     $('#aw-paste',sheet).onclick=()=>pasteInto(en);
@@ -1540,7 +1556,8 @@ async function openAddWord(o={}){
       const f=fr.value.trim();if(!f){toast('Type the French word first.');return;}
       const data={en:en.value.trim(),ex:$('#aw-ex',sheet).value.trim(),note:$('#aw-note',sheet).value.trim()};
       if(edit){Object.assign(edit,{fr:f,...data});save();toast('Saved ✓',true);}
-      else{const w=addCustomWord(f,data.en,data.ex,o.src||'Mes mots',{note:data.note,src:o.src||''});if(w&&w.custom){Object.assign(w,{en:w.en||data.en,note:data.note||w.note||''});save();}}
+      else{const w=addCustomWord(f,data.en,data.ex,o.src||'Mes mots',{note:data.note,src:o.src||''});if(w&&w.custom){Object.assign(w,{en:w.en||data.en,note:data.note||w.note||''});save();}
+        if(w){applyListSelect(sheet,w.id);const s=$('#aw-list',sheet);if(s&&s.value){const l=lists().find(x=>x.id===ST.lastList);if(l)toast(`Saved to “${l.name}” ✓`,true);}}}
       close();if(route==='notebook'||route==='mots')render();
     };
     if(!fr.value)fr.focus();else if(!en.value)en.focus();
@@ -1724,7 +1741,7 @@ function viewSheet(v){
       if(!it.ans[b]){return;}
       if(!bl.local){skipped++;return;}
       const user=it.ans[b].replace(/^\s*(que\s+|qu')?(je\s+|j'|tu\s+|il\s+|elle\s+|on\s+|nous\s+|vous\s+|ils\s+|elles\s+)/i,'');
-      const r=compareAns(user,bl.local);const good=r==='good'||r==='accent';
+      let r=compareAns(it.ans[b],bl.local);if(r==='bad')r=compareAns(user,bl.local);const good=r==='good'||r==='accent';
       it.res[b]=r==='good'?'ok':r==='accent'?'close':'bad';if(r==='accent'&&!ST.strictAccents)it.res[b]='ok';
       bl.right=bl.local[0];checked++;record(good,'exercice');
       if(!good) addMistake({src:'exercice',wrong:sentenceWith(it,false),right:sentenceWith({...it,ans:it.ans.map((a,j)=>j===b?bl.local[0]:a)},false),why:`${bl.hint?bl.hint+', ':''}${TENSES[s.tense]||''}`});
@@ -1763,6 +1780,260 @@ Reply with only JSON: {"items":[{"n":1,"answers":["..."],"correct":[true],"why":
     }catch(e){toast(aiMsg(e));aiB.disabled=false;aiB.textContent='Check & explain with AI';}
   };
 }
+
+/* ================= VERBES (conjugation lookup, examples, my verbs) ================= */
+const VERB_EN={parler:'to speak, talk',aimer:'to like, love',travailler:'to work',habiter:'to live (somewhere)',regarder:'to watch, look at',écouter:'to listen (to)',manger:'to eat',commencer:'to start, begin',chercher:'to look for',trouver:'to find',donner:'to give',demander:'to ask',penser:'to think',jouer:'to play',cuisiner:'to cook',étudier:'to study',préparer:'to prepare',utiliser:'to use',oublier:'to forget',finir:'to finish',choisir:'to choose',réussir:'to succeed, pass',réfléchir:'to think (about), reflect',attendre:'to wait (for)',vendre:'to sell',répondre:'to answer',entendre:'to hear',perdre:'to lose',être:'to be',avoir:'to have',aller:'to go',faire:'to do, make',pouvoir:'can, to be able to',vouloir:'to want',devoir:'must, to have to; to owe',savoir:'to know (facts, how to)',venir:'to come',prendre:'to take',mettre:'to put, put on',dire:'to say, tell',voir:'to see',sortir:'to go out',partir:'to leave',boire:'to drink',lire:'to read',écrire:'to write',connaître:'to know (people, places)',croire:'to believe',dormir:'to sleep',ouvrir:'to open',recevoir:'to receive',vivre:'to live',comprendre:'to understand',apprendre:'to learn',devenir:'to become',tenir:'to hold',acheter:'to buy',appeler:'to call',préférer:'to prefer',envoyer:'to send',courir:'to run',conduire:'to drive',arriver:'to arrive',entrer:'to come in, enter',rester:'to stay',tomber:'to fall',rentrer:'to go home, come back',monter:'to go up, get on',descendre:'to go down, get off',naître:'to be born',revenir:'to come back',retourner:'to go back, return',mourir:'to die',obtenir:'to obtain, get',permettre:'to allow',promettre:'to promise',décrire:'to describe',lever:'to raise, lift',promener:'to walk (a dog…)',emmener:'to take (someone somewhere)',payer:'to pay',essayer:'to try',répéter:'to repeat',espérer:'to hope',souvenir:'(se souvenir de) to remember',prévenir:'to warn, let know',reprendre:'to take again, resume',surprendre:'to surprise',remettre:'to put back, hand in',laver:'to wash',reposer:'to put down; (se reposer) to rest',habiller:'to dress',réveiller:'to wake (someone) up',coucher:'to put to bed',dépêcher:'(se dépêcher) to hurry',amuser:'to amuse; (s\'amuser) to have fun',occuper:'to occupy; (s\'occuper de) to take care of',rencontrer:'to meet',marcher:'to walk; to work (machine)',visiter:'to visit (a place)',inviter:'to invite',arrêter:'to stop',continuer:'to continue',expliquer:'to explain',fermer:'to close',gagner:'to win, earn',garder:'to keep',laisser:'to leave, let',montrer:'to show',passer:'to pass, spend (time)',porter:'to carry, wear',raconter:'to tell (a story)',rappeler:'to call back, remind',rêver:'to dream',sembler:'to seem',tourner:'to turn',voyager:'to travel',changer:'to change',nager:'to swim',partager:'to share',ranger:'to tidy up',bouger:'to move',avancer:'to move forward',placer:'to place',remplir:'to fill (in)',grandir:'to grow up',maigrir:'to lose weight',vieillir:'to get older',rendre:'to give back',défendre:'to defend; to forbid'};
+const REFLEXIVES=['se lever','se coucher','se réveiller',"s'habiller",'se laver','se reposer','se dépêcher',"s'amuser","s'occuper",'se promener','se souvenir',"s'appeler",'se préparer','se sentir'];
+const VERB_TENSE_KEYS=Object.keys(TENSES);
+function verbInfo(v){
+  v=normAns(v).replace(/’/g,"'");
+  const refl=/^(se |s')/.test(v),base=v.replace(/^(se |s')/,'');
+  const tb=ST.verbTables&&ST.verbTables[base];
+  const known=ALL_VERBS.includes(base)||!!tb;
+  const regular=/er$/.test(base)&&!IRR[base]&&!FUT[base]&&base!=='aller';
+  const safe=known||(regular&&!/[eé][^aeiouyé]+er$/.test(base)&&!/yer$/.test(base))||(/ir$/.test(base)&&!/(tir|mir|vir|rir|enir)$/.test(base));
+  let en=VERB_EN[base]||(tb&&tb.en)||'';
+  const aux=refl?'être':(tb&&tb.aux)||(ETRE_V.has(base)?'être':'avoir');
+  const pp=(tb&&tb.pp)||participle(base);
+  return {v,base,refl,known,safe,en,aux,pp,group:IRR[base]||DERIV[base]||FUT[base]||tb?'irregular':/er$/.test(base)?'regular -er':/ir$/.test(base)?'-ir':'-re'};
+}
+function formsOf(v){
+  const set=new Set();
+  for(const t of VERB_TENSE_KEYS)for(const p of ['je','tu','il','nous','vous','ils'])try{conjugate(v,t,p).forEach(f=>{const last=f.split(/\s+/).pop().replace(/^[mts]'/,'');set.add(normAns(last));if(!/\s/.test(f))set.add(normAns(f.replace(/^[mts]'/,'')));});}catch(e){}
+  return set;
+}
+function corpusExamples(v){
+  const forms=formsOf(v),out=[],seen=new Set();
+  const pool=[...allTexts().flatMap(t=>t.sentences.map(s=>({fr:s.fr.replace(/^—\s*/,''),en:s.en,src:t.title}))),...allWords().filter(w=>w.ex).map(w=>({fr:w.ex,en:'',src:'Mots'})),...(ST.sheets||[]).flatMap(sh=>sh.sections.flatMap(s=>s.items.map(it=>({fr:sentenceWith(it,true),en:'',src:sh.title}))))];
+  for(const s of pool){
+    const toks=normAns(s.fr).split(/[^a-zà-öø-ÿœæ']+/i).flatMap(t=>t.split("'")).filter(Boolean);
+    if(toks.some(t=>forms.has(t))&&!seen.has(s.fr)){seen.add(s.fr);out.push(s);if(out.length>=6)break;}
+  }
+  return out;
+}
+function viewVerbes(v){
+  if(params.drill&&DRILL) return paintDrill(v);
+  ST.myVerbs=ST.myVerbs||[];ST.verbRecent=ST.verbRecent||[];
+  const verb=params.verb?normAns(params.verb).replace(/’/g,"'"):'';
+  const info=verb?verbInfo(verb):null;
+  const saved=info&&ST.myVerbs.includes(info.v);
+  const tsel=ST.verbTenses||['present','pc','imparfait','futur'];
+  v.innerHTML=`<div class="stack-lg">
+   <div class="stack" style="gap:6px"><div class="eyebrow">Conjugation · examples · practice</div><h1>Verbes</h1>
+    <p class="muted">Look up any verb: every tense with audio, real example sentences, and a drill for the verbs you save.</p></div>
+   <div class="card stack">
+    <div class="row" style="flex-wrap:nowrap"><input type="search" id="vb-q" list="vb-list" placeholder="prendre, aller, se lever…" value="${esc(verb)}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"><datalist id="vb-list">${[...ALL_VERBS,...REFLEXIVES].map(x=>`<option value="${esc(x)}">`).join('')}</datalist><button class="btn primary" id="vb-go" type="button">Conjugate</button></div>
+    ${ST.verbRecent.length?`<div class="row" style="gap:6px"><span class="tiny muted">Recent:</span>${ST.verbRecent.slice(0,8).map(x=>`<button class="btn sm ghost" type="button" data-verb="${esc(x)}">${esc(x)}</button>`).join('')}</div>`:''}
+   </div>
+   <div class="card stack">
+    <div class="row between"><h3>My verbs <span class="muted small">(${ST.myVerbs.length})</span></h3><button class="btn primary sm" id="vb-drill" type="button" ${ST.myVerbs.length?'':'disabled'}>Practise my verbs</button></div>
+    ${ST.myVerbs.length?`<div class="row" style="gap:6px">${ST.myVerbs.map(x=>`<button class="btn sm" type="button" data-verb="${esc(x)}">${esc(x)}</button>`).join('')}</div>`:`<p class="small muted">Look up a verb and tap ☆ Save to add it here.</p>`}
+    <div><span class="lbl">Tenses to practise</span><div class="row" style="gap:6px" id="vb-tenses">${VERB_TENSE_KEYS.map(t=>`<label class="pill" style="cursor:pointer;padding:5px 10px"><input type="checkbox" value="${t}" ${tsel.includes(t)?'checked':''} style="margin-right:4px">${TENSES[t]}</label>`).join('')}</div></div>
+   </div>
+   <div id="vb-res">${info?verbResultHtml(info,saved):''}</div>
+  </div>`;
+  const q=$('#vb-q');
+  const look=x=>{x=normAns(x||q.value).replace(/’/g,"'");if(!x)return;if(!/(er|ir|re|oir)$/.test(x)){toast('Type the infinitive, e.g. prendre, finir, se lever.');return;}
+    ST.verbRecent=[x,...ST.verbRecent.filter(y=>y!==x)].slice(0,12);save();go('verbes',{verb:x});};
+  $('#vb-go').onclick=()=>look();q.addEventListener('keydown',e=>{if(e.key==='Enter')look();});
+  $$('[data-verb]',v).forEach(b=>b.onclick=()=>look(b.dataset.verb));
+  $$('#vb-tenses input').forEach(c=>c.onchange=()=>{ST.verbTenses=$$('#vb-tenses input:checked').map(x=>x.value);save();});
+  const tensesSel=()=>{const t=$$('#vb-tenses input:checked').map(x=>x.value);return t.length?t:['present'];};
+  $('#vb-drill').onclick=()=>startVerbDrill(ST.myVerbs,tensesSel(),'My verbs');
+  if(info) wireVerbResult(v,info,tensesSel);
+}
+function verbResultHtml(info,saved){
+  const ex=corpusExamples(info.v);const aiEx=(ST.verbEx||{})[info.v]||[];
+  return `<div class="stack-lg">
+   <div class="card raised stack">
+    <div class="row between" style="align-items:flex-start"><div class="stack" style="gap:4px">
+      <div class="row" style="gap:10px"><span style="font-family:var(--f-read);font-size:1.9rem;line-height:1.1">${esc(info.v)}</span>${spk(info.v)}</div>
+      <div id="vb-en" style="font-size:1.05rem">${info.en?esc(info.en):'<span class="muted small">Meaning not in the app yet</span>'}</div>
+      <div class="row" style="gap:6px"><span class="pill">${esc(info.group)}</span><span class="pill lv">aux: ${esc(info.aux)}</span><span class="pill">participle: ${esc(info.pp)}</span>${info.refl?'<span class="pill warn">reflexive</span>':''}</div></div>
+     <div class="row" style="gap:6px"><button class="btn ${saved?'':'primary'}" id="vb-save" type="button">${saved?'★ Saved':'☆ Save'}</button><button class="btn" id="vb-drill1" type="button">Drill this verb</button></div></div>
+    ${!info.safe?`<div class="note warn">This verb isn't in the app's checked list, so the forms below follow the regular pattern and may be wrong if it's irregular. <button class="btn sm" id="vb-ai-table" type="button" data-needs-ai>Get the correct table with AI</button></div>`:''}
+    ${!info.en?`<div><button class="btn sm" id="vb-ai-en" type="button" data-needs-ai>Get the meaning with AI</button></div>`:''}
+    <p class="tiny muted">Tap any form to hear it. (e) = add -e for a woman; plural agreement applies with être.</p>
+    <div class="conjtable">${conjTable(info.v)}</div>
+   </div>
+   <div class="stack"><div class="row between"><h2>Examples</h2><button class="btn sm" id="vb-ai-ex" type="button" data-needs-ai>${aiEx.length?'New examples':'Everyday examples'} with AI</button></div>
+    <div data-ai-gate>${aiGate()}</div>
+    <div id="vb-ex">${exampleListHtml(aiEx,true)}${ex.length?`<div class="eyebrow" style="margin:14px 0 6px">From your texts and exercises</div>${exampleListHtml(ex)}`:''}${!ex.length&&!aiEx.length?'<div class="empty">No examples with this verb in your texts yet.</div>':''}</div></div>
+  </div>`;
+}
+function exampleListHtml(list,ai){
+  if(!list.length) return '';
+  return `<div class="list">${list.map(s=>`<div class="li" style="align-items:flex-start">${spk(s.fr)}<div class="grow stack" style="gap:2px"><div class="fr translatable">${esc(s.fr)}</div>${s.en?`<div class="small muted">${esc(s.en)}</div>`:''}${s.tense||s.src?`<div class="tiny muted">${esc(s.tense||s.src)}</div>`:''}</div><button class="btn sm" type="button" data-exsave="${esc(s.fr)}" data-exen="${esc(s.en||'')}">+ Notebook</button></div>`).join('')}</div>`;
+}
+function wireVerbResult(v,info,tensesSel){
+  $('#vb-save').onclick=()=>{ST.myVerbs=ST.myVerbs||[];if(ST.myVerbs.includes(info.v))ST.myVerbs=ST.myVerbs.filter(x=>x!==info.v);else{ST.myVerbs.unshift(info.v);toast('Saved to My verbs ✓',true);}save();viewVerbes(v);paintAI();};
+  $('#vb-drill1').onclick=()=>startVerbDrill([info.v],tensesSel(),info.v);
+  const wireEx=()=>$$('[data-exsave]',v).forEach(b=>b.onclick=()=>openAddWord({fr:b.dataset.exsave,en:b.dataset.exen,src:'Verbes · '+info.v}));
+  wireEx();
+  const exB=$('#vb-ai-ex');
+  if(exB)exB.onclick=async()=>{exB.disabled=true;exB.innerHTML='<span class="spinner"></span> Writing examples…';
+    try{const r=await AI.json(`Write 6 short, natural example sentences with the French verb "${info.v}" for a learner at level ${ST.level}, the kind of thing people really say in daily life (work, home, shopping, friends). Use a mix of tenses: présent, passé composé, imparfait, futur proche, conditionnel, and one question or negative. Reply with only JSON: {"meaning":"short English meaning","examples":[{"fr":"...","en":"...","tense":"tense name in French"}]}`,{cache:false});
+      const ex=(r.examples||[]).filter(x=>x&&x.fr).map(x=>({fr:String(x.fr),en:String(x.en||''),tense:String(x.tense||'')}));
+      if(!ex.length)throw {code:'invalid_json'};
+      ST.verbEx=ST.verbEx||{};ST.verbEx[info.v]=ex;const k=Object.keys(ST.verbEx);if(k.length>60)delete ST.verbEx[k[0]];
+      if(r.meaning&&!info.en){ST.verbTables=ST.verbTables||{};ST.verbTables[info.base]={...(ST.verbTables[info.base]||{}),en:String(r.meaning)};}
+      save();viewVerbes(v);paintAI();
+    }catch(e){toast(aiMsg(e));exB.disabled=false;exB.textContent='Everyday examples with AI';}};
+  const enB=$('#vb-ai-en');
+  if(enB)enB.onclick=async()=>{enB.disabled=true;enB.innerHTML='<span class="spinner"></span>';
+    try{const r=await AI.json(`French verb "${info.v}". Reply with only JSON: {"meaning":"short English meaning(s)"}`,{modelTier:'quick'});ST.verbTables=ST.verbTables||{};ST.verbTables[info.base]={...(ST.verbTables[info.base]||{}),en:String(r.meaning||'')};save();viewVerbes(v);paintAI();}
+    catch(e){toast(aiMsg(e));enB.disabled=false;enB.textContent='Get the meaning with AI';}};
+  const tbB=$('#vb-ai-table');
+  if(tbB)tbB.onclick=async()=>{tbB.disabled=true;tbB.innerHTML='<span class="spinner"></span> Checking…';
+    try{const r=await AI.json(`Conjugate the French verb "${info.base}" (non-reflexive form). Give the 6 forms (je, tu, il, nous, vous, ils) without pronouns. Reply with only JSON: {"meaning":"English","aux":"avoir"|"être","pp":"past participle (masculine singular)","present":[6],"imparfait":[6],"futur":[6],"cond":[6],"subj":[6]}`);
+      const ok=k=>Array.isArray(r[k])&&r[k].length===6;
+      if(!['present','imparfait','futur','cond','subj'].every(ok)||!r.pp)throw {code:'invalid_json'};
+      ST.verbTables=ST.verbTables||{};ST.verbTables[info.base]={en:String(r.meaning||''),aux:r.aux==='être'?'être':'avoir',pp:String(r.pp),present:r.present.map(String),imparfait:r.imparfait.map(String),futur:r.futur.map(String),cond:r.cond.map(String),subj:r.subj.map(String)};
+      save();toast('Table updated ✓',true);viewVerbes(v);paintAI();
+    }catch(e){toast(aiMsg(e));tbB.disabled=false;tbB.textContent='Get the correct table with AI';}};
+}
+function startVerbDrill(verbs,tenses,title){
+  const items=Array.from({length:12},()=>makeConjItem(verbs,tenses));
+  DRILL={unit:'verbs:'+title,title:title==='My verbs'?'My verbs':title,back:'verbes',backArg:title==='My verbs'?{}:{verb:title},items,i:0,score:0,answered:false,wrong:[]};
+  go('verbes',{...(title==='My verbs'?{}:{verb:title}),drill:1});
+}
+
+/* ================= VERB DETECTION IN TEXTS ================= */
+let VERB_IDX=null;
+function verbIndex(){
+  if(VERB_IDX) return VERB_IDX;
+  VERB_IDX=new Map();
+  const add=(f,v)=>{f=normAns(f);if(!f)return;const a=VERB_IDX.get(f)||[];if(!a.includes(v))a.push(v);VERB_IDX.set(f,a);};
+  for(const v of ALL_VERBS){
+    add(v,v);
+    try{const pp=participle(v);add(pp,v);add(pp+'e',v);add(pp+(pp.endsWith('s')?'':'s'),v);add(pp+'es',v);}catch(e){}
+    for(const t of ['present','imparfait','futur','cond','subj'])for(const p of ['je','tu','il','nous','vous','ils'])try{conjugateCore(v,t,p).forEach(f=>add(f,v));}catch(e){}
+  }
+  return VERB_IDX;
+}
+const NOT_VERBS=new Set(['été','est','a','as','sont','fait','dit','mis','pris','bien','tout']);
+function verbsForWord(w,r){
+  const n=normAns(w).replace(/^[mtsljnd]'/,'');
+  let list=[...(verbIndex().get(n)||[])];
+  if(r&&r.lemma&&/verb|verbe/i.test(r.pos||'')){const l=normAns(r.lemma).replace(/^(se |s')/,'');if(/(er|ir|re|oir)$/.test(l)&&!list.includes(l))list.unshift(l);}
+  return list.slice(0,3);
+}
+function verbRowHtml(word,r){
+  const vs=verbsForWord(word,r);if(!vs.length) return '';
+  const my=ST.myVerbs||[];
+  return `<div class="panel" style="margin-top:10px;padding:10px 12px"><div class="tiny muted" style="margin-bottom:6px">${NOT_VERBS.has(normAns(word))?'Can be a form of':'Verb'}: ${vs.map(v=>`<b>${esc(v)}</b>`).join(' / ')}</div>
+   <div class="row" style="gap:6px">${vs.map(v=>`<button class="btn sm" type="button" data-conj="${esc(v)}">Conjugate ${esc(v)}</button><button class="btn sm ghost" type="button" data-savev="${esc(v)}">${my.includes(v)?'★':'☆'}</button>`).join('')}</div></div>`;
+}
+function wireVerbRow(){
+  $$('#pop [data-conj]').forEach(b=>b.onclick=()=>{const v=b.dataset.conj;hidePop();ST.verbRecent=[v,...(ST.verbRecent||[]).filter(y=>y!==v)].slice(0,12);save();go('verbes',{verb:v});});
+  $$('#pop [data-savev]').forEach(b=>b.onclick=()=>{const v=b.dataset.savev;ST.myVerbs=ST.myVerbs||[];if(ST.myVerbs.includes(v)){ST.myVerbs=ST.myVerbs.filter(x=>x!==v);b.textContent='☆';}else{ST.myVerbs.unshift(v);b.textContent='★';toast(`${v} saved to My verbs ✓`,true);}save();});
+}
+
+/* ================= WORD LISTS (playlists) ================= */
+function lists(){ST.lists=ST.lists||[];return ST.lists;}
+function defaultListName(){return 'Mots du '+frDate(Date.now(),{day:'numeric',month:'long'});}
+function createList(name){const l={id:'l'+uid(),name:String(name||defaultListName()).trim().slice(0,60)||defaultListName(),created:Date.now(),ids:[]};lists().unshift(l);ST.lastList=l.id;save();return l;}
+function addToList(listId,wid){const l=lists().find(x=>x.id===listId);if(!l||!wid)return;if(!l.ids.includes(wid))l.ids.unshift(wid);l.updated=Date.now();ST.lastList=l.id;save();}
+function listWords(l){const all=allWords();return l.ids.map(id=>all.find(w=>w.id===id)).filter(Boolean);}
+function listSelectHtml(pre){
+  const sel=pre!==undefined?pre:(ST.lastList&&lists().some(l=>l.id===ST.lastList)?ST.lastList:'');
+  return `<div><label class="lbl" for="aw-list">Save to list</label><select id="aw-list"><option value="">No list (only in Mes mots)</option>${lists().map(l=>`<option value="${l.id}" ${l.id===sel?'selected':''}>${esc(l.name)} (${l.ids.length})</option>`).join('')}<option value="__new">+ New list…</option></select>
+   <input type="text" id="aw-newlist" placeholder="List name" value="${esc(defaultListName())}" hidden style="margin-top:6px" data-noaccent="1"></div>`;
+}
+function wireListSelect(sheet){const s=$('#aw-list',sheet),n=$('#aw-newlist',sheet);if(!s)return;s.onchange=()=>{n.hidden=s.value!=='__new';if(!n.hidden){n.focus();n.select();}};}
+function applyListSelect(sheet,wid){
+  const s=$('#aw-list',sheet);if(!s||!wid)return;
+  let id=s.value;if(!id){ST.lastList='';save();return;}
+  if(id==='__new')id=createList($('#aw-newlist',sheet).value).id;
+  addToList(id,wid);
+}
+function openListPicker(wid,after){
+  const w=allWords().find(x=>x.id===wid);if(!w)return;
+  openModal(`<div class="stack"><div class="row between"><h2>Lists</h2><button class="btn ghost sm" data-close type="button">Done</button></div>
+   <p class="small muted">Choose the lists for <b style="font-family:var(--f-read)">${esc(w.fr)}</b>.</p>
+   <div class="list" id="lp-list">${lists().length?lists().map(l=>`<label class="li" style="cursor:pointer"><input type="checkbox" value="${l.id}" ${l.ids.includes(wid)?'checked':''}><span class="grow">${esc(l.name)}</span><span class="tiny muted">${l.ids.length}</span></label>`).join(''):'<div class="li small muted">No lists yet.</div>'}</div>
+   <div class="row" style="flex-wrap:nowrap"><input type="text" id="lp-new" placeholder="New list name" value="${esc(defaultListName())}" data-noaccent="1"><button class="btn" id="lp-add" type="button">+ Create</button></div></div>`,(sheet,close)=>{
+    const wire=()=>$$('#lp-list input',sheet).forEach(c=>c.onchange=()=>{const l=lists().find(x=>x.id===c.value);if(!l)return;if(c.checked)addToList(l.id,wid);else{l.ids=l.ids.filter(x=>x!==wid);save();}});
+    wire();
+    $('#lp-add',sheet).onclick=()=>{const l=createList($('#lp-new',sheet).value);addToList(l.id,wid);close();openListPicker(wid,after);toast(`Added to “${l.name}” ✓`,true);};
+    const m=$('#modal');const oc=m.onclick;m.onclick=e=>{oc&&oc(e);if(m.hidden&&after)after();};
+    $$('[data-close]',sheet).forEach(b=>b.addEventListener('click',()=>after&&after()));
+  });
+}
+
+/* ================= MES MOTS view (with lists) ================= */
+function viewNotebook(v){
+  if(params.session) return paintSession(v);
+  const L=params.list?lists().find(l=>l.id===params.list):null;
+  if(params.list&&!L){go('notebook');return;}
+  const base=L?listWords(L):notebookWords();
+  const f=params.f||'all',q=normAns(params.q||'');
+  const state=w=>{const c=ST.srs[w.id];if(!c)return 'new';if(c.reps>=2&&c.iv>=7)return 'known';return 'learning';};
+  let list=base.filter(w=>f==='all'||(f==='missing'?!w.en:f==='expr'?/\s/.test(w.fr.trim()):state(w)===f));
+  if(q) list=list.filter(w=>normAns(w.fr).includes(q)||normAns(w.en||'').includes(q));
+  const n=Date.now();const dueN=base.filter(w=>!ST.srs[w.id]||ST.srs[w.id].due<=n).length;
+  const pill={new:'<span class="pill">New</span>',learning:'<span class="pill warn">Learning</span>',known:'<span class="pill ok">Known</span>'};
+  const inLists=id=>lists().filter(l=>l.ids.includes(id)).length;
+  v.innerHTML=`<div class="stack-lg">
+  ${L?`<div class="stack" style="gap:8px"><button class="btn ghost sm" style="align-self:flex-start" data-go="notebook" type="button">← Mes mots</button>
+     <div class="eyebrow">List · ${base.length} word${base.length===1?'':'s'} · created ${esc(frDate(L.created,{day:'numeric',month:'short'}))}</div>
+     <div class="row between"><h1 id="nl-title">${esc(L.name)}</h1><div class="row" style="gap:6px"><button class="btn sm" id="nl-ren" type="button">Rename</button><button class="btn sm ghost danger" id="nl-del" type="button">Delete list</button></div></div>
+     <div class="row" id="nl-renrow" hidden style="flex-wrap:nowrap"><input type="text" id="nl-name" value="${esc(L.name)}" data-noaccent="1"><button class="btn primary sm" id="nl-ok" type="button">Save</button></div></div>`
+  :`<div class="stack" style="gap:6px"><div class="eyebrow">Your vocabulary notebook</div><h1>Mes mots</h1>
+   <p class="muted">Save any word or phrase: tap a word and choose <b>+ Notebook</b>, or select words and tap <b>+ Notebook</b>. Put them in lists, like playlists, and practise one list at a time.</p></div>
+   <div class="stack"><div class="row between"><h2>My lists</h2><button class="btn sm" id="nl-new" type="button">+ New list</button></div>
+    <div class="row" id="nl-newrow" hidden style="flex-wrap:nowrap"><input type="text" id="nl-newname" value="${esc(defaultListName())}" data-noaccent="1"><button class="btn primary sm" id="nl-create" type="button">Create</button></div>
+    ${lists().length?`<div class="grid3">${lists().map(l=>{const ws=listWords(l);return `<button type="button" class="textcard" data-go="notebook" data-arg='${esc(JSON.stringify({list:l.id}))}'><div class="row between"><span class="pill lv">${ws.length} word${ws.length===1?'':'s'}</span><span class="tiny muted">${esc(frDate(l.updated||l.created,{day:'numeric',month:'short'}))}</span></div><h3>${esc(l.name)}</h3><div class="ex">${ws.slice(0,4).map(w=>esc(w.fr)).join(' · ')||'<span class="muted">Empty</span>'}</div></button>`;}).join('')}</div>`
+    :`<div class="empty">No lists yet. When you save a word, choose “+ New list…”, or tap “+ New list” here.</div>`}</div>
+   <h2>All saved words</h2>`}
+  <div class="row">
+   <button class="btn primary" id="nb-prac" type="button" ${base.length?'':'disabled'}>Practise ${L?'this list':''} ${dueN?`(${dueN} due)`:''}</button>
+   <button class="btn" id="nb-add" type="button">+ Add word or expression</button>
+   <button class="btn" id="nb-copy" type="button" ${base.length?'':'disabled'}>Copy ${L?'list':'all'}</button>
+  </div>
+  <div class="row between" style="gap:10px">
+   <div class="seg" id="nb-f">${[['all','All'],['expr','Expressions'],['missing','Needs translation'],['new','New'],['learning','Learning'],['known','Known']].map(([k,l])=>`<button type="button" data-f="${k}" aria-pressed="${k===f}">${l}${k==='missing'?` (${base.filter(w=>!w.en).length})`:''}</button>`).join('')}</div>
+   <input type="search" id="nb-q" placeholder="Search…" value="${esc(params.q||'')}" style="max-width:220px" data-noaccent="1">
+  </div>
+  ${list.length?`<div class="list">${list.map(w=>`<div class="li nbrow" style="align-items:flex-start">${spk(w.fr)}
+    <div class="grow stack" style="gap:2px"><div class="fr translatable">${esc(w.fr)}</div>
+     <div class="small en ${w.en?'':'missing'}">${w.en?esc(w.en):'No translation yet'}</div>
+     ${w.ex?`<div class="small muted translatable" style="font-family:var(--f-read);font-style:italic">${esc(w.ex)}</div>`:''}
+     ${w.note?`<div class="tiny muted">${esc(w.note)}</div>`:''}
+     <div class="tiny muted">${w.src?esc(w.src)+' · ':''}${w.added?esc(frDate(w.added,{day:'numeric',month:'short'})):''}${inLists(w.id)?` · in ${inLists(w.id)} list${inLists(w.id)>1?'s':''}`:''}</div></div>
+    <span class="stack" style="gap:6px;align-items:flex-end">${pill[state(w)]}<span class="row" style="gap:4px">
+     <button class="btn sm" type="button" data-lists="${w.id}">Lists</button>
+     ${w.custom?`<button class="btn sm" type="button" data-edit="${w.id}">${w.en?'Edit':'Add meaning'}</button>`:''}
+     <button class="iconbtn" type="button" data-rm="${w.id}" aria-label="${L?'Remove from list':'Remove'}" title="${L?'Remove from this list':'Remove from notebook'}">✕</button></span></span></div>`).join('')}</div>`
+  :`<div class="empty">${base.length?'No words match.':L?'This list is empty. Save words and choose this list, or use “Lists” on any word.':'Your notebook is empty. Open a text, tap a word and choose + Notebook.'}</div>`}
+  </div>`;
+  const re=()=>{viewNotebook(v);paintAI();};
+  $$('#nb-f button').forEach(b=>b.onclick=()=>go('notebook',{...(L?{list:L.id}:{}),f:b.dataset.f,q:params.q}));
+  let tmr;$('#nb-q').oninput=e=>{clearTimeout(tmr);const val=e.target.value;tmr=setTimeout(()=>{params.q=val;re();const i=$('#nb-q');i.focus();i.setSelectionRange(val.length,val.length);},250);};
+  $('#nb-add').onclick=()=>openAddWord({src:L?L.name:'Mes mots',list:L?L.id:undefined});
+  $$('[data-edit]',v).forEach(b=>b.onclick=()=>openAddWord({id:b.dataset.edit}));
+  $$('[data-lists]',v).forEach(b=>b.onclick=()=>openListPicker(b.dataset.lists,re));
+  $$('[data-rm]',v).forEach(b=>b.onclick=()=>{
+    const id=b.dataset.rm;
+    if(L){L.ids=L.ids.filter(x=>x!==id);save();re();return;}
+    if(!b.dataset.sure){b.dataset.sure=1;b.textContent='?';b.title='Tap again to remove from your notebook and all lists';return;}
+    ST.customVocab=ST.customVocab.filter(w=>w.id!==id);ST.nbRefs=(ST.nbRefs||[]).filter(x=>x!==id);lists().forEach(l=>l.ids=l.ids.filter(x=>x!==id));if(id.startsWith('c'))delete ST.srs[id];save();paintChrome();re();});
+  $('#nb-copy').onclick=()=>copyText((L?L.name+'\n':'')+base.map(w=>`${w.fr} — ${w.en||'?'}${w.ex?`  (${w.ex})`:''}`).join('\n'));
+  $('#nb-prac').onclick=()=>{
+    const now=Date.now();
+    let qids=[...base.filter(w=>ST.srs[w.id]&&ST.srs[w.id].due<=now),...base.filter(w=>!ST.srs[w.id])].map(w=>w.id);
+    if(!qids.length) qids=shuffle(base).slice(0,30).map(w=>w.id);
+    SESS.q=qids.slice(0,60);SESS.i=0;SESS.flipped=false;SESS.done=0;SESS.back='notebook';go('notebook',{session:1,...(L?{list:L.id}:{})});
+  };
+  if(L){
+    $('#nl-ren').onclick=()=>{$('#nl-renrow').hidden=false;$('#nl-name').focus();};
+    $('#nl-ok').onclick=()=>{L.name=$('#nl-name').value.trim()||L.name;save();re();};
+    const d=$('#nl-del');d.onclick=()=>{if(!d.dataset.sure){d.dataset.sure=1;d.textContent='Tap again: delete list (words stay)';return;}ST.lists=lists().filter(x=>x.id!==L.id);if(ST.lastList===L.id)ST.lastList='';save();go('notebook');};
+  }else{
+    $('#nl-new').onclick=()=>{$('#nl-newrow').hidden=false;const i=$('#nl-newname');i.focus();i.select();};
+    $('#nl-create').onclick=()=>{const l=createList($('#nl-newname').value);go('notebook',{list:l.id});};
+  }
+}
 /* ================= DERIVED DATA ================= */
 const allWords=()=>[...ST.customVocab,...VOCAB];
 const dueWords=()=>{const n=Date.now();return allWords().filter(w=>ST.srs[w.id]&&ST.srs[w.id].due<=n);};
@@ -1781,7 +2052,7 @@ const allTexts=()=>[...USER_TEXTS.map(normText),...BUILTIN_TEXTS.map(normText)];
 const suggestText=()=>{const ts=allTexts().filter(t=>t.level===ST.level);return ts.find(t=>!ST.textsRead[t.id])||ts[0]||allTexts()[0];};
 
 /* ================= ROUTER ================= */
-const ROUTES=[{id:'today',t:"Aujourd'hui",tab:1},{id:'journee',t:'Ma journée',s:'Journée',tab:1},{id:'textes',t:'Textes',tab:1},{id:'exos',t:'Exercices'},{id:'parler',t:'Parler',tab:1},{id:'mots',t:'Mots',tab:1},{id:'notebook',t:'Mes mots'},{id:'grammaire',t:'Grammaire',s:'Gramm.',tab:1},{id:'carnet',t:"Carnet d'erreurs"},{id:'progres',t:'Progrès'}];
+const ROUTES=[{id:'today',t:"Aujourd'hui",tab:1},{id:'journee',t:'Ma journée',s:'Journée',tab:1},{id:'textes',t:'Textes',tab:1},{id:'exos',t:'Exercices'},{id:'parler',t:'Parler',tab:1},{id:'mots',t:'Mots',tab:1},{id:'notebook',t:'Mes mots'},{id:'grammaire',t:'Grammaire',s:'Gramm.',tab:1},{id:'verbes',t:'Verbes'},{id:'carnet',t:"Carnet d'erreurs"},{id:'progres',t:'Progrès'}];
 let route='today',params={};
 function go(r,p={}){TTS.stop();hidePop();clearInterval(TIMER.h);TIMER.run=false;READ.playing=false;route=ROUTES.some(x=>x.id===r)?r:'today';params=p||{};try{if(location.hash!=='#'+route)history.replaceState(null,'','#'+route);}catch(e){}render();window.scrollTo(0,0);}
 function paintChrome(){
@@ -2091,9 +2362,11 @@ async function wordPop(el,word,sent,text){
   const body=(r)=>`<div class="row between" style="gap:8px"><span class="pw">${esc(word)}</span>${spk(word)}</div>
    ${r?`${r.lemma&&normAns(r.lemma)!==normAns(word)?`<div class="small muted">from <b>${esc(r.lemma)}</b>${r.pos?' · '+esc(r.pos):''}</div>`:r.fr&&normAns(r.fr)!==normAns(word)?`<div class="small muted">in <b>${esc(r.fr)}</b></div>`:''}
    <div style="font-size:1.02rem;margin-top:4px">${esc(r.en)}</div>${r.note?`<div class="small muted" style="margin-top:4px">${esc(r.note)}</div>`:''}`:''}
+   ${verbRowHtml(word,r)}
    <div id="pop-extra"></div>
    <div class="row" style="margin-top:10px;gap:6px"><button class="btn sm primary" id="pop-add" type="button">+ Notebook</button>${sent.en?`<button class="btn sm" id="pop-sent" type="button">Translate sentence</button>`:''}</div>`;
   const wire=(r)=>{
+    wireVerbRow();
     const a=$('#pop-add');if(a)a.onclick=()=>{hidePop();openAddWord({fr:(r&&r.lemma)||word,en:r&&r.en,ex:sent.fr,src:text?text.title:''});};
     const s=$('#pop-sent');if(s)s.onclick=()=>{$('#pop-extra').innerHTML=`<div class="note" style="margin-top:8px">${esc(sent.en)}</div>`;s.remove();};
   };
@@ -2440,15 +2713,11 @@ function viewGrammaire(v){
   const nx=nextUnit();
   v.innerHTML=`<div class="stack-lg">
   <div class="stack" style="gap:6px"><div class="eyebrow">The tense ladder</div><h1>Grammaire</h1><p class="muted">In the order you need it for speaking. Each step has a one-screen rule and quick drills. Aim for 80% before moving on.</p></div>
-  <div class="card stack"><h3>Conjugator</h3><div class="row" style="flex-wrap:nowrap"><input type="text" id="cj-v" list="cj-list" placeholder="Type a verb: prendre, aller, finir…" value="${esc(params.verb||'')}"><datalist id="cj-list">${ALL_VERBS.map(x=>`<option value="${esc(x)}">`).join('')}</datalist><button class="btn primary" id="cj-go" type="button">Conjugate</button></div><div id="cj-out"></div></div>
+  <button type="button" class="task" data-go="verbes" style="align-items:center"><span class="stack" style="gap:2px;flex:1"><h3>Verbes · conjugator</h3><span class="meta">Any verb in every tense with audio, example sentences, and practice for the verbs you save.</span></span><span class="pill lv">Open →</span></button>
   <div class="ladder">${UNITS.map((u,i)=>{const m=unitMastery(u);return `<button type="button" class="rung ${nx&&nx.id===u.id?'next':''}" data-go="grammaire" data-arg='${esc(JSON.stringify({unit:u.id}))}'>
     <span class="step num">${i+1}</span><span class="stack" style="gap:2px;min-width:0"><span class="row" style="gap:8px"><h3>${esc(u.title)}</h3><span class="pill lv">${u.level}</span>${nx&&nx.id===u.id?'<span class="pill red">Next step</span>':''}</span><span class="small muted">${esc(u.sub)}</span></span>
     <span class="mast"><span class="small muted num">${m?m+'%':'—'}</span><div class="progress" style="margin-top:4px"><i style="width:${m}%;${m>=80?'background:var(--ok)':''}"></i></div></span></button>`;}).join('')}</div></div>`;
-  const run=()=>{const verb=normAns($('#cj-v').value);if(!verb)return;const out=$('#cj-out');
-    if(!/(er|ir|re|oir)$/.test(verb)){out.innerHTML='<div class="note">Type the infinitive (ending in -er, -ir or -re).</div>';return;}
-    try{out.innerHTML=`${ALL_VERBS.includes(verb)?'':'<div class="note" style="margin-bottom:10px">This verb isn\'t in the checked list. Forms follow the regular pattern and may be wrong if it\'s irregular.</div>'}<div class="row" style="margin-bottom:10px"><span style="font-family:var(--f-read);font-size:1.3rem">${esc(verb)}</span>${spk(verb)}<span class="small muted">auxiliary: ${ETRE_V.has(verb)?'être':'avoir'} · participle: ${esc(participle(verb))}</span></div><div class="conjtable">${conjTable(verb)}</div>`;}catch(e){out.innerHTML='<div class="note warn">Couldn\'t conjugate that verb.</div>';}};
-  $('#cj-go').onclick=run;$('#cj-v').addEventListener('keydown',e=>{if(e.key==='Enter')run();});
-  if(params.verb)run();
+  if(params.verb){go('verbes',{verb:params.verb});return;}
 }
 function viewUnit(v){
   const u=UNITS.find(x=>x.id===params.unit);if(!u){go('grammaire');return;}
@@ -2485,13 +2754,14 @@ Reply with only JSON: {"items":[...]}`,{cache:false});
   });
 }
 function paintDrill(v){
-  const u=UNITS.find(x=>x.id===DRILL.unit);const it=DRILL.items[DRILL.i];
+  const u=UNITS.find(x=>x.id===DRILL.unit)||{id:DRILL.unit,title:DRILL.title||'Practice'};const it=DRILL.items[DRILL.i];
+  const backGo=DRILL.back||'grammaire',backArg=DRILL.back?(DRILL.backArg||{}):{unit:u.id};
   if(!it){
     const pct=Math.round(DRILL.score/DRILL.items.length*100);
     const us=ST.unitScores[u.id]||{best:0,n:0};us.best=Math.max(us.best||0,pct);us.last=pct;us.n=(us.n||0)+1;ST.unitScores[u.id]=us;save();
     v.innerHTML=`<div class="card stack" style="align-items:center;text-align:center;padding:34px"><div class="eyebrow">${esc(u.title)}</div><h1 class="num">${pct}%</h1><p class="muted">${DRILL.score} / ${DRILL.items.length} correct. ${pct>=80?'Step mastered. On to the next one!':'Do another round. Aim for 80%.'}</p>
       ${DRILL.wrong.length?`<div class="list" style="width:100%;text-align:left">${DRILL.wrong.map(w=>`<div class="li"><div class="grow"><div class="small muted">${esc(w.q)}</div><div class="fr">${esc(w.a)}</div></div></div>`).join('')}</div>`:''}
-      <div class="row"><button class="btn primary" data-go="grammaire" data-arg='${esc(JSON.stringify({unit:u.id}))}' type="button">Back to the rule</button><button class="btn" data-go="grammaire" type="button">The ladder</button></div></div>`;
+      <div class="row"><button class="btn primary" data-go="${backGo}" data-arg='${esc(JSON.stringify(backArg))}' type="button">${backGo==='grammaire'?'Back to the rule':'Back'}</button><button class="btn" data-go="grammaire" type="button">The ladder</button></div></div>`;
     DRILL=null;return;
   }
   let body='';
@@ -2499,7 +2769,7 @@ function paintDrill(v){
     <input type="text" id="dr-in" autocomplete="off" autocapitalize="off" spellcheck="false" autocorrect="off" placeholder="${it.tense==='pc'||it.tense==='pqp'?'auxiliary + participle':'verb form'}">`;
   else if(it.type==='fill') body=`<div class="prompt-big">${esc(it.q)}</div><input type="text" id="dr-in" autocomplete="off" autocapitalize="off" spellcheck="false" autocorrect="off" placeholder="Missing word(s)">`;
   else body=`<div class="prompt-big">${esc(it.q)}</div><div class="choices">${it.options.map((o,j)=>`<button class="choice" type="button" data-o="${j}">${esc(o)}</button>`).join('')}</div>`;
-  v.innerHTML=`<div class="stack"><div class="row between"><button class="btn ghost sm" data-go="grammaire" data-arg='${esc(JSON.stringify({unit:u.id}))}' type="button">← Stop</button><span class="small muted num">${DRILL.i+1} / ${DRILL.items.length} · ${DRILL.score} ✓</span></div>
+  v.innerHTML=`<div class="stack"><div class="row between"><button class="btn ghost sm" data-go="${backGo}" data-arg='${esc(JSON.stringify(backArg))}' type="button">← Stop</button><span class="small muted num">${DRILL.i+1} / ${DRILL.items.length} · ${DRILL.score} ✓</span></div>
    <div class="progress"><i style="width:${DRILL.i/DRILL.items.length*100}%"></i></div>
    <div class="card raised drill">${body}<div id="dr-fb"></div>${it.type!=='mc'?`<div class="row"><button class="btn primary" id="dr-ok" type="button">Check</button></div>`:''}</div></div>`;
   const fb=$('#dr-fb');
@@ -2520,7 +2790,7 @@ function paintDrill(v){
     const inp=$('#dr-in');inp.focus();
     const check=()=>{if(DRILL.answered){next();return;}const val=inp.value;if(!val.trim())return;
       let user=val.replace(/^\s*(que\s+|qu')?(je\s+|j'|tu\s+|il\s+|elle\s+|on\s+|nous\s+|vous\s+|ils\s+|elles\s+)/i,'');
-      const answers=it.answers;const res=compareAns(user,answers);const shown=it.type==='conj'?`${it.label}${it.label.endsWith("'")?'':' '}${answers.join(' / ')}`:answers[0];
+      const answers=it.answers;let res=compareAns(val,answers);if(res==='bad')res=compareAns(user,answers);const shown=it.type==='conj'?`${it.label}${it.label.endsWith("'")?'':' '}${answers.join(' / ')}`:answers[0];
       const ok=res==='good'||res==='accent';
       fb.innerHTML=`<div class="feedback ${ok?(res==='accent'?'close':'good'):'bad'}">${ok?(res==='accent'?'Correct, but watch the accents: ':'Correct ! '):'Answer: '}<span class="ans">${esc(shown)}</span> ${spk(it.type==='conj'?shown.split(' / ')[0]:shown)}${it.why?`<div class="small" style="margin-top:4px">${esc(it.why)}</div>`:''}</div>`;
       inp.disabled=true;finish(ok,shown,it.why||'',it.type==='conj'?`${it.verb}, ${TENSES[it.tense]}, ${it.person}`:it.q,ok?null:val);
@@ -2643,7 +2913,7 @@ function openSettings(focus){
 }
 
 /* ================= BOOT ================= */
-const VIEWS={exos:viewExos,notebook:viewNotebook,today:viewToday,journee:viewJournee,textes:viewTextes,parler:viewParler,mots:viewMots,grammaire:viewGrammaire,carnet:viewCarnet,progres:viewProgres};
+const VIEWS={verbes:viewVerbes,exos:viewExos,notebook:viewNotebook,today:viewToday,journee:viewJournee,textes:viewTextes,parler:viewParler,mots:viewMots,grammaire:viewGrammaire,carnet:viewCarnet,progres:viewProgres};
 (function boot(){
   const h=(location.hash||'').replace('#','');
   if(ROUTES.some(r=>r.id===h)) route=h;
@@ -2653,52 +2923,6 @@ const VIEWS={exos:viewExos,notebook:viewNotebook,today:viewToday,journee:viewJou
   Sync.init();
 })();
 
-/* ================= MES MOTS (notebook view) ================= */
-function viewNotebook(v){
-  if(params.session) return paintSession(v);
-  const all=notebookWords();
-  const f=params.f||'all',q=normAns(params.q||'');
-  const state=w=>{const c=ST.srs[w.id];if(!c)return 'new';if(c.reps>=2&&c.iv>=7)return 'known';return 'learning';};
-  let list=all.filter(w=>f==='all'||(f==='missing'?!w.en:f==='expr'?/\s/.test(w.fr.trim()):state(w)===f));
-  if(q) list=list.filter(w=>normAns(w.fr).includes(q)||normAns(w.en||'').includes(q));
-  const n=Date.now();const dueN=all.filter(w=>!ST.srs[w.id]||ST.srs[w.id].due<=n).length;
-  const pill={new:'<span class="pill">New</span>',learning:'<span class="pill warn">Learning</span>',known:'<span class="pill ok">Known</span>'};
-  v.innerHTML=`<div class="stack-lg">
-  <div class="stack" style="gap:6px"><div class="eyebrow">Your vocabulary notebook</div><h1>Mes mots</h1>
-   <p class="muted">Save any word or phrase: tap a word in a text and choose <b>+ Notebook</b>, or select a few words and tap <b>+ Notebook</b>. Paste the meaning from Apple Translate, or let the app fill it in.</p></div>
-  <div class="row">
-   <button class="btn primary" id="nb-prac" type="button" ${all.length?'':'disabled'}>Practise ${dueN?`(${dueN} due)`:'all'}</button>
-   <button class="btn" id="nb-add" type="button">+ Add word or expression</button>
-   <button class="btn" id="nb-copy" type="button" ${all.length?'':'disabled'}>Copy list</button>
-  </div>
-  <div class="row between" style="gap:10px">
-   <div class="seg" id="nb-f">${[['all','All'],['expr','Expressions'],['missing','Needs translation'],['new','New'],['learning','Learning'],['known','Known']].map(([k,l])=>`<button type="button" data-f="${k}" aria-pressed="${k===f}">${l}${k==='missing'?` (${all.filter(w=>!w.en).length})`:''}</button>`).join('')}</div>
-   <input type="search" id="nb-q" placeholder="Search…" value="${esc(params.q||'')}" style="max-width:220px" data-noaccent="1">
-  </div>
-  ${list.length?`<div class="list">${list.map(w=>`<div class="li nbrow" style="align-items:flex-start">${spk(w.fr)}
-    <div class="grow stack" style="gap:2px"><div class="fr translatable">${esc(w.fr)}</div>
-     <div class="small en ${w.en?'':'missing'}">${w.en?esc(w.en):'No translation yet'}</div>
-     ${w.ex?`<div class="small muted translatable" style="font-family:var(--f-read);font-style:italic">${esc(w.ex)}</div>`:''}
-     ${w.note?`<div class="tiny muted">${esc(w.note)}</div>`:''}
-     <div class="tiny muted">${w.src?esc(w.src)+' · ':''}${w.added?esc(frDate(w.added,{day:'numeric',month:'short'})):''}</div></div>
-    <span class="stack" style="gap:6px;align-items:flex-end">${pill[state(w)]}<span class="row" style="gap:4px">${w.custom?`<button class="btn sm" type="button" data-edit="${w.id}">${w.en?'Edit':'Add meaning'}</button>`:''}<button class="iconbtn" type="button" data-rm="${w.id}" aria-label="Remove">✕</button></span></span></div>`).join('')}</div>`
-  :`<div class="empty">${all.length?'No words match.':'Your notebook is empty. Open a text, tap a word and choose + Notebook.'}</div>`}
-  </div>`;
-  $$('#nb-f button').forEach(b=>b.onclick=()=>go('notebook',{f:b.dataset.f,q:params.q}));
-  let tmr;$('#nb-q').oninput=e=>{clearTimeout(tmr);const val=e.target.value;tmr=setTimeout(()=>{params.q=val;viewNotebook(v);const i=$('#nb-q');i.focus();i.setSelectionRange(val.length,val.length);},250);};
-  $('#nb-add').onclick=()=>openAddWord({src:'Mes mots'});
-  $$('[data-edit]',v).forEach(b=>b.onclick=()=>openAddWord({id:b.dataset.edit}));
-  $$('[data-rm]',v).forEach(b=>b.onclick=()=>{
-    if(!b.dataset.sure){b.dataset.sure=1;b.textContent='?';b.title='Tap again to remove';return;}
-    const id=b.dataset.rm;ST.customVocab=ST.customVocab.filter(w=>w.id!==id);ST.nbRefs=(ST.nbRefs||[]).filter(x=>x!==id);if(id.startsWith('c'))delete ST.srs[id];save();paintChrome();viewNotebook(v);});
-  $('#nb-copy').onclick=()=>copyText(all.map(w=>`${w.fr} — ${w.en||'?'}${w.ex?`  (${w.ex})`:''}`).join('\n'));
-  $('#nb-prac').onclick=()=>{
-    const now=Date.now();
-    let qids=[...all.filter(w=>ST.srs[w.id]&&ST.srs[w.id].due<=now),...all.filter(w=>!ST.srs[w.id])].map(w=>w.id);
-    if(!qids.length) qids=shuffle(all).slice(0,30).map(w=>w.id);
-    SESS.q=qids.slice(0,60);SESS.i=0;SESS.flipped=false;SESS.done=0;SESS.back='notebook';go('notebook',{session:1});
-  };
-}
 
 </script>
 </body>
