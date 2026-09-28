@@ -180,7 +180,11 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:0}
 /* ---------- popover / modal / toast ---------- */
 #pop{position:fixed;z-index:60;width:min(320px,calc(100vw - 24px));background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:14px}
 #pop .pw{font-family:var(--f-read);font-size:1.25rem}
-#selbtn{position:fixed;z-index:55;background:var(--ink);color:var(--paper);border:0;border-radius:8px;padding:7px 12px;font-weight:600;font-size:.84rem;box-shadow:var(--shadow)}
+#selbar{position:fixed;z-index:55;display:flex;gap:1px;background:var(--ink);border-radius:9px;overflow:hidden;box-shadow:var(--shadow)}
+#selbar button{background:var(--ink);color:var(--paper);border:0;padding:8px 13px;font-weight:600;font-size:.84rem}
+#selbar button:hover{background:color-mix(in srgb,var(--ink) 85%,var(--paper))}
+#selbar button + button{border-left:1px solid color-mix(in srgb,var(--paper) 25%,transparent)}
+.nbrow .en.missing{color:var(--warn);font-style:italic}
 #modal{position:fixed;inset:0;z-index:70;background:rgba(10,12,30,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px}
 @media (min-width:640px){#modal{align-items:center}}
 .sheet{background:var(--surface);border-radius:14px;width:min(640px,100%);max-height:calc(100% - 20px);overflow:auto;padding:22px;box-shadow:var(--shadow)}
@@ -290,6 +294,12 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:0}
 .err .pair{font-family:var(--f-read)}
 .err .pair s{color:var(--red)}
 .err .pair b{color:var(--ok);font-weight:500}
+input.blank-in{display:inline-block;width:10ch;max-width:60%;min-width:0;margin:0 3px;padding:0 4px;border:0;border-bottom:2px solid var(--blue);border-radius:0;background:color-mix(in srgb,var(--blue-soft) 45%,transparent);font-family:var(--f-read);font-size:1em;line-height:1.4;color:var(--blue);vertical-align:baseline;box-shadow:none}
+input.blank-in:focus{box-shadow:none;background:var(--blue-soft);border-color:var(--blue)}
+input.blank-in.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+input.blank-in.bad{border-color:var(--red);color:var(--red);background:var(--red-soft);text-decoration:line-through}
+input.blank-in.close{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+input.blank-in::placeholder{color:var(--ink-3);font-style:italic}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -320,7 +330,7 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:0}
   <nav class="tabbar" id="tabbar" aria-label="Sections"></nav>
 </div>
 <div id="pop" hidden></div>
-<button id="selbtn" type="button" hidden>Traduire la sélection</button>
+<div id="selbar" hidden><button id="sel-tr" type="button">Traduire</button><button id="sel-add" type="button">+ Notebook</button></div>
 <div id="modal" hidden></div>
 <div id="toast" aria-live="polite"></div>
 <div id="accentbar" hidden></div>
@@ -949,6 +959,8 @@ const ICON={
  mots:'<svg viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>',
  grammaire:'<svg viewBox="0 0 24 24"><path d="M6 20V4M18 20V4M6 8h12M6 13h12M6 18h12"/></svg>',
  carnet:'<svg viewBox="0 0 24 24"><path d="M5 3h13a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H5z"/><path d="M9 3v18M12.5 9l3 3M15.5 9l-3 3"/></svg>',
+ exos:'<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 9h3M8 14h8M13 9h3"/><path d="M8 9.5h3" stroke-width="2.4"/></svg>',
+ notebook:'<svg viewBox="0 0 24 24"><path d="M6 3h11a2 2 0 0 1 2 2v16l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>',
  progres:'<svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
  play:'<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
  tri:'<svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>'
@@ -1071,7 +1083,7 @@ function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 function defaultState(){return {v:1,name:'Sa',level:'A2',mode:'adaptive',levelSince:0,levelLog:[{t:Date.now(),level:'A2',why:'start'}],
   rate:0.9,voice:'',strictAccents:false,newPerDay:10,wordDir:'fr',wordTheme:'all',
   srs:{},customVocab:[],results:[],activity:{},journal:[],mistakes:[],textsRead:{},dict:{},unitScores:{},updatedAt:0};}
-function migrate(s){const d=defaultState();const o=Object.assign(d,s||{});['srs','activity','textsRead','dict','unitScores'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={};});['customVocab','results','journal','mistakes','levelLog'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[];});return o;}
+function migrate(s){const d=defaultState();const o=Object.assign(d,s||{});['srs','activity','textsRead','dict','unitScores'].forEach(k=>{if(!o[k]||typeof o[k]!=='object')o[k]={};});['customVocab','results','journal','mistakes','levelLog','sheets','nbRefs'].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[];});return o;}
 let ST=migrate(lsGet(LS_KEY));
 let USER_TEXTS=lsGet(LS_TEXTS)||[];
 
@@ -1235,64 +1247,371 @@ const ACCENTS=['é','è','ê','ë','à','â','ç','ù','û','î','ï','ô','œ',
   document.addEventListener('focusin',e=>{if(fine&&e.target.matches('input[type=text],textarea')&&!e.target.dataset.noaccent)bar.hidden=false;});
   document.addEventListener('focusout',()=>setTimeout(()=>{const a=document.activeElement;if(!a||!a.matches('input[type=text],textarea'))bar.hidden=true;},80));
 })();
-/* selection → translate */
+/* ================= DEVICE TRANSLATION & CLIPBOARD ================= */
+/* On-device translation where the browser offers it (Translator API). Free, private, no Claude usage. */
+const DeviceTR={inst:{},
+  has(){return typeof self!=='undefined'&&'Translator' in self;},
+  /* only reports 'available' once the translator has worked here before; never probes on its own */
+  async status(){return this.has()?(ST.devTrOK?'available':'maybe'):'no';},
+  async translate(text,from='fr',to='en'){const k=from+to;
+    const run=async()=>{if(!this.inst[k])this.inst[k]=await self.Translator.create({sourceLanguage:from,targetLanguage:to});return this.inst[k].translate(text);};
+    const r=await Promise.race([run(),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),20000))]);
+    if(!ST.devTrOK){ST.devTrOK=1;save();}return r;}
+};
+async function copyText(text,inputEl){
+  try{await navigator.clipboard.writeText(text);toast('Copied ✓',true);return true;}
+  catch(e){if(inputEl){inputEl.focus();inputEl.select();}toast('Select the text and copy it.');return false;}
+}
+async function pasteInto(input){
+  try{const t=await navigator.clipboard.readText();if(t&&t.trim()){input.value=t.trim();input.dispatchEvent(new Event('input',{bubbles:true}));toast('Pasted ✓',true);return;}}catch(e){}
+  input.focus();toast('Long-press the field and choose Paste.');
+}
+
+/* selection → translate / add */
 (function(){
-  const btn=$('#selbtn');
+  const bar=$('#selbar'),add=$('#sel-add');
   const check=()=>{
-    const sel=window.getSelection();const txt=sel?String(sel).trim():'';
-    if(!txt||txt.length<2||txt.length>1500){btn.hidden=true;return;}
+    const sel=window.getSelection();const txt=sel?String(sel).replace(/\s+/g,' ').trim():'';
+    if(!txt||txt.length<2||txt.length>1500){bar.hidden=true;return;}
     const node=sel.anchorNode&&(sel.anchorNode.nodeType===1?sel.anchorNode:sel.anchorNode.parentElement);
-    if(!node||!node.closest('.reader,.corr,.bubble,.translatable')){btn.hidden=true;return;}
+    if(!node||!node.closest('.reader,.corr,.bubble,.translatable')){bar.hidden=true;return;}
     const r=sel.getRangeAt(0).getBoundingClientRect();
-    btn.hidden=false;
-    btn.style.left=Math.min(Math.max(12,r.left+r.width/2-80),window.innerWidth-180)+'px';
-    btn.style.top=Math.max(12,r.top-44)+'px';
-    btn.dataset.text=txt;
+    add.hidden=txt.length>80;
+    bar.hidden=false;
+    bar.style.left=Math.min(Math.max(12,r.left+r.width/2-110),window.innerWidth-240)+'px';
+    bar.style.top=Math.max(12,r.top-50)+'px';
+    bar.dataset.text=txt;
+    const s=node.closest('.sent');
+    bar.dataset.ctx=s?($('.fr',s)||s).textContent.trim():'';
   };
   document.addEventListener('mouseup',()=>setTimeout(check,10));
   document.addEventListener('touchend',()=>setTimeout(check,250));
-  document.addEventListener('selectionchange',()=>{const s=window.getSelection();if(!s||!String(s).trim())btn.hidden=true;});
-  btn.addEventListener('mousedown',e=>e.preventDefault());
-  btn.addEventListener('click',()=>{btn.hidden=true;openTranslate(btn.dataset.text,true);});
+  document.addEventListener('selectionchange',()=>{const s=window.getSelection();if(!s||!String(s).trim())bar.hidden=true;});
+  bar.addEventListener('mousedown',e=>e.preventDefault());
+  $('#sel-tr').addEventListener('click',()=>{bar.hidden=true;openTranslate(bar.dataset.text,true);});
+  add.addEventListener('click',()=>{bar.hidden=true;const t=bar.dataset.text.replace(/^[«"“(\s]+|[»"”).,;:!?\s]+$/g,'');openAddWord({fr:t,ex:bar.dataset.ctx||'',src:currentSource()});});
 })();
+function currentSource(){if(route==='textes'&&params.id){const t=allTexts().find(x=>x.id===params.id);if(t)return t.title;}if(route==='exos'&&params.id){const s=(ST.sheets||[]).find(x=>x.id===params.id);if(s)return s.title;}return ({journee:'Ma journée',parler:'Conversation'})[route]||'';}
 
 /* ================= TRANSLATE ================= */
 function openTranslate(text='',auto=false){
   openModal(`<div class="stack">
     <div class="row between"><h2>Traduire</h2><button class="btn ghost sm" data-close type="button">Fermer</button></div>
-    <div data-ai-gate>${aiGate()}</div>
+    <div id="tr-gate"></div>
     <div><label class="lbl" for="tr-in">Text (French or English)</label><textarea id="tr-in" rows="4" placeholder="Paste or type anything…">${esc(text)}</textarea></div>
     <div class="row between"><div class="seg" id="tr-dir"><button type="button" data-d="auto" aria-pressed="true">Auto</button><button type="button" data-d="fr-en" aria-pressed="false">FR → EN</button><button type="button" data-d="en-fr" aria-pressed="false">EN → FR</button></div>
-    <button class="btn primary" id="tr-go" type="button" data-needs-ai ${AI.on()?'':'disabled'}>Traduire</button></div>
-    <div id="tr-out"></div></div>`,(sheet)=>{
+    <button class="btn primary" id="tr-go" type="button">Traduire</button></div>
+    <div id="tr-out"></div>
+    <p class="tiny muted">On iPhone and iPad you can also select any text and tap <b>Translate</b> in the menu to use Apple Translate.</p></div>`,async(sheet)=>{
     let dir='auto';
+    const dev=await DeviceTR.status('fr','en');
+    const canDev=dev!=='no'&&dev!=='unavailable';
+    if(!AI.on()&&!canDev) $('#tr-gate',sheet).innerHTML=`<div class="note warn">No translator is available here. Select the text and use your device's Translate option (on iPhone: select → Translate), or open the app inside Claude.</div>`;
+    else if(!AI.on()) $('#tr-gate',sheet).innerHTML=`<div class="note">Translating on this device.</div>`;
     $$('#tr-dir button',sheet).forEach(b=>b.onclick=()=>{dir=b.dataset.d;$$('#tr-dir button',sheet).forEach(x=>x.setAttribute('aria-pressed',x===b));});
+    const show=(from,translation,notes,t)=>{
+      const out=$('#tr-out',sheet);const fr=from==='fr'?t:translation,en=from==='fr'?translation:t;
+      out.innerHTML=`<div class="card flat stack translatable"><div class="row between"><span class="eyebrow">${from==='fr'?'English':'Français'}</span><span class="row" style="gap:6px">${spk(fr,'Écouter le français')}<button class="btn sm" id="tr-copy" type="button">Copy</button></span></div>
+        <p style="font-family:var(--f-read);font-size:1.08rem;white-space:pre-wrap">${esc(translation)}</p>
+        ${(notes||[]).length?`<ul class="small muted" style="margin:0;padding-left:18px">${notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`:''}
+        ${fr.length<=80?`<div><button class="btn sm" id="tr-save" type="button">+ Add to my notebook</button></div>`:''}</div>`;
+      $('#tr-copy',sheet).onclick=()=>copyText(translation);
+      const sv=$('#tr-save',sheet);if(sv)sv.onclick=()=>{modalClose&&modalClose();openAddWord({fr,en,src:'Traduire'});};
+    };
     const run=async()=>{
       const t=$('#tr-in',sheet).value.trim();if(!t)return;
       const out=$('#tr-out',sheet);out.innerHTML=thinking('Translating…');
+      if(!AI.on()){
+        if(!canDev){out.innerHTML='';return;}
+        try{const from=dir==='en-fr'?'en':'fr',to=from==='fr'?'en':'fr';show(from,await DeviceTR.translate(t,from,to),[],t);}
+        catch(e){out.innerHTML=`<div class="note warn">The on-device translator couldn't start. Select the text and use your device's Translate option instead.</div>`;}
+        return;
+      }
       try{
         const r=await AI.json(`Translate for a learner of French (level ${ST.level}). Direction: ${dir==='auto'?'detect the language; French → English, anything else → French':dir==='fr-en'?'French → English':'English → French'}.
 Text:
 """${t.slice(0,6000)}"""
 Reply with only JSON: {"from":"fr"|"en","translation":"...","notes":["up to 3 short notes in English about idioms, false friends or grammar worth knowing"]}`,{modelTier:'quick'});
-        const fr=r.from==='fr'?t:r.translation;
-        out.innerHTML=`<div class="card flat stack translatable"><div class="row between"><span class="eyebrow">${r.from==='fr'?'English':'Français'}</span>${spk(fr,'Écouter le français')}</div>
-          <p style="font-family:var(--f-read);font-size:1.08rem;white-space:pre-wrap">${esc(r.translation)}</p>
-          ${(r.notes||[]).length?`<ul class="small muted" style="margin:0;padding-left:18px">${r.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>`:''}
-          ${fr.length<80?`<div><button class="btn sm" id="tr-save" type="button">+ Add to my words</button></div>`:''}</div>`;
-        const sv=$('#tr-save',sheet);
-        if(sv)sv.onclick=()=>{addCustomWord(r.from==='fr'?t:r.translation,r.from==='fr'?r.translation:t,'');sv.disabled=true;sv.textContent='Added ✓';};
+        show(r.from==='fr'?'fr':'en',r.translation,r.notes,t);
       }catch(e){out.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;}
     };
     $('#tr-go',sheet).onclick=run;
-    if(auto&&text&&AI.on())run();
+    if(auto&&text&&(AI.on()||dev==='available'))run();
   });
 }
-function addCustomWord(fr,en,ex,theme='Mes mots'){
-  fr=String(fr).trim();if(!fr)return;
-  if([...VOCAB,...ST.customVocab].some(w=>normAns(w.fr)===normAns(fr))){toast('Already in your words.');return;}
-  ST.customVocab.push({id:'c'+uid(),fr,en:String(en||'').trim(),ex:ex||'',level:ST.level,theme,custom:1,added:Date.now()});
-  save();toast('Added to your words ✓',true);
+
+/* ================= VOCABULARY NOTEBOOK ================= */
+function findWord(fr){const n=normAns(fr);return ST.customVocab.find(w=>normAns(w.fr)===n)||VOCAB.find(w=>normAns(w.fr)===n);}
+function notebookWords(){const refs=new Set(ST.nbRefs||[]);return [...ST.customVocab,...VOCAB.filter(w=>refs.has(w.id))].sort((a,b)=>(b.added||0)-(a.added||0));}
+function addCustomWord(fr,en,ex,theme='Mes mots',extra={}){
+  fr=String(fr).trim();if(!fr)return null;
+  const ex0=findWord(fr);
+  if(ex0){
+    if(ex0.custom){if(en&&!ex0.en)ex0.en=String(en).trim();if(ex&&!ex0.ex)ex0.ex=ex;Object.assign(ex0,extra);save();toast('Already in your notebook ✓');return ex0;}
+    ST.nbRefs=ST.nbRefs||[];if(!ST.nbRefs.includes(ex0.id)){ST.nbRefs.push(ex0.id);ex0.added=Date.now();}
+    save();toast('Added to your notebook ✓',true);return ex0;
+  }
+  const w={id:'c'+uid(),fr,en:String(en||'').trim(),ex:ex||'',level:ST.level,theme,custom:1,added:Date.now(),...extra};
+  ST.customVocab.push(w);save();toast('Added to your notebook ✓',true);paintChrome();return w;
+}
+async function openAddWord(o={}){
+  const edit=o.id?ST.customVocab.find(w=>w.id===o.id):null;
+  const known=o.en||(edit&&edit.en)||(o.fr&&(localLookup(o.fr)||{}).en)||'';
+  openModal(`<div class="stack">
+   <div class="row between"><h2>${edit?'Edit word':'Add to my notebook'}</h2><button class="btn ghost sm" data-close type="button">Cancel</button></div>
+   <div><label class="lbl" for="aw-fr">French word or phrase</label><div class="row" style="flex-wrap:nowrap;gap:6px"><input type="text" id="aw-fr" value="${esc(edit?edit.fr:o.fr||'')}" autocomplete="off"><button class="iconbtn" id="aw-say" type="button" aria-label="Listen">${ICON.play}</button><button class="btn sm" id="aw-copy" type="button">Copy</button></div></div>
+   <div><label class="lbl" for="aw-en">Translation</label><div class="row" style="flex-wrap:nowrap;gap:6px"><input type="text" id="aw-en" value="${esc(known)}" placeholder="Type or paste the meaning" autocomplete="off" data-noaccent="1"><button class="btn sm" id="aw-paste" type="button">Paste</button></div>
+     <div class="row" id="aw-auto" style="margin-top:8px;gap:6px"></div>
+     <p class="tiny muted" style="margin-top:6px">Apple Translate: select the word in the text, tap <b>Translate</b>, then <b>Copy Translation</b>, and tap <b>Paste</b> here. Or tap <b>Copy</b> above and paste the word into the Translate app.</p></div>
+   <div><label class="lbl" for="aw-ex">Example sentence</label><textarea id="aw-ex" rows="2" style="min-height:64px">${esc(edit?edit.ex:o.ex||'')}</textarea></div>
+   <div><label class="lbl" for="aw-note">Note (optional)</label><input type="text" id="aw-note" value="${esc(edit?edit.note||'':'')}" placeholder="e.g. feminine · irregular verb · heard at work" autocomplete="off" data-noaccent="1"></div>
+   <div class="row"><button class="btn primary" id="aw-save" type="button">${edit?'Save changes':'Save to notebook'}</button><span class="small muted" id="aw-msg"></span></div></div>`,async(sheet,close)=>{
+    const fr=$('#aw-fr',sheet),en=$('#aw-en',sheet);
+    $('#aw-say',sheet).onclick=e=>TTS.speak(fr.value,{btn:e.currentTarget});
+    $('#aw-copy',sheet).onclick=()=>copyText(fr.value,fr);
+    $('#aw-paste',sheet).onclick=()=>pasteInto(en);
+    const auto=$('#aw-auto',sheet);
+    const dev=await DeviceTR.status('fr','en');
+    const devTr=async()=>{const b=$('#aw-dev',sheet);if(b){b.disabled=true;b.innerHTML='<span class="spinner"></span> Translating…';}
+      try{en.value=await DeviceTR.translate(fr.value.trim());if(b)b.textContent='Translated on this device ✓';}catch(e){if(b){b.disabled=false;b.textContent='Translate on this device';}toast("The device translator couldn't start.");}};
+    let html='';
+    if(dev!=='no'&&dev!=='unavailable') html+=`<button class="btn sm" id="aw-dev" type="button">Translate on this device</button>`;
+    if(AI.on()) html+=`<button class="btn sm" id="aw-ai" type="button">Ask Claude (meaning + note)</button>`;
+    auto.innerHTML=html;
+    const devB=$('#aw-dev',sheet);if(devB)devB.onclick=devTr;
+    const aiB=$('#aw-ai',sheet);
+    if(aiB)aiB.onclick=async()=>{aiB.disabled=true;aiB.innerHTML='<span class="spinner"></span> Asking…';
+      try{const r=await AI.json(`French word or phrase "${fr.value.trim()}"${$('#aw-ex',sheet).value.trim()?` in the sentence "${$('#aw-ex',sheet).value.trim()}"`:''}. Reply with only JSON: {"lemma":"dictionary form (with article for nouns)","en":"English meaning in context","note":"short useful note, e.g. gender, verb group, register (max 10 words)"}`,{modelTier:'quick'});
+        if(r.en)en.value=r.en;if(r.note&&!$('#aw-note',sheet).value)$('#aw-note',sheet).value=r.note;
+        if(r.lemma&&normAns(r.lemma)!==normAns(fr.value)){$('#aw-msg',sheet).innerHTML=`Dictionary form: <b>${esc(r.lemma)}</b> <button class="btn sm ghost" id="aw-lem" type="button">Use it</button>`;$('#aw-lem',sheet).onclick=()=>{fr.value=r.lemma;$('#aw-msg',sheet).textContent='';};}
+        aiB.textContent='Done ✓';}catch(e){aiB.disabled=false;aiB.textContent='Ask Claude (meaning + note)';toast(aiMsg(e));}};
+    if(!known&&fr.value.trim()&&dev==='available') devTr();
+    $('#aw-save',sheet).onclick=()=>{
+      const f=fr.value.trim();if(!f){toast('Type the French word first.');return;}
+      const data={en:en.value.trim(),ex:$('#aw-ex',sheet).value.trim(),note:$('#aw-note',sheet).value.trim()};
+      if(edit){Object.assign(edit,{fr:f,...data});save();toast('Saved ✓',true);}
+      else{const w=addCustomWord(f,data.en,data.ex,o.src||'Mes mots',{note:data.note,src:o.src||''});if(w&&w.custom){Object.assign(w,{en:w.en||data.en,note:data.note||w.note||''});save();}}
+      close();if(route==='notebook'||route==='mots')render();
+    };
+    if(!fr.value)fr.focus();else if(!en.value)en.focus();
+  });
+}
+
+/* ================= EXERCICES DU PROF (fill-in-the-blank worksheets) ================= */
+const BLANK_RE=/_{3,}|…{2,}|\.{5,}/g;
+const SUBJ_PRON={'je':'je',"j'":'je','tu':'tu','il':'il','elle':'elle','on':'il','nous':'nous','vous':'vous','ils':'ils','elles':'elles'};
+function sheetTense(s){
+  s=stripAcc(String(s).toLowerCase());
+  if(/plus-que-parfait/.test(s))return 'pqp';
+  if(/passe compose/.test(s))return 'pc';
+  if(/imparfait/.test(s))return 'imparfait';
+  if(/futur proche/.test(s))return null;
+  if(/futur/.test(s))return 'futur';
+  if(/conditionnel/.test(s))return 'cond';
+  if(/subjonctif/.test(s))return 'subj';
+  if(/present/.test(s))return 'present';
+  return null;
+}
+function checkableVerb(v){
+  if(!v||/\s/.test(v)) return false;
+  if(ALL_VERBS.includes(v)) return true;
+  if(/er$/.test(v)&&!/[eé][^aeiouyé]+er$/.test(v)&&!/yer$/.test(v)) return true;
+  return false;
+}
+function personFromContext(before){
+  const clause=before.toLowerCase().replace(/[’]/g,"'").split(/[,;:]/).pop();
+  const toks=clause.replace(/(j'|l'|n'|m'|t'|s')/g,' $1 ').split(/\s+/).filter(Boolean);
+  for(const t of toks){if(SUBJ_PRON[t])return {p:SUBJ_PRON[t],sure:true};}
+  if(!toks.length) return null;
+  if(/\b(les|des|mes|tes|ses|nos|vos|leurs|ces|plusieurs|beaucoup)\b/.test(clause)||/\bet\b/.test(clause)) return {p:'ils',noun:true};
+  return {p:'il',noun:true};
+}
+function localAnswers(verb,tense,before){
+  if(!tense||!checkableVerb(verb)) return null;
+  const ps=personFromContext(before);if(!ps) return null;
+  try{
+    let a=conjugate(verb,tense,ps.p);
+    if(ps.noun&&(ps.p==='il'||ps.p==='ils')) a=[...new Set([...a,...conjugate(verb,tense,ps.p==='il'?'elle':'elles')])];
+    return a;
+  }catch(e){return null;}
+}
+function parseSheet(raw,titleHint){
+  let lines=String(raw).replace(/\r/g,'').split('\n').map(l=>l.replace(/\s+$/,'')).filter(l=>l.trim());
+  const numRe=/^\s*\d+\s*[.)\-–]?\s*/;
+  const isHead=t=>/^(exercice|ex\.?\s*\d|partie|activité)/i.test(t);
+  const numbered=lines.filter(l=>numRe.test(l)&&/^\s*\d/.test(l)).length>=3;
+  if(numbered){const out=[];for(const l of lines){const t=l.trim();if(out.length&&!/^\d/.test(t)&&!isHead(t)&&!isHead(out[out.length-1]))out[out.length-1]+=' '+t;else out.push(t);}lines=out;}
+  const sections=[];let cur=null;
+  const newSec=title=>{cur={title:title||'',instr:[],tense:null,items:[]};sections.push(cur);};
+  for(let l of lines){
+    const t=l.trim();
+    if(isHead(t)){newSec(t);continue;}
+    if(!cur)newSec('');
+    const body=t.replace(/^\s*\d+\s*[.)\-–]?\s*/,'');
+    BLANK_RE.lastIndex=0;
+    if(!BLANK_RE.test(body)){cur.instr.push(body.replace(/^consigne\s*:\s*/i,''));continue;}
+    cur.items.push({text:body});
+  }
+  for(const s of sections){
+    s.tense=sheetTense(s.title+' '+s.instr.join(' '));
+    for(const it of s.items){
+      const parts=it.text.split(BLANK_RE);
+      it.blanks=[];
+      for(let b=0;b<parts.length-1;b++){
+        const after=parts[b+1],m=after.match(/^\s*\(([^)]+)\)/);
+        const hint=m?m[1].trim():'';
+        const before=parts.slice(0,b+1).join(' … ');
+        it.blanks.push({hint,local:localAnswers(normAns(hint),s.tense,parts[b])||null});
+      }
+      it.ans=it.blanks.map(()=>'');it.res=it.blanks.map(()=>null);
+    }
+  }
+  const secs=sections.filter(s=>s.items.length||s.instr.length);
+  const title=titleHint||(secs[0]&&secs[0].title)||('Exercice du '+frDate(Date.now(),{day:'numeric',month:'long'}));
+  return {title,sections:secs};
+}
+function sheetCount(sh){return sh.sections.reduce((n,s)=>n+s.items.length,0);}
+function openAddSheet(){
+  const imgOk=AI.on()&&AI.images;
+  openModal(`<div class="stack">
+   <div class="row between"><h2>Add a teacher's exercise</h2><button class="btn ghost sm" data-close type="button">Cancel</button></div>
+   <p class="small muted">Paste the exercise as it is. Blanks written as <b>_____</b> or <b>……</b> become fields you can fill in. A hint in brackets, like <b>(travailler)</b>, stays next to the blank.</p>
+   <div><label class="lbl" for="sh-title">Title (optional)</label><input type="text" id="sh-title" placeholder="e.g. Présent — devoirs du 25 septembre"></div>
+   <div><label class="lbl" for="sh-text">Exercise text</label><textarea id="sh-text" rows="10" placeholder="Exercice 1 – Conjuguez les verbes au présent&#10;1. Je __________ (travailler) dans une entreprise internationale."></textarea></div>
+   ${imgOk?`<div><label class="lbl" for="sh-img">…or a photo of the sheet</label><input type="file" id="sh-img" accept="${esc((AI.images.mediaTypes||['image/jpeg','image/png']).join(','))}" ${AI.images.maxCount>1?'multiple':''}></div>`:`<p class="tiny muted">From a photo or PDF on iPhone: long-press the text (Live Text), Select All, Copy, then paste here.</p>`}
+   <div id="sh-prev" class="small muted"></div>
+   <div class="row"><button class="btn primary" id="sh-go" type="button">Create exercise</button></div></div>`,(sheet,close)=>{
+    const ta=$('#sh-text',sheet);
+    const prev=()=>{const v=ta.value.trim();if(!v){$('#sh-prev',sheet).textContent='';return;}const p=parseSheet(v);const n=sheetCount(p);
+      $('#sh-prev',sheet).innerHTML=n?`Found <b>${n}</b> sentences with blanks${p.sections.length>1?` in ${p.sections.length} exercises`:''}.${p.sections.some(s=>s.tense)?` Automatic checking is on for the verbs (${p.sections.filter(s=>s.tense).map(s=>TENSES[s.tense]).join(', ')}).`:''}`:'No blanks found yet. Blanks need at least three underscores: ___';};
+    ta.oninput=prev;
+    $('#sh-go',sheet).onclick=async()=>{
+      const f=$('#sh-img',sheet);const files=f&&f.files&&f.files.length?[...f.files]:null;
+      let text=ta.value.trim();
+      if(!text&&files){
+        const b=$('#sh-go',sheet);b.disabled=true;$('#sh-prev',sheet).innerHTML=thinking('Reading the photo…');
+        try{const r=await AI.json(`Transcribe this French exercise sheet exactly. Keep numbering and instructions. Write every blank as __________ and keep hints in brackets right after the blank, e.g. "Je __________ (travailler) …". Reply with only JSON: {"text":"the full exercise text with line breaks"}`,{images:files});text=String(r.text||'').trim();ta.value=text;prev();}
+        catch(e){$('#sh-prev',sheet).innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;b.disabled=false;return;}
+        b.disabled=false;
+      }
+      if(!text){toast('Paste the exercise first.');return;}
+      const p=parseSheet(text,$('#sh-title',sheet).value.trim());
+      if(!sheetCount(p)){toast('No blanks found. Mark each blank with ___');return;}
+      const sh={id:uid(),created:Date.now(),raw:text,...p};
+      ST.sheets=ST.sheets||[];ST.sheets.unshift(sh);if(ST.sheets.length>40)ST.sheets.length=40;save();
+      close();go('exos',{id:sh.id});
+    };
+  });
+}
+function sentenceWith(it,useCorrect){
+  const parts=it.text.split(BLANK_RE);let out=parts[0];
+  for(let b=0;b<it.blanks.length;b++){
+    const a=(useCorrect&&(it.res[b]==='bad'||!it.ans[b])&&it.blanks[b].right)?it.blanks[b].right:(it.ans[b]||(useCorrect&&it.blanks[b].local?it.blanks[b].local[0]:'…'));
+    out+=a+parts[b+1].replace(/^\s*\([^)]*\)/,'');
+  }
+  return out.replace(/\s+/g,' ').trim();
+}
+function viewExos(v){
+  ST.sheets=ST.sheets||[];
+  if(params.id) return viewSheet(v);
+  v.innerHTML=`<div class="stack-lg">
+   <div class="row between" style="align-items:flex-end"><div class="stack" style="gap:6px"><div class="eyebrow">Homework, in the app</div><h1>Exercices</h1>
+    <p class="muted">Paste your teacher's fill-in-the-blank exercises, fill them in here, listen to every sentence, tap words to translate them and save expressions to your notebook.</p></div>
+    <button class="btn primary" id="ex-add" type="button">+ Add an exercise</button></div>
+   ${ST.sheets.length?`<div class="grid3">${ST.sheets.map(sh=>{const n=sheetCount(sh),done=sh.sections.reduce((a,s)=>a+s.items.filter(it=>it.ans.every(x=>x)).length,0),ok=sh.sections.reduce((a,s)=>a+s.items.filter(it=>it.res.length&&it.res.every(r=>r==='ok')).length,0);
+     return `<button type="button" class="textcard" data-go="exos" data-arg='${esc(JSON.stringify({id:sh.id}))}'><div class="row" style="gap:6px"><span class="pill red">From my teacher</span>${ok===n?'<span class="pill ok">All correct ✓</span>':''}</div><h3>${esc(sh.title)}</h3><div class="small muted">${n} sentences · ${done} filled · ${ok} correct</div><div class="ex">${esc((sh.sections[0]&&sh.sections[0].items[0]||{}).text||'')}</div></button>`;}).join('')}</div>`
+   :`<div class="empty">No exercises yet. Tap “+ Add an exercise” and paste the sheet from your teacher.</div>`}
+  </div>`;
+  $('#ex-add').onclick=openAddSheet;
+}
+function viewSheet(v){
+  const sh=(ST.sheets||[]).find(x=>x.id===params.id);if(!sh){go('exos');return;}
+  let k=0;
+  v.innerHTML=`<div class="stack-lg">
+   <div class="stack" style="gap:8px"><button class="btn ghost sm" style="align-self:flex-start" data-go="exos" type="button">← All exercises</button>
+    <h1>${esc(sh.title)}</h1><p class="small muted">Tap a word to translate it · select words, then <b>+ Notebook</b> to save an expression · ▸ reads the sentence with your answer.</p></div>
+   <div class="row">
+    <button class="btn primary" id="sh-check" type="button">Check</button>
+    <button class="btn" id="sh-ai" type="button" ${AI.on()?'':'hidden'}>Check &amp; explain with Claude</button>
+    <button class="btn ghost" id="sh-show" type="button">Show answers</button>
+    <button class="btn ghost" id="sh-read" type="button">▶ Read all</button>
+    <button class="btn ghost" id="sh-reset" type="button">Reset</button></div>
+   <div id="sh-score"></div>
+   ${sh.sections.map((s,si)=>`<div class="stack">
+     ${s.title&&s.title!==sh.title?`<h2>${esc(s.title)}</h2>`:''}
+     ${s.instr.map(x=>`<div class="panel row between translatable" style="gap:10px"><span>${tokenHtml(x)}</span>${spk(x)}</div>`).join('')}
+     ${s.tense?`<div class="tiny muted">Automatic check: ${TENSES[s.tense]} · the conjugator finds the subject from the words before the blank.</div>`:''}
+     <div class="seyes reader translatable" style="--lh:44px;line-height:44px">${s.items.map((it,ii)=>{k++;const parts=it.text.split(BLANK_RE);
+       let h=`<span class="sent" data-s="${si}" data-i="${ii}"><button class="play" type="button" data-sp="${si}:${ii}" aria-label="Read sentence">${ICON.tri}</button><span class="tiny muted num" style="margin-right:6px">${k}.</span>${tokenHtml(parts[0])}`;
+       for(let b=0;b<it.blanks.length;b++){const w=11;
+         h+=`<input type="text" class="blank-in ${it.res[b]||''}" data-k="${si}:${ii}:${b}" value="${esc(it.ans[b]||'')}" style="width:${w}ch" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Blank ${k}">`+tokenHtml(parts[b+1]);}
+       h+=`<span class="fbk" data-f="${si}:${ii}"></span></span>`;return h;}).join('')}</div></div>`).join('')}
+   <div class="row between"><button class="btn ghost danger sm" id="sh-del" type="button">Delete exercise</button><button class="btn sm" id="sh-raw" type="button">Show original text</button></div>
+  </div>`;
+  const itm=key=>{const [si,ii]=key.split(':').map(Number);return sh.sections[si].items[ii];};
+  let tmr;
+  $$('.blank-in',v).forEach(inp=>{
+    inp.oninput=()=>{const [si,ii,b]=inp.dataset.k.split(':').map(Number);const it=sh.sections[si].items[ii];it.ans[b]=inp.value;it.res[b]=null;inp.classList.remove('ok','bad','close');clearTimeout(tmr);tmr=setTimeout(save,800);};
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const all=$$('.blank-in',v);const i=all.indexOf(inp);if(all[i+1])all[i+1].focus();else inp.blur();}});
+  });
+  $$('[data-sp]',v).forEach(b=>b.onclick=e=>{e.stopPropagation();const it=itm(b.dataset.sp);TTS.speak(sentenceWith(it,false),{btn:null});});
+  $$('.reader',v).forEach(r=>r.addEventListener('click',e=>{const w=e.target.closest('.w');if(!w)return;const sel=window.getSelection();if(sel&&String(sel).trim().length>1)return;
+    const s=w.closest('.sent');const it=sh.sections[+s.dataset.s].items[+s.dataset.i];wordPop(w,w.dataset.w,{fr:sentenceWith(it,false),en:''},null);}));
+  const paintFb=()=>{
+    let tot=0,ok=0,unk=0;
+    sh.sections.forEach((s,si)=>s.items.forEach((it,ii)=>{
+      it.blanks.forEach((bl,b)=>{const inp=$(`.blank-in[data-k="${si}:${ii}:${b}"]`,v);inp.classList.remove('ok','bad','close');if(it.res[b])inp.classList.add(it.res[b]);if(it.res[b]){tot++;if(it.res[b]==='ok')ok++;}});
+      const fb=$(`[data-f="${si}:${ii}"]`,v);
+      const notes=it.blanks.map((bl,b)=>it.res[b]==='bad'&&bl.right?`<span class="hand">${esc(bl.right)}</span>`:it.res[b]==='close'?`<span class="tiny" style="color:var(--warn)">accents</span>`:'').filter(Boolean);
+      fb.innerHTML=(notes.length?' '+notes.join(' '):'')+(it.why?`<span class="tr" style="line-height:1.5;padding-bottom:6px">${esc(it.why)}</span>`:'');
+    }));
+    $('#sh-score',v).innerHTML=tot?`<div class="note"><b class="num">${ok}/${tot}</b> correct${unk?'':''}.</div>`:'';
+  };
+  paintFb();
+  $('#sh-check').onclick=()=>{
+    let checked=0,skipped=0;
+    sh.sections.forEach(s=>s.items.forEach(it=>it.blanks.forEach((bl,b)=>{
+      if(!it.ans[b]){return;}
+      if(!bl.local){skipped++;return;}
+      const user=it.ans[b].replace(/^\s*(que\s+|qu')?(je\s+|j'|tu\s+|il\s+|elle\s+|on\s+|nous\s+|vous\s+|ils\s+|elles\s+)/i,'');
+      const r=compareAns(user,bl.local);const good=r==='good'||r==='accent';
+      it.res[b]=r==='good'?'ok':r==='accent'?'close':'bad';if(r==='accent'&&!ST.strictAccents)it.res[b]='ok';
+      bl.right=bl.local[0];checked++;record(good,'exercice');
+      if(!good) addMistake({src:'exercice',wrong:sentenceWith(it,false),right:sentenceWith({...it,ans:it.ans.map((a,j)=>j===b?bl.local[0]:a)},false),why:`${bl.hint?bl.hint+', ':''}${TENSES[s.tense]||''}`});
+    })));
+    act('drills',Math.max(1,checked));save();paintFb();
+    if(skipped) toast(`${skipped} blank${skipped>1?'s':''} can't be checked automatically${AI.on()?'. Use “Check & explain with Claude”.':'.'}`);
+    else if(!checked) toast('Fill in some blanks first.');
+  };
+  $('#sh-show').onclick=()=>{
+    let n=0;
+    sh.sections.forEach((s,si)=>s.items.forEach((it,ii)=>it.blanks.forEach((bl,b)=>{const ans=bl.right||(bl.local&&bl.local[0]);if(ans&&!it.ans[b]){const inp=$(`.blank-in[data-k="${si}:${ii}:${b}"]`,v);inp.placeholder=ans;n++;}})));
+    toast(n?'Answers shown in grey inside the empty blanks.':AI.on()?'No automatic answers here. Use “Check & explain with Claude”.':'No automatic answers for these blanks.');
+  };
+  $('#sh-read').onclick=async()=>{const all=[];sh.sections.forEach(s=>s.items.forEach(it=>all.push(sentenceWith(it,true))));let i=0;const next=()=>{if(i<all.length&&route==='exos')TTS.speak(all[i++],{onend:next});};next();};
+  $('#sh-reset').onclick=()=>{const b=$('#sh-reset');if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Tap again to clear';return;}sh.sections.forEach(s=>s.items.forEach(it=>{it.ans=it.ans.map(()=>'');it.res=it.res.map(()=>null);it.why='';it.blanks.forEach(bl=>delete bl.right);}));save();viewSheet(v);paintAI();};
+  $('#sh-del').onclick=()=>{const b=$('#sh-del');if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Tap again to delete';return;}ST.sheets=ST.sheets.filter(x=>x.id!==sh.id);save();go('exos');};
+  $('#sh-raw').onclick=()=>openModal(`<div class="stack"><div class="row between"><h2>Original text</h2><button class="btn ghost sm" data-close type="button">Close</button></div><pre class="translatable" style="white-space:pre-wrap;font-family:var(--f-read);margin:0">${esc(sh.raw||'')}</pre></div>`);
+  const aiB=$('#sh-ai');
+  if(aiB) aiB.onclick=async()=>{
+    const flat=[];sh.sections.forEach((s,si)=>s.items.forEach((it,ii)=>flat.push({si,ii,it,s})));
+    const lines=flat.map((f,n)=>{let c=0;const txt=f.it.text.replace(BLANK_RE,()=>`[${++c}]`);return `${n+1}. ${txt}  || student: ${f.it.blanks.map((_,b)=>`[${b+1}]=${f.it.ans[b]?JSON.stringify(f.it.ans[b]):'(empty)'}`).join(' ')}`;}).join('\n');
+    const instr=sh.sections.map(s=>[s.title,...s.instr].filter(Boolean).join(' — ')).join(' | ');
+    aiB.disabled=true;aiB.innerHTML='<span class="spinner"></span> Checking…';
+    try{
+      const r=await AI.json(`You are a French teacher correcting a fill-in-the-blank exercise for a ${ST.level} learner.
+Instructions: ${instr}
+Each line shows the sentence with numbered blanks [1], [2]… and the student's answers.
+${lines.slice(0,12000)}
+For every sentence and every blank give the correct answer and whether the student's answer is correct (accept any correct variant; empty = false). Add a short English explanation only when the student was wrong or left it empty.
+Reply with only JSON: {"items":[{"n":1,"answers":["..."],"correct":[true],"why":"..."}]}`);
+      (r.items||[]).forEach(x=>{const f=flat[(+x.n||0)-1];if(!f)return;
+        (x.answers||[]).forEach((a,b)=>{if(b>=f.it.blanks.length)return;f.it.blanks[b].right=String(a);
+          if(f.it.ans[b]){const ok=!!(x.correct||[])[b];f.it.res[b]=ok?'ok':'bad';record(ok,'exercice');if(!ok)addMistake({src:'exercice',wrong:sentenceWith(f.it,false),right:sentenceWith({...f.it,ans:f.it.ans.map((q,j)=>j===b?String(a):q)},false),why:String(x.why||'')});}});
+        f.it.why=(x.correct||[]).every(Boolean)&&f.it.ans.every(Boolean)?'':String(x.why||'');});
+      act('drills');save();paintFb();aiB.textContent='Checked ✓';setTimeout(()=>{aiB.disabled=false;aiB.textContent='Check & explain with Claude';},2500);
+    }catch(e){toast(aiMsg(e));aiB.disabled=false;aiB.textContent='Check & explain with Claude';}
+  };
 }
 /* ================= DERIVED DATA ================= */
 const allWords=()=>[...ST.customVocab,...VOCAB];
@@ -1312,12 +1631,12 @@ const allTexts=()=>[...USER_TEXTS.map(normText),...BUILTIN_TEXTS.map(normText)];
 const suggestText=()=>{const ts=allTexts().filter(t=>t.level===ST.level);return ts.find(t=>!ST.textsRead[t.id])||ts[0]||allTexts()[0];};
 
 /* ================= ROUTER ================= */
-const ROUTES=[{id:'today',t:"Aujourd'hui",tab:1},{id:'journee',t:'Ma journée',s:'Journée',tab:1},{id:'textes',t:'Textes',tab:1},{id:'parler',t:'Parler',tab:1},{id:'mots',t:'Mots',tab:1},{id:'grammaire',t:'Grammaire',s:'Gramm.',tab:1},{id:'carnet',t:"Carnet d'erreurs"},{id:'progres',t:'Progrès'}];
+const ROUTES=[{id:'today',t:"Aujourd'hui",tab:1},{id:'journee',t:'Ma journée',s:'Journée',tab:1},{id:'textes',t:'Textes',tab:1},{id:'exos',t:'Exercices'},{id:'parler',t:'Parler',tab:1},{id:'mots',t:'Mots',tab:1},{id:'notebook',t:'Mes mots'},{id:'grammaire',t:'Grammaire',s:'Gramm.',tab:1},{id:'carnet',t:"Carnet d'erreurs"},{id:'progres',t:'Progrès'}];
 let route='today',params={};
 function go(r,p={}){TTS.stop();hidePop();clearInterval(TIMER.h);TIMER.run=false;READ.playing=false;route=ROUTES.some(x=>x.id===r)?r:'today';params=p||{};try{if(location.hash!=='#'+route)history.replaceState(null,'','#'+route);}catch(e){}render();window.scrollTo(0,0);}
 function paintChrome(){
   const cur=r=>r.id===route?'aria-current="page"':'';
-  $('#sidenav').innerHTML=ROUTES.map(r=>`<button type="button" data-go="${r.id}" ${cur(r)}>${ICON[r.id]}<span>${esc(r.t)}</span>${r.id==='carnet'&&ST.mistakes.length?`<span class="pill" style="margin-left:auto">${ST.mistakes.length}</span>`:''}</button>`).join('');
+  $('#sidenav').innerHTML=ROUTES.map(r=>`<button type="button" data-go="${r.id}" ${cur(r)}>${ICON[r.id]}<span>${esc(r.t)}</span>${r.id==='notebook'&&ST.customVocab.length?`<span class="pill" style="margin-left:auto">${notebookWords().length}</span>`:''}${r.id==='carnet'&&ST.mistakes.length?`<span class="pill" style="margin-left:auto">${ST.mistakes.length}</span>`:''}</button>`).join('');
   $('#tabbar').innerHTML=ROUTES.filter(r=>r.tab).map(r=>`<button type="button" data-go="${r.id}" ${cur(r)}>${ICON[r.id]}<span>${esc(r.s||r.t)}</span></button>`).join('');
   const chip=`<b>${ST.level}</b><span>${ST.mode==='adaptive'?'adaptatif':'manuel'}</span>`;
   $('#lvchip-side').innerHTML=chip;$('#lvchip-top').innerHTML=chip;
@@ -1480,7 +1799,7 @@ function viewLibrary(v){
   v.innerHTML=`<div class="stack-lg">
    <div class="row between" style="align-items:flex-end"><div class="stack" style="gap:6px"><div class="eyebrow">Read · listen · transform</div><h1>Textes</h1>
     <p class="muted">Tap any word to translate it. Then do the class exercises: change the subject, change the tense.</p></div>
-    <div class="row"><button class="btn primary" id="add-prof" type="button">+ Add my teacher's text</button><button class="btn" id="gen-story" type="button">New story</button></div></div>
+    <div class="row"><button class="btn primary" id="add-prof" type="button">+ Add my teacher's text</button><button class="btn" data-go="exos" type="button">Teacher's exercises${(ST.sheets||[]).length?` (${ST.sheets.length})`:''}</button><button class="btn" id="gen-story" type="button">New story</button></div></div>
    <div class="seg" id="tf">${[['lvl','Around my level'],['mine','My texts'],['all','All'],...LEVELS.map(l=>[l,l])].map(([k,l])=>`<button type="button" data-f="${k}" aria-pressed="${k===f}">${l}</button>`).join('')}</div>
    ${list.length?`<div class="grid3">${list.map(t=>`<button type="button" class="textcard" data-go="textes" data-arg='${esc(JSON.stringify({id:t.id}))}'>
      ${ST.textsRead[t.id]?'<span class="pill ok read">Read ✓</span>':''}
@@ -1623,13 +1942,16 @@ async function wordPop(el,word,sent,text){
    ${r?`${r.lemma&&normAns(r.lemma)!==normAns(word)?`<div class="small muted">from <b>${esc(r.lemma)}</b>${r.pos?' · '+esc(r.pos):''}</div>`:r.fr&&normAns(r.fr)!==normAns(word)?`<div class="small muted">in <b>${esc(r.fr)}</b></div>`:''}
    <div style="font-size:1.02rem;margin-top:4px">${esc(r.en)}</div>${r.note?`<div class="small muted" style="margin-top:4px">${esc(r.note)}</div>`:''}`:''}
    <div id="pop-extra"></div>
-   <div class="row" style="margin-top:10px;gap:6px">${r?`<button class="btn sm" id="pop-add" type="button">+ My words</button>`:''}${sent.en?`<button class="btn sm" id="pop-sent" type="button">Translate sentence</button>`:''}</div>`;
+   <div class="row" style="margin-top:10px;gap:6px"><button class="btn sm primary" id="pop-add" type="button">+ Notebook</button>${sent.en?`<button class="btn sm" id="pop-sent" type="button">Translate sentence</button>`:''}</div>`;
   const wire=(r)=>{
-    const a=$('#pop-add');if(a)a.onclick=()=>{addCustomWord(r.lemma||r.fr||word,r.en,sent.fr);a.disabled=true;a.textContent='Added ✓';};
+    const a=$('#pop-add');if(a)a.onclick=()=>{hidePop();openAddWord({fr:(r&&r.lemma)||word,en:r&&r.en,ex:sent.fr,src:text?text.title:''});};
     const s=$('#pop-sent');if(s)s.onclick=()=>{$('#pop-extra').innerHTML=`<div class="note" style="margin-top:8px">${esc(sent.en)}</div>`;s.remove();};
   };
   if(loc){showPop(el,body(loc));wire(loc);return;}
-  if(!AI.on()){showPop(el,body(null)+`<div class="small muted">No saved translation for this word.</div>`);wire(null);return;}
+  if(!AI.on()){
+    const dev=await DeviceTR.status('fr','en');
+    if(dev==='available'){try{const en=await DeviceTR.translate(word);const r={en,note:'Translated on this device'};showPop(el,body(r));wire(r);return;}catch(e){}}
+    showPop(el,body(null)+`<div class="small muted" style="margin-top:6px">Not in the app's word lists. Select the word and tap <b>Translate</b> (Apple Translate), or add it to your notebook and paste the meaning.</div>`);wire(null);return;}
   showPop(el,`<div class="row between"><span class="pw">${esc(word)}</span>${spk(word)}</div>${thinking('Looking it up…')}`);
   try{
     const r=await AI.json(`French word "${word}" in this sentence: "${sent.fr}". Reply with only JSON: {"lemma":"dictionary form","pos":"verb / noun / adjective / …","en":"English meaning in this context","note":"for verbs: tense and person, e.g. 'passé composé of prendre, je'; otherwise a short usage note (max 12 words)"}`,{modelTier:'quick'});
@@ -1699,10 +2021,10 @@ function renderReaderTab(t){
       catch(e){out.innerHTML=`<div class="note warn">${esc(aiMsg(e))}</div>`;}
     };
   }else{
-    box.innerHTML=`<div style="margin-top:14px">${t.glossary.length?`<div class="list">${t.glossary.map((g,i)=>`<div class="li">${spk(g.fr)}<div class="grow"><div class="fr">${esc(g.fr)}</div><div class="small muted">${esc(g.en)}</div></div><button class="btn sm" type="button" data-add="${i}">+ My words</button></div>`).join('')}</div><div class="row" style="margin-top:10px"><button class="btn" id="add-all" type="button">Add all to my review deck</button></div>`:'<div class="empty">No vocabulary list for this text. Tap words in the text to look them up.</div>'}</div>`;
+    box.innerHTML=`<div style="margin-top:14px">${t.glossary.length?`<div class="list">${t.glossary.map((g,i)=>`<div class="li">${spk(g.fr)}<div class="grow"><div class="fr">${esc(g.fr)}</div><div class="small muted">${esc(g.en)}</div></div><button class="btn sm" type="button" data-add="${i}">+ Notebook</button></div>`).join('')}</div><div class="row" style="margin-top:10px"><button class="btn" id="add-all" type="button">Add all to my notebook</button></div>`:'<div class="empty">No vocabulary list for this text. Tap words in the text to look them up.</div>'}</div>`;
     const ex=g=>(t.sentences.find(s=>normAns(s.fr).includes(normAns(g.fr).split(' ').pop()))||{}).fr||'';
-    $$('[data-add]',box).forEach(b=>b.onclick=()=>{const g=t.glossary[+b.dataset.add];addCustomWord(g.fr,g.en,ex(g),t.title);b.disabled=true;b.textContent='Added ✓';});
-    const aa=$('#add-all',box);if(aa)aa.onclick=()=>{let n=0;t.glossary.forEach(g=>{if(![...VOCAB,...ST.customVocab].some(w=>normAns(w.fr)===normAns(g.fr))){ST.customVocab.push({id:'c'+uid(),fr:g.fr,en:g.en,ex:ex(g),level:t.level,theme:t.title,custom:1,added:Date.now()});n++;}});save();toast(n?`${n} words added ✓`:'Already in your words.',!!n);};
+    $$('[data-add]',box).forEach(b=>b.onclick=()=>{const g=t.glossary[+b.dataset.add];addCustomWord(g.fr,g.en,ex(g),t.title,{src:t.title});b.disabled=true;b.textContent='Added ✓';});
+    const aa=$('#add-all',box);if(aa)aa.onclick=()=>{let n=0;t.glossary.forEach(g=>{if(![...VOCAB,...ST.customVocab].some(w=>normAns(w.fr)===normAns(g.fr))){ST.customVocab.push({id:'c'+uid(),fr:g.fr,en:g.en,ex:ex(g),level:t.level,theme:t.title,src:t.title,custom:1,added:Date.now()});n++;}});save();toast(n?`${n} words added ✓`:'Already in your words.',!!n);};
   }
 }
 function checkDrill(t,i,box){
@@ -1892,6 +2214,7 @@ function viewMots(v){
   v.innerHTML=`<div class="stack-lg">
   <div class="stack" style="gap:6px"><div class="eyebrow">Spaced repetition</div><h1>Mots</h1><p class="muted">High-frequency words and phrases, always inside a sentence. Each word comes back just before you'd forget it.</p></div>
   <div class="stats"><div class="stat"><div class="v num">${due}</div><div class="k">To review</div></div><div class="stat"><div class="v num">${nl}</div><div class="k">New today</div></div><div class="stat"><div class="v num">${learnedCount()}</div><div class="k">Learned</div></div><div class="stat"><div class="v num">${allWords().length}</div><div class="k">In the deck</div></div></div>
+  <button type="button" class="task" data-go="notebook" style="align-items:center"><span class="stack" style="gap:2px;flex:1"><h3>Mes mots · my notebook</h3><span class="meta">${notebookWords().length} words you saved from texts, conversations and translations. Tap to review or edit them.</span></span><span class="pill lv">Open →</span></button>
   <div class="card raised stack">
    <div class="row between"><h2>${due+nl?`Session: ${Math.min(due,60)+nl} cards`:'Nothing due'}</h2>
     <div class="seg" id="wd"><button type="button" data-d="fr" aria-pressed="${ST.wordDir!=='en'}">FR → EN</button><button type="button" data-d="en" aria-pressed="${ST.wordDir==='en'}">EN → FR</button></div></div>
@@ -1912,7 +2235,7 @@ function viewMots(v){
     const dueL=shuffle(dueWords()).slice(0,60);const nw=newPool().sort((a,b)=>(b.custom||0)-(a.custom||0)).slice(0,newLeftToday());
     SESS.q=[...dueL.map(w=>w.id),...nw.map(w=>w.id)];
     const mixed=[];let a=SESS.q.slice(0,dueL.length),b=SESS.q.slice(dueL.length);while(a.length||b.length){if(a.length)mixed.push(a.shift());if(a.length)mixed.push(a.shift());if(b.length)mixed.push(b.shift());}
-    SESS.q=mixed;SESS.i=0;SESS.flipped=false;SESS.done=0;go('mots',{session:1});
+    SESS.q=mixed;SESS.i=0;SESS.flipped=false;SESS.done=0;SESS.back='mots';go('mots',{session:1});
   };
   $('#w-gen').onclick=async()=>{
     const topic=$('#w-topic').value.trim();if(!topic){toast('Type a topic first.');return;}
@@ -1929,17 +2252,17 @@ function viewMots(v){
 function paintSession(v){
   const id=SESS.q[SESS.i];const w=allWords().find(x=>x.id===id);
   if(!w){
-    v.innerHTML=`<div class="card stack" style="align-items:center;text-align:center;padding:36px"><h2>Session finished</h2><p class="muted">${SESS.done} cards reviewed. À demain !</p><button class="btn primary" data-go="mots" type="button">Back to words</button></div>`;
+    v.innerHTML=`<div class="card stack" style="align-items:center;text-align:center;padding:36px"><h2>Session finished</h2><p class="muted">${SESS.done} cards reviewed. À demain !</p><button class="btn primary" data-go="${SESS.back||'mots'}" type="button">Back</button></div>`;
     return;
   }
   const c=ST.srs[id];const isNew=!c;const en=ST.wordDir==='en';
   const labels=[0,1,2,3].map(g=>g===0?'10 min':ivLabel(schedule(c,g).iv));
   const front=en?`<div class="big" style="font-family:var(--f-ui);font-size:1.6rem">${esc(w.en)}</div>`:`<div class="big">${esc(w.fr)}</div>`;
   v.innerHTML=`<div class="stack">
-   <div class="row between"><button class="btn ghost sm" data-go="mots" type="button">← Stop</button><span class="small muted num">${SESS.i+1} / ${SESS.q.length}</span></div>
+   <div class="row between"><button class="btn ghost sm" data-go="${SESS.back||'mots'}" type="button">← Stop</button><span class="small muted num">${SESS.i+1} / ${SESS.q.length}</span></div>
    <div class="progress"><i style="width:${SESS.i/SESS.q.length*100}%"></i></div>
    <div class="card raised flash">${isNew?'<span class="pill warn">New word</span>':''}${front}
-    ${SESS.flipped?`<hr class="sep" style="width:60%">${en?`<div class="big">${esc(w.fr)}</div>`:`<div style="font-size:1.3rem">${esc(w.en)}</div>`}${w.ex?`<div class="exs">${esc(w.ex)}</div>`:''}<div class="row">${spk(w.fr,'Écouter le mot')}${w.ex?`<button class="btn sm" type="button" data-say="${esc(w.ex)}">▶ Example</button>`:''}</div>`:
+    ${SESS.flipped?`<hr class="sep" style="width:60%">${en?`<div class="big">${esc(w.fr)}</div>`:`<div style="font-size:1.3rem">${w.en?esc(w.en):'<span class="muted small">No translation yet — add one in Mes mots</span>'}</div>`}${w.note?`<div class="small muted">${esc(w.note)}</div>`:''}${w.ex?`<div class="exs">${esc(w.ex)}</div>`:''}<div class="row">${spk(w.fr,'Écouter le mot')}${w.ex?`<button class="btn sm" type="button" data-say="${esc(w.ex)}">▶ Example</button>`:''}</div>`:
     (en?'':`<div class="row">${spk(w.fr)}</div>`)}
    </div>
    ${SESS.flipped?`<div class="rate"><button class="btn" data-g="0" type="button">Again<small>${labels[0]}</small></button><button class="btn" data-g="1" type="button">Hard<small>${labels[1]}</small></button><button class="btn primary" data-g="2" type="button">Good<small style="color:inherit;opacity:.8">${labels[2]}</small></button><button class="btn" data-g="3" type="button">Easy<small>${labels[3]}</small></button></div>`:
@@ -1955,7 +2278,7 @@ function paintSession(v){
     SESS.i++;SESS.done++;SESS.flipped=false;paintSession(v);
   };
   $$('[data-g]',v).forEach(b=>b.onclick=()=>rate(+b.dataset.g));
-  SESS.key=e=>{if(route!=='mots'||!params.session||e.target.matches('input,textarea,select'))return;if(e.key===' '&&!SESS.flipped){e.preventDefault();flip();}else if(SESS.flipped&&/^[1-4]$/.test(e.key))rate(+e.key-1);};
+  SESS.key=e=>{if(!params.session||e.target.matches('input,textarea,select'))return;if(e.key===' '&&!SESS.flipped){e.preventDefault();flip();}else if(SESS.flipped&&/^[1-4]$/.test(e.key))rate(+e.key-1);};
 }
 document.addEventListener('keydown',e=>{if(SESS.key)SESS.key(e);});
 
@@ -2140,7 +2463,7 @@ function openSettings(){
 }
 
 /* ================= BOOT ================= */
-const VIEWS={today:viewToday,journee:viewJournee,textes:viewTextes,parler:viewParler,mots:viewMots,grammaire:viewGrammaire,carnet:viewCarnet,progres:viewProgres};
+const VIEWS={exos:viewExos,notebook:viewNotebook,today:viewToday,journee:viewJournee,textes:viewTextes,parler:viewParler,mots:viewMots,grammaire:viewGrammaire,carnet:viewCarnet,progres:viewProgres};
 (function boot(){
   const h=(location.hash||'').replace('#','');
   if(ROUTES.some(r=>r.id===h)) route=h;
@@ -2149,6 +2472,53 @@ const VIEWS={today:viewToday,journee:viewJournee,textes:viewTextes,parler:viewPa
   AI.init();
   Sync.init();
 })();
+
+/* ================= MES MOTS (notebook view) ================= */
+function viewNotebook(v){
+  if(params.session) return paintSession(v);
+  const all=notebookWords();
+  const f=params.f||'all',q=normAns(params.q||'');
+  const state=w=>{const c=ST.srs[w.id];if(!c)return 'new';if(c.reps>=2&&c.iv>=7)return 'known';return 'learning';};
+  let list=all.filter(w=>f==='all'||(f==='missing'?!w.en:f==='expr'?/\s/.test(w.fr.trim()):state(w)===f));
+  if(q) list=list.filter(w=>normAns(w.fr).includes(q)||normAns(w.en||'').includes(q));
+  const n=Date.now();const dueN=all.filter(w=>!ST.srs[w.id]||ST.srs[w.id].due<=n).length;
+  const pill={new:'<span class="pill">New</span>',learning:'<span class="pill warn">Learning</span>',known:'<span class="pill ok">Known</span>'};
+  v.innerHTML=`<div class="stack-lg">
+  <div class="stack" style="gap:6px"><div class="eyebrow">Your vocabulary notebook</div><h1>Mes mots</h1>
+   <p class="muted">Save any word or phrase: tap a word in a text and choose <b>+ Notebook</b>, or select a few words and tap <b>+ Notebook</b>. Paste the meaning from Apple Translate, or let the app fill it in.</p></div>
+  <div class="row">
+   <button class="btn primary" id="nb-prac" type="button" ${all.length?'':'disabled'}>Practise ${dueN?`(${dueN} due)`:'all'}</button>
+   <button class="btn" id="nb-add" type="button">+ Add word or expression</button>
+   <button class="btn" id="nb-copy" type="button" ${all.length?'':'disabled'}>Copy list</button>
+  </div>
+  <div class="row between" style="gap:10px">
+   <div class="seg" id="nb-f">${[['all','All'],['expr','Expressions'],['missing','Needs translation'],['new','New'],['learning','Learning'],['known','Known']].map(([k,l])=>`<button type="button" data-f="${k}" aria-pressed="${k===f}">${l}${k==='missing'?` (${all.filter(w=>!w.en).length})`:''}</button>`).join('')}</div>
+   <input type="search" id="nb-q" placeholder="Search…" value="${esc(params.q||'')}" style="max-width:220px" data-noaccent="1">
+  </div>
+  ${list.length?`<div class="list">${list.map(w=>`<div class="li nbrow" style="align-items:flex-start">${spk(w.fr)}
+    <div class="grow stack" style="gap:2px"><div class="fr translatable">${esc(w.fr)}</div>
+     <div class="small en ${w.en?'':'missing'}">${w.en?esc(w.en):'No translation yet'}</div>
+     ${w.ex?`<div class="small muted translatable" style="font-family:var(--f-read);font-style:italic">${esc(w.ex)}</div>`:''}
+     ${w.note?`<div class="tiny muted">${esc(w.note)}</div>`:''}
+     <div class="tiny muted">${w.src?esc(w.src)+' · ':''}${w.added?esc(frDate(w.added,{day:'numeric',month:'short'})):''}</div></div>
+    <span class="stack" style="gap:6px;align-items:flex-end">${pill[state(w)]}<span class="row" style="gap:4px">${w.custom?`<button class="btn sm" type="button" data-edit="${w.id}">${w.en?'Edit':'Add meaning'}</button>`:''}<button class="iconbtn" type="button" data-rm="${w.id}" aria-label="Remove">✕</button></span></span></div>`).join('')}</div>`
+  :`<div class="empty">${all.length?'No words match.':'Your notebook is empty. Open a text, tap a word and choose + Notebook.'}</div>`}
+  </div>`;
+  $$('#nb-f button').forEach(b=>b.onclick=()=>go('notebook',{f:b.dataset.f,q:params.q}));
+  let tmr;$('#nb-q').oninput=e=>{clearTimeout(tmr);const val=e.target.value;tmr=setTimeout(()=>{params.q=val;viewNotebook(v);const i=$('#nb-q');i.focus();i.setSelectionRange(val.length,val.length);},250);};
+  $('#nb-add').onclick=()=>openAddWord({src:'Mes mots'});
+  $$('[data-edit]',v).forEach(b=>b.onclick=()=>openAddWord({id:b.dataset.edit}));
+  $$('[data-rm]',v).forEach(b=>b.onclick=()=>{
+    if(!b.dataset.sure){b.dataset.sure=1;b.textContent='?';b.title='Tap again to remove';return;}
+    const id=b.dataset.rm;ST.customVocab=ST.customVocab.filter(w=>w.id!==id);ST.nbRefs=(ST.nbRefs||[]).filter(x=>x!==id);if(id.startsWith('c'))delete ST.srs[id];save();paintChrome();viewNotebook(v);});
+  $('#nb-copy').onclick=()=>copyText(all.map(w=>`${w.fr} — ${w.en||'?'}${w.ex?`  (${w.ex})`:''}`).join('\n'));
+  $('#nb-prac').onclick=()=>{
+    const now=Date.now();
+    let qids=[...all.filter(w=>ST.srs[w.id]&&ST.srs[w.id].due<=now),...all.filter(w=>!ST.srs[w.id])].map(w=>w.id);
+    if(!qids.length) qids=shuffle(all).slice(0,30).map(w=>w.id);
+    SESS.q=qids.slice(0,60);SESS.i=0;SESS.flipped=false;SESS.done=0;SESS.back='notebook';go('notebook',{session:1});
+  };
+}
 
 </script>
 </body>
