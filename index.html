@@ -1162,7 +1162,7 @@ function addMistake(m){
 
 /* ================= AI (Claude) ================= */
 const IN_CLAUDE=!!(window.claude&&window.claude.use);
-const PROVIDERS={gemini:{name:'Google Gemini',model:'gemini-flash-latest',keyUrl:'https://aistudio.google.com/apikey'},mistral:{name:'Mistral',model:'mistral-small-latest',keyUrl:'https://console.mistral.ai/api-keys'}};
+const PROVIDERS={gemini:{name:'Google Gemini',model:'gemini-3.5-flash',keyUrl:'https://aistudio.google.com/apikey'},mistral:{name:'Mistral',model:'mistral-small-latest',keyUrl:'https://console.mistral.ai/api-keys'}};
 const aiPref=()=>{try{return localStorage.getItem('cahier.ai.pref')||'auto';}catch(e){return 'auto';}};
 const aiKey=p=>{try{return (localStorage.getItem('cahier.ai.key.'+p)||'').trim();}catch(e){return '';}};
 const aiModel=p=>{try{return (localStorage.getItem('cahier.ai.model.'+p)||'').trim()||PROVIDERS[p].model;}catch(e){return PROVIDERS[p].model;}};
@@ -1224,23 +1224,48 @@ async function extCall(prov,turns,{json=false,images=null,signal}={}){
   if(!key) throw {code:'unavailable'};
   const imgs=[];if(images){const list=images instanceof Blob?[images]:[...images];for(const f of list.slice(0,3))imgs.push(await fileToB64(f));}
   const merged=[];for(const t of turns){const role=t.role==='assistant'?'assistant':'user';const last=merged[merged.length-1];if(last&&last.role===role)last.content+='\n\n'+t.content;else merged.push({role,content:String(t.content)});}
-  const custom=(localStorage.getItem('cahier.ai.model.'+prov)||'').trim();
-  const fallbacks=prov==='gemini'?[model,...(custom?[]:['gemini-2.5-flash','gemini-2.5-flash-lite'])]:[model,...(custom?[]:['mistral-small-2506','open-mistral-nemo'])];
-  let lastErr=null,useJson=json;
-  for(const m of [...new Set(fallbacks)]){
-    for(let attempt=0;attempt<3;attempt++){
-      try{return await extRequest(prov,m,key,merged,imgs,useJson,signal);}
-      catch(e){
-        lastErr=e;
-        if(e.code==='cancelled'||e.code==='bad_key'||e.code==='network'||e.code==='refused'||e.code==='prompt_too_large') throw e;
-        if(e.code==='upstream_error'&&e.status===400&&useJson){useJson=false;continue;}
-        if(e.code==='bad_model') break;
-        if((e.code==='upstream_error'&&(!e.status||e.status>=500))||e.code==='rate_limited'||e.code==='empty_completion'){ if(attempt<2){await sleep(1200*(attempt+1));continue;} break; }
-        break;
-      }
-    }
+  let custom='';try{custom=(localStorage.getItem('cahier.ai.model.'+prov)||'').trim();}catch(e){}
+  let found='';try{found=localStorage.getItem('cahier.ai.found.'+prov)||'';}catch(e){}
+  const list=custom?[custom]:prov==='gemini'?[found,model,'gemini-3.5-flash-lite','gemini-flash-latest'].filter(Boolean):[model,'mistral-small-2506','open-mistral-nemo'];
+  let lastErr=null,useJson=json,discovered=false;
+  const tried=new Set();
+  const queue=[...new Set(list)];
+  while(queue.length){
+    const m=queue.shift();if(tried.has(m))continue;tried.add(m);
+    const r=await tryModel(m);
+    if(r.ok){if(prov==='gemini'&&!custom&&m!==found){try{localStorage.setItem('cahier.ai.found.gemini',m);}catch(e){}}return r.txt;}
+    if(r.fatal)throw r.err;
+    if(r.err.code==='bad_model'&&prov==='gemini'&&!discovered&&!custom){discovered=true;const best=await discoverGemini(key,signal);best.filter(x=>!tried.has(x)).reverse().forEach(x=>queue.unshift(x));}
   }
   throw lastErr||{code:'upstream_error'};
+  async function tryModel(m){
+    let err=null;
+    for(let attempt=0;attempt<3;attempt++){
+      try{return {ok:true,txt:await extRequest(prov,m,key,merged,imgs,useJson,signal)};}
+      catch(e){
+        err=lastErr=e;
+        if(e.code==='cancelled'||e.code==='bad_key'||e.code==='network'||e.code==='refused'||e.code==='prompt_too_large') return {fatal:true,err:e};
+        if(e.code==='upstream_error'&&e.status===400&&/model/i.test(e.detail||'')){e.code='bad_model';return {err:e};}
+        if(e.code==='upstream_error'&&e.status===400&&useJson){useJson=false;continue;}
+        if(e.code==='bad_model') return {err:e};
+        if((e.code==='upstream_error'&&(!e.status||e.status>=500))||e.code==='rate_limited'||e.code==='empty_completion'){if(attempt<2){await sleep(1200*(attempt+1));continue;}}
+        return {err:e};
+      }
+    }
+    return {err};
+  }
+}
+/* ask Google which Gemini models this key can use; best Flash models first */
+async function discoverGemini(key,signal){
+  try{
+    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200',{headers:{'x-goog-api-key':key},signal});
+    const d=await r.json();
+    const ms=(d.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')).map(m=>m.name.replace(/^models\//,''))
+      .filter(n=>/^gemini-/.test(n)&&/flash/.test(n)&&!/(tts|image|audio|live|embedding|thinking|exp|preview|robotics|native|computer)/.test(n));
+    const ver=n=>{const m=n.match(/gemini-(\d+(?:\.\d+)?)/);return m?parseFloat(m[1]):0;};
+    const score=n=>ver(n)*10+(/lite/.test(n)?0:2)+(/latest/.test(n)?1:0)-(/-\d{3,}$/.test(n)?0.5:0);
+    return ms.sort((a,b)=>score(b)-score(a)).slice(0,4);
+  }catch(e){return [];}
 }
 const AI={fn:null,state:'loading',images:null,prov:null,claudeImages:null,
   async init(){
