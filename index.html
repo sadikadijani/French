@@ -133,8 +133,8 @@ main{min-width:0;display:flex;flex-direction:column}
 .seg{display:inline-flex;background:var(--surface-2);border-radius:9px;padding:3px;gap:2px;flex-wrap:wrap}
 .seg button{border:0;background:none;border-radius:7px;padding:6px 12px;font-weight:600;font-size:.84rem;color:var(--ink-2)}
 .seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
-input[type=text],input[type=search],textarea,select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 12px;outline:none}
-input[type=text]:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+input[type=text],input[type=search],input[type=password],textarea,select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 12px;outline:none}
+input[type=text]:focus,input[type=password]:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
 textarea{resize:vertical;min-height:120px;line-height:1.6}
 label.lbl{display:block;font-size:.8rem;font-weight:600;color:var(--ink-2);margin-bottom:5px}
 hr.sep{border:0;border-top:1px solid var(--line);margin:0}
@@ -1161,33 +1161,114 @@ function addMistake(m){
 }
 
 /* ================= AI (Claude) ================= */
-const AI={fn:null,state:'loading',images:null,
+const IN_CLAUDE=!!(window.claude&&window.claude.use);
+const PROVIDERS={gemini:{name:'Google Gemini',model:'gemini-flash-latest',keyUrl:'https://aistudio.google.com/apikey'},mistral:{name:'Mistral',model:'mistral-small-latest',keyUrl:'https://console.mistral.ai/api-keys'}};
+const aiPref=()=>{try{return localStorage.getItem('cahier.ai.pref')||'auto';}catch(e){return 'auto';}};
+const aiKey=p=>{try{return (localStorage.getItem('cahier.ai.key.'+p)||'').trim();}catch(e){return '';}};
+const aiModel=p=>{try{return (localStorage.getItem('cahier.ai.model.'+p)||'').trim()||PROVIDERS[p].model;}catch(e){return PROVIDERS[p].model;}};
+const aiSet=(k,v)=>{try{if(v)localStorage.setItem(k,v);else localStorage.removeItem(k);}catch(e){}};
+const STYLE_RULES=`Style rules for any French you write for the learner: use natural, everyday French as people really speak and write it today in France, Belgium and Luxembourg (neutral-casual register). Prefer high-frequency words and set phrases people actually use (e.g. « du coup », « en fait », « je vais + infinitif », « on » for « nous » in speech) over rare, literary or overly formal words. If you use something familiar or formal, label it (fam.) or (formal). Grammar must stay correct.
+
+`;
+function withStyle(p){
+  if(typeof p==='string') return STYLE_RULES+p;
+  if(Array.isArray(p)&&p.length){const c=p.map(t=>({...t}));c[0].content=STYLE_RULES+c[0].content;return c;}
+  return p;
+}
+function looseJSON(t){
+  t=String(t||'').trim();
+  try{return JSON.parse(t);}catch(e){}
+  const f=t.match(/```(?:json)?\s*([\s\S]*?)```/);if(f){try{return JSON.parse(f[1]);}catch(e){}}
+  const a=t.search(/[\[{]/),b=Math.max(t.lastIndexOf('}'),t.lastIndexOf(']'));
+  if(a>=0&&b>a){try{return JSON.parse(t.slice(a,b+1));}catch(e){}}
+  return undefined;
+}
+function fileToB64(f){return new Promise((res,rej)=>{const img=new Image();const url=URL.createObjectURL(f);
+  img.onload=()=>{const s=Math.min(1,1600/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);res({type:'image/jpeg',b64:c.toDataURL('image/jpeg',0.85).split(',')[1]});};
+  img.onerror=()=>{URL.revokeObjectURL(url);rej({code:'image_rejected'});};img.src=url;});}
+function extErr(status,d){
+  const msg=JSON.stringify(d||{}).toLowerCase();
+  if(status===401||status===403||(status===400&&/api[ _-]?key/.test(msg)))return {code:'bad_key'};
+  if(status===404)return {code:'bad_model'};
+  if(status===429)return {code:'rate_limited'};
+  if(status===413)return {code:'prompt_too_large'};
+  return {code:'upstream_error',message:msg.slice(0,200)};
+}
+async function extCall(prov,turns,{json=false,images=null,signal}={}){
+  const key=aiKey(prov),model=aiModel(prov);
+  if(!key) throw {code:'unavailable'};
+  const imgs=[];if(images){const list=images instanceof Blob?[images]:[...images];for(const f of list.slice(0,3))imgs.push(await fileToB64(f));}
+  const merged=[];for(const t of turns){const role=t.role==='assistant'?'assistant':'user';const last=merged[merged.length-1];if(last&&last.role===role)last.content+='\n\n'+t.content;else merged.push({role,content:String(t.content)});}
+  let res,d;
+  try{
+    if(prov==='gemini'){
+      const contents=merged.map((t,i)=>({role:t.role==='assistant'?'model':'user',parts:[{text:t.content},...(i===merged.length-1?imgs.map(im=>({inline_data:{mime_type:im.type,data:im.b64}})):[])]}));
+      res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify({contents,generationConfig:json?{responseMimeType:'application/json',temperature:0.4}:{temperature:0.7}}),signal});
+    }else{
+      const messages=merged.map((t,i)=>({role:t.role,content:(i===merged.length-1&&imgs.length)?[{type:'text',text:t.content},...imgs.map(im=>({type:'image_url',image_url:`data:${im.type};base64,${im.b64}`}))]:t.content}));
+      res=await fetch('https://api.mistral.ai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model,messages,temperature:json?0.3:0.7,...(json?{response_format:{type:'json_object'}}:{})}),signal});
+    }
+    d=await res.json().catch(()=>({}));
+  }catch(e){if(e&&e.name==='AbortError')throw {code:'cancelled'};throw {code:'network'};}
+  if(!res.ok) throw extErr(res.status,d);
+  let txt='';
+  if(prov==='gemini'){const c=d.candidates&&d.candidates[0];txt=((c&&c.content&&c.content.parts)||[]).map(p=>p.text||'').join('');if(!txt)throw {code:(d.promptFeedback&&d.promptFeedback.blockReason)||(c&&c.finishReason==='SAFETY')?'refused':'empty_completion'};}
+  else{const m=d.choices&&d.choices[0]&&d.choices[0].message;const c=m&&m.content;txt=Array.isArray(c)?c.map(x=>x.text||'').join(''):String(c||'');if(!txt)throw {code:'empty_completion'};}
+  return txt;
+}
+const AI={fn:null,state:'loading',images:null,prov:null,claudeImages:null,
   async init(){
     try{
-      if(!window.claude||!window.claude.use){this.state='off';return;}
-      const s=await claude.use('sample');
-      if(!s){this.state='off';paintAI();return;}
-      this.fn=s;this.state='on';
-      try{const l=await s.limits();this.images=l&&l.images?l.images:null;}catch(e){}
-    }catch(e){this.state='off';}
+      if(IN_CLAUDE){const s=await claude.use('sample');if(s){this.fn=s;try{const l=await s.limits();this.claudeImages=l&&l.images?l.images:null;}catch(e){}}}
+    }catch(e){}
+    this.refresh();
+  },
+  refresh(){
+    const pref=aiPref(),has=p=>!IN_CLAUDE&&!!aiKey(p);
+    let p=null;
+    if(pref==='gemini'&&has('gemini'))p='gemini';
+    else if(pref==='mistral'&&has('mistral'))p='mistral';
+    else if(this.fn)p='claude';
+    else if(has('gemini'))p='gemini';
+    else if(has('mistral'))p='mistral';
+    this.prov=p;
+    if(!(this.state==='denied'&&p==='claude'))this.state=p?'on':'off';
+    this.images=p==='claude'?this.claudeImages:p?{maxCount:3,maxInputBytes:20000000,mediaTypes:['image/jpeg','image/png','image/webp','image/heic']}:null;
     paintAI();
   },
+  name(){return this.prov==='claude'?'Claude':this.prov?PROVIDERS[this.prov].name:'AI';},
   on(){return this.state==='on';},
-  json(p,o={}){if(!this.fn)return Promise.reject({code:'unavailable'});return this.fn.json(p,o);},
-  text(p,o={}){if(!this.fn)return Promise.reject({code:'unavailable'});return this.fn(p,o);}
+  async json(p,o={}){
+    if(!this.prov)throw {code:'unavailable'};
+    p=withStyle(p);
+    if(this.prov==='claude')return this.fn.json(p,o);
+    const txt=await extCall(this.prov,typeof p==='string'?[{role:'user',content:p}]:p,{json:true,images:o.images,signal:o.signal});
+    const v=looseJSON(txt);if(v===undefined)throw {code:'invalid_json',text:txt};
+    return v;
+  },
+  async text(p,o={}){
+    if(!this.prov)throw {code:'unavailable'};
+    p=withStyle(p);
+    if(this.prov==='claude')return this.fn(p,o);
+    const txt=await extCall(this.prov,typeof p==='string'?[{role:'user',content:p}]:p,{images:o.images,signal:o.signal});
+    if(o.onText)try{o.onText({text:txt,delta:txt});}catch(e){}
+    return {text:txt,truncated:false,modelTierApplied:'default'};
+  }
 };
 function aiMsg(e){
   const c=e&&e.code;
-  if(c==='not_granted'||c==='sampling_disabled'||c==='not_declared'||c==='capability_disabled'){AI.state='denied';paintAI();return 'Claude access is off for this page, so AI features are paused. Reload the page to be asked again.';}
-  return ({rate_limited:'Too many requests right now. Wait a minute, then try again.',invalid_json:'The answer came back in an unexpected format. Try again.',refused:'Claude declined this request. Try rephrasing it.',session_expired:'Your Claude session expired. Sign in again, then retry.',prompt_too_large:'That text is too long. Try a shorter part.',unavailable:'AI features need this page to be open in Claude.',image_rejected:"That image couldn't be read. Try a clearer JPG or PNG photo.",images_unavailable:"Photos can't be sent from this view. Paste the text instead.",cancelled:'Stopped.',empty_completion:'No answer came back. Try again.'})[c]||'Something went wrong reaching Claude. Try again.';
+  if(AI.prov==='claude'&&(c==='not_granted'||c==='sampling_disabled'||c==='not_declared'||c==='capability_disabled')){AI.state='denied';paintAI();return 'Claude access is off for this page, so AI features are paused. Reload the page to be asked again.';}
+  const who=AI.name();
+  return ({rate_limited:`${who}'s limit is reached for now. Wait a minute (or until tomorrow for the daily free limit), then try again.`,invalid_json:'The answer came back in an unexpected format. Try again.',refused:`${who} declined this request. Try rephrasing it.`,session_expired:'Your Claude session expired. Sign in again, then retry.',prompt_too_large:'That text is too long. Try a shorter part.',unavailable:'AI features need a connection: add a free Gemini or Mistral key in Réglages → AI, or open the app inside Claude.',image_rejected:"That image couldn't be read. Try a clearer JPG or PNG photo.",images_unavailable:"Photos can't be sent from this view. Paste the text instead.",cancelled:'Stopped.',empty_completion:'No answer came back. Try again.',bad_key:`Your ${who} key was refused. Check it in Réglages → AI.`,bad_model:`${who} doesn't know that model name. Reset it in Réglages → AI.`,network:`Couldn't reach ${who}. Check your internet connection and try again.`})[c]||`Something went wrong reaching ${who}. Try again.`;
 }
 function aiGate(){
-  if(AI.state==='loading') return `<div class="note">Connecting to Claude…</div>`;
-  if(AI.state!=='on') return `<div class="note warn">This feature uses Claude and isn't available right now. ${AI.state==='denied'?'Reload the page to allow access.':'Open this page inside Claude to use it.'}</div>`;
+  if(AI.state==='loading') return `<div class="note">Connecting…</div>`;
+  if(AI.state!=='on') return `<div class="note warn">This feature needs AI. ${AI.state==='denied'?'Reload the page to allow Claude access.':IN_CLAUDE?'It isn\'t available right now.':'Add a free Gemini or Mistral key to use it.'} ${IN_CLAUDE?'':'<button class="btn sm" type="button" data-open-settings>Set up AI</button>'}</div>`;
   return '';
 }
 function paintAI(){$$('[data-ai-gate]').forEach(el=>{el.innerHTML=aiGate();});$$('[data-needs-ai]').forEach(b=>{b.disabled=!AI.on();});}
-const thinking=(t='Claude is thinking…')=>`<div class="thinking"><span class="spinner"></span>${esc(t)}</div>`;
+document.addEventListener('click',e=>{if(e.target.closest('[data-open-settings]')){e.preventDefault();openSettings('ai');}});
+const thinking=(t)=>`<div class="thinking"><span class="spinner"></span>${esc(t||(AI.name()+' is thinking…'))}</div>`;
 
 /* ================= SPEECH ================= */
 const TTS={ok:typeof window.speechSynthesis!=='undefined',voices:[],btn:null,
@@ -1376,7 +1457,7 @@ async function openAddWord(o={}){
       try{en.value=await DeviceTR.translate(fr.value.trim());if(b)b.textContent='Translated on this device ✓';}catch(e){if(b){b.disabled=false;b.textContent='Translate on this device';}toast("The device translator couldn't start.");}};
     let html='';
     if(dev!=='no'&&dev!=='unavailable') html+=`<button class="btn sm" id="aw-dev" type="button">Translate on this device</button>`;
-    if(AI.on()) html+=`<button class="btn sm" id="aw-ai" type="button">Ask Claude (meaning + note)</button>`;
+    if(AI.on()) html+=`<button class="btn sm" id="aw-ai" type="button">Ask AI (meaning + note)</button>`;
     auto.innerHTML=html;
     const devB=$('#aw-dev',sheet);if(devB)devB.onclick=devTr;
     const aiB=$('#aw-ai',sheet);
@@ -1384,7 +1465,7 @@ async function openAddWord(o={}){
       try{const r=await AI.json(`French word or phrase "${fr.value.trim()}"${$('#aw-ex',sheet).value.trim()?` in the sentence "${$('#aw-ex',sheet).value.trim()}"`:''}. Reply with only JSON: {"lemma":"dictionary form (with article for nouns)","en":"English meaning in context","note":"short useful note, e.g. gender, verb group, register (max 10 words)"}`,{modelTier:'quick'});
         if(r.en)en.value=r.en;if(r.note&&!$('#aw-note',sheet).value)$('#aw-note',sheet).value=r.note;
         if(r.lemma&&normAns(r.lemma)!==normAns(fr.value)){$('#aw-msg',sheet).innerHTML=`Dictionary form: <b>${esc(r.lemma)}</b> <button class="btn sm ghost" id="aw-lem" type="button">Use it</button>`;$('#aw-lem',sheet).onclick=()=>{fr.value=r.lemma;$('#aw-msg',sheet).textContent='';};}
-        aiB.textContent='Done ✓';}catch(e){aiB.disabled=false;aiB.textContent='Ask Claude (meaning + note)';toast(aiMsg(e));}};
+        aiB.textContent='Done ✓';}catch(e){aiB.disabled=false;aiB.textContent='Ask AI (meaning + note)';toast(aiMsg(e));}};
     if(!known&&fr.value.trim()&&dev==='available') devTr();
     $('#aw-save',sheet).onclick=()=>{
       const f=fr.value.trim();if(!f){toast('Type the French word first.');return;}
@@ -1532,7 +1613,7 @@ function viewSheet(v){
     <h1>${esc(sh.title)}</h1><p class="small muted">Tap a word to translate it · select words, then <b>+ Notebook</b> to save an expression · ▸ reads the sentence with your answer.</p></div>
    <div class="row">
     <button class="btn primary" id="sh-check" type="button">Check</button>
-    <button class="btn" id="sh-ai" type="button" ${AI.on()?'':'hidden'}>Check &amp; explain with Claude</button>
+    <button class="btn" id="sh-ai" type="button" ${AI.on()?'':'hidden'}>Check &amp; explain with AI</button>
     <button class="btn ghost" id="sh-show" type="button">Show answers</button>
     <button class="btn ghost" id="sh-read" type="button">▶ Read all</button>
     <button class="btn ghost" id="sh-reset" type="button">Reset</button></div>
@@ -1580,13 +1661,13 @@ function viewSheet(v){
       if(!good) addMistake({src:'exercice',wrong:sentenceWith(it,false),right:sentenceWith({...it,ans:it.ans.map((a,j)=>j===b?bl.local[0]:a)},false),why:`${bl.hint?bl.hint+', ':''}${TENSES[s.tense]||''}`});
     })));
     act('drills',Math.max(1,checked));save();paintFb();
-    if(skipped) toast(`${skipped} blank${skipped>1?'s':''} can't be checked automatically${AI.on()?'. Use “Check & explain with Claude”.':'.'}`);
+    if(skipped) toast(`${skipped} blank${skipped>1?'s':''} can't be checked automatically${AI.on()?'. Use “Check & explain with AI”.':'.'}`);
     else if(!checked) toast('Fill in some blanks first.');
   };
   $('#sh-show').onclick=()=>{
     let n=0;
     sh.sections.forEach((s,si)=>s.items.forEach((it,ii)=>it.blanks.forEach((bl,b)=>{const ans=bl.right||(bl.local&&bl.local[0]);if(ans&&!it.ans[b]){const inp=$(`.blank-in[data-k="${si}:${ii}:${b}"]`,v);inp.placeholder=ans;n++;}})));
-    toast(n?'Answers shown in grey inside the empty blanks.':AI.on()?'No automatic answers here. Use “Check & explain with Claude”.':'No automatic answers for these blanks.');
+    toast(n?'Answers shown in grey inside the empty blanks.':AI.on()?'No automatic answers here. Use “Check & explain with AI”.':'No automatic answers for these blanks.');
   };
   $('#sh-read').onclick=async()=>{const all=[];sh.sections.forEach(s=>s.items.forEach(it=>all.push(sentenceWith(it,true))));let i=0;const next=()=>{if(i<all.length&&route==='exos')TTS.speak(all[i++],{onend:next});};next();};
   $('#sh-reset').onclick=()=>{const b=$('#sh-reset');if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Tap again to clear';return;}sh.sections.forEach(s=>s.items.forEach(it=>{it.ans=it.ans.map(()=>'');it.res=it.res.map(()=>null);it.why='';it.blanks.forEach(bl=>delete bl.right);}));save();viewSheet(v);paintAI();};
@@ -1609,8 +1690,8 @@ Reply with only JSON: {"items":[{"n":1,"answers":["..."],"correct":[true],"why":
         (x.answers||[]).forEach((a,b)=>{if(b>=f.it.blanks.length)return;f.it.blanks[b].right=String(a);
           if(f.it.ans[b]){const ok=!!(x.correct||[])[b];f.it.res[b]=ok?'ok':'bad';record(ok,'exercice');if(!ok)addMistake({src:'exercice',wrong:sentenceWith(f.it,false),right:sentenceWith({...f.it,ans:f.it.ans.map((q,j)=>j===b?String(a):q)},false),why:String(x.why||'')});}});
         f.it.why=(x.correct||[]).every(Boolean)&&f.it.ans.every(Boolean)?'':String(x.why||'');});
-      act('drills');save();paintFb();aiB.textContent='Checked ✓';setTimeout(()=>{aiB.disabled=false;aiB.textContent='Check & explain with Claude';},2500);
-    }catch(e){toast(aiMsg(e));aiB.disabled=false;aiB.textContent='Check & explain with Claude';}
+      act('drills');save();paintFb();aiB.textContent='Checked ✓';setTimeout(()=>{aiB.disabled=false;aiB.textContent='Check & explain with AI';},2500);
+    }catch(e){toast(aiMsg(e));aiB.disabled=false;aiB.textContent='Check & explain with AI';}
   };
 }
 /* ================= DERIVED DATA ================= */
@@ -1824,12 +1905,12 @@ function openAddText(){
   const imgOk=AI.on()&&AI.images;
   openModal(`<div class="stack">
    <div class="row between"><h2>Add your teacher's text</h2><button class="btn ghost sm" data-close type="button">Cancel</button></div>
-   <p class="small muted">Claude splits it into sentences, translates each one, picks the key vocabulary and writes class-style drills. The original text stays exactly as your teacher wrote it.</p>
+   <p class="small muted">The AI splits it into sentences, translates each one, picks the key vocabulary and writes class-style drills. The original text stays exactly as your teacher wrote it.</p>
    <div data-ai-gate>${aiGate()}</div>
    <div><label class="lbl" for="at-title">Title (optional)</label><input type="text" id="at-title" placeholder="e.g. Cours du 24 septembre"></div>
    <div><label class="lbl" for="at-text">Paste the text</label><textarea id="at-text" rows="8" placeholder="Collez le texte ici…"></textarea></div>
    ${imgOk?`<div><label class="lbl" for="at-img">…or add a photo of the handout</label><input type="file" id="at-img" accept="${esc((AI.images.mediaTypes||['image/jpeg','image/png']).join(','))}" ${AI.images.maxCount>1?'multiple':''}></div>`:''}
-   <div class="row"><button class="btn primary" id="at-go" type="button" data-needs-ai ${AI.on()?'':'disabled'}>Prepare with Claude</button><button class="btn" id="at-plain" type="button">Save without AI</button></div>
+   <div class="row"><button class="btn primary" id="at-go" type="button" data-needs-ai ${AI.on()?'':'disabled'}>Prepare with AI</button><button class="btn" id="at-plain" type="button">Save without AI</button></div>
    <div id="at-out"></div></div>`,(sheet,close)=>{
     $('#at-plain',sheet).onclick=()=>{
       const text=$('#at-text',sheet).value.trim();if(!text){toast('Paste the text first.');return;}
@@ -1972,7 +2053,7 @@ function renderReaderTab(t){
   const box=$('#rd-tab');const tab=params.tab||'drills';
   if(tab==='drills'){
     box.innerHTML=`<div class="stack" style="margin-top:14px">${t.drills.length?t.drills.map(drillCard).join(''):'<div class="empty">No drills for this text yet.</div>'}
-     <div data-ai-gate>${aiGate()}</div><div><button class="btn" id="more-drills" type="button" data-needs-ai>More drills with Claude</button></div></div>`;
+     <div data-ai-gate>${aiGate()}</div><div><button class="btn" id="more-drills" type="button" data-needs-ai>More drills with AI</button></div></div>`;
     $$('[data-check]',box).forEach(b=>b.onclick=()=>checkDrill(t,+b.dataset.check,box));
     $$('[data-show]',box).forEach(b=>b.onclick=()=>{const i=+b.dataset.show,c=$(`[data-d="${i}"]`,box);$('.fb',c).innerHTML=`<div class="feedback close">Answer: <span class="ans">${esc(t.drills[i].answer)}</span> ${spk(t.drills[i].answer)}</div>`;});
     $$('input[id^="dr-"]',box).forEach(inp=>inp.addEventListener('keydown',e=>{if(e.key==='Enter')checkDrill(t,+inp.id.slice(3),box);}));
@@ -1985,16 +2066,16 @@ function renderReaderTab(t){
         if(t.builtin){ST.extraDrills=ST.extraDrills||{};ST.extraDrills[t.id]=[...(ST.extraDrills[t.id]||[]),...nd].slice(-24);save();}
         else{const ut=USER_TEXTS.find(x=>x.id===t.id);ut.drills=[...(ut.drills||[]),...nd];saveUserText(ut);}
         t.drills.push(...nd);renderReaderTab(t);paintAI();
-      }catch(e){toast(aiMsg(e));b.disabled=false;b.textContent='More drills with Claude';}
+      }catch(e){toast(aiMsg(e));b.disabled=false;b.textContent='More drills with AI';}
     };
   }else if(tab==='free'){
-    box.innerHTML=`<div class="stack" style="margin-top:14px"><p class="small muted">Exactly like in class: pick any sentence, pick a change, write it. Claude checks it and explains.</p>
+    box.innerHTML=`<div class="stack" style="margin-top:14px"><p class="small muted">Exactly like in class: pick any sentence, pick a change, write it. The AI checks it and explains.</p>
      <div data-ai-gate>${aiGate()}</div>
      <div><label class="lbl" for="fp-s">Sentence</label><select id="fp-s">${t.sentences.map((s,i)=>`<option value="${i}">${esc(s.fr)}</option>`).join('')}</select></div>
      <div><label class="lbl" for="fp-i">Change</label><select id="fp-i">${FREE_INSTR.map(x=>`<option>${esc(x)}</option>`).join('')}</select></div>
      <div class="row"><button class="btn sm" id="fp-rand" type="button">Surprise me</button></div>
      <input type="text" id="fp-a" placeholder="Your new sentence" autocomplete="off" spellcheck="false">
-     <div class="row"><button class="btn primary" id="fp-go" type="button" data-needs-ai>Check with Claude</button></div><div id="fp-out"></div></div>`;
+     <div class="row"><button class="btn primary" id="fp-go" type="button" data-needs-ai>Check with AI</button></div><div id="fp-out"></div></div>`;
     $('#fp-rand').onclick=()=>{$('#fp-s').value=Math.floor(Math.random()*t.sentences.length);$('#fp-i').selectedIndex=Math.floor(Math.random()*FREE_INSTR.length);$('#fp-a').value='';$('#fp-out').innerHTML='';};
     const run=async()=>{
       const s=t.sentences[+$('#fp-s').value].fr,ins=$('#fp-i').value,a=$('#fp-a').value.trim();if(!a){toast('Write your sentence first.');return;}
@@ -2172,7 +2253,7 @@ function paintTimer(box){
    <div class="timer" id="tm" style="--p:${(1-TIMER.left/TIMER.t)*100}%"><div class="num" id="tm-n">${TIMER.left}</div></div>
    <div class="row" style="justify-content:center"><button class="btn primary" id="tm-go" type="button">${TIMER.run?'Pause':TIMER.left<TIMER.t&&TIMER.left>0?'Resume':'Start'}</button><button class="btn" id="tm-reset" type="button">Reset</button>
     <div class="seg" id="tm-len">${[60,90,120].map(n=>`<button type="button" data-n="${n}" aria-pressed="${TIMER.t===n}">${n}s</button>`).join('')}</div></div>
-   <hr class="sep"><div class="stack"><h3>Get feedback</h3><p class="small muted">Afterwards, write down (or dictate) what you said. Claude corrects it and shows how a native speaker would say it.</p>
+   <hr class="sep"><div class="stack"><h3>Get feedback</h3><p class="small muted">Afterwards, write down (or dictate) what you said. The AI corrects it and shows how a native speaker would say it.</p>
    <div data-ai-gate>${aiGate()}</div><textarea id="tm-txt" rows="4" placeholder="Ce que j'ai dit…"></textarea><div class="row"><button class="btn" id="tm-fix" type="button" data-needs-ai>Correct</button></div><div id="tm-out"></div></div></div>`;
   const tick=()=>{TIMER.left--;const n=$('#tm-n');if(n){n.textContent=TIMER.left;$('#tm').style.setProperty('--p',(1-TIMER.left/TIMER.t)*100+'%');}
     if(TIMER.left<=0){clearInterval(TIMER.h);TIMER.run=false;act('speak');toast('Time! Great effort.',true);if($('#tm-go'))$('#tm-go').textContent='Start';TIMER.left=TIMER.t;}};
@@ -2222,7 +2303,7 @@ function viewMots(v){
     <div><label class="lbl" for="w-new">New words per day</label><select id="w-new">${[5,10,15,20,30].map(n=>`<option ${ST.newPerDay===n?'selected':''}>${n}</option>`).join('')}</select></div></div>
    <div class="row"><button class="btn primary" id="w-start" type="button" ${due+nl?'':'disabled'}>Start</button>${!due&&!nl?'<span class="small muted">Come back tomorrow, or add more new words per day.</span>':''}</div>
   </div>
-  <div class="card stack"><h3>More words with Claude</h3><p class="small muted">Get 15 useful words and phrases on any topic, at your level (${ST.level}).</p><div data-ai-gate>${aiGate()}</div>
+  <div class="card stack"><h3>More words with AI</h3><p class="small muted">Get 15 useful words and phrases on any topic, at your level (${ST.level}).</p><div data-ai-gate>${aiGate()}</div>
    <div class="row" style="flex-wrap:nowrap"><input type="text" id="w-topic" placeholder="e.g. à la banque, réunions, cuisine…"><button class="btn" id="w-gen" type="button" data-needs-ai>Generate</button></div><div id="w-out"></div></div>
   <div class="stack"><div class="row between"><h2>All words</h2><select id="w-filter" style="width:auto"><option value="all">All topics</option>${themes.map(t=>`<option ${th===t?'selected':''}>${esc(t)}</option>`).join('')}</select></div>
    <div class="list">${list.slice(0,250).map(w=>`<div class="li">${spk(w.ex||w.fr)}<div class="grow"><div class="fr">${esc(w.fr)}</div><div class="small muted">${esc(w.en)}</div></div><span class="pill lv">${esc(w.level)}</span>${st(w)}</div>`).join('')}</div></div>
@@ -2311,7 +2392,7 @@ function viewUnit(v){
     ${u.conj?`<button class="btn primary" data-start="conj" type="button">Conjugation · 10</button>`:''}
     ${u.mc.length?`<button class="btn ${u.conj?'':'primary'}" data-start="mc" type="button">Quiz · ${u.mc.length}</button>`:''}
     ${u.conj&&u.mc.length?`<button class="btn" data-start="mix" type="button">Mixed · 12</button>`:''}
-    <button class="btn" data-start="ai" type="button" data-needs-ai>New exercises with Claude</button></div><div data-ai-gate>${aiGate()}</div><div id="u-out"></div></div></div>`;
+    <button class="btn" data-start="ai" type="button" data-needs-ai>New exercises with AI</button></div><div data-ai-gate>${aiGate()}</div><div id="u-out"></div></div></div>`;
   $$('[data-start]',v).forEach(b=>b.onclick=async()=>{
     const k=b.dataset.start;let items=[];
     const conjItems=n=>Array.from({length:n},()=>makeConjItem(VERB_SETS[u.conj.verbs],u.conj.tenses));
@@ -2442,7 +2523,7 @@ function viewProgres(v){
 }
 
 /* ================= SETTINGS ================= */
-function openSettings(){
+function openSettings(focus){
   const voices=TTS.voices;
   openModal(`<div class="stack">
    <div class="row between"><h2>Réglages</h2><button class="btn ghost sm" data-close type="button">Done</button></div>
@@ -2451,6 +2532,19 @@ function openSettings(){
    <div><label class="lbl" for="s-rate">Reading speed: <span id="s-rv">${ST.rate}</span></label><input type="range" id="s-rate" min="0.5" max="1.3" step="0.05" value="${ST.rate}" style="width:100%"></div>
    <label class="row small" style="gap:8px"><input type="checkbox" id="s-acc" ${ST.strictAccents?'checked':''}> Count missing accents as mistakes</label>
    <hr class="sep">
+   <div class="stack" id="s-ai" style="gap:10px"><b>AI connection</b>${IN_CLAUDE?`<p class="small muted">Inside Claude, the AI features use your Claude account. In the GitHub version of the app you can connect a free Google Gemini or Mistral key instead.</p>`:`
+    <p class="small muted">The AI features (translation, corrections, conversations, stories, exercises) use a free key from Google Gemini or Mistral. The key stays only in this browser on this device.</p>
+    <div><label class="lbl">Use</label><div class="seg" id="s-prov">${[['auto','Automatic'],['gemini','Gemini'],['mistral','Mistral']].map(([k,l])=>`<button type="button" data-p="${k}" aria-pressed="${aiPref()===k}">${l}</button>`).join('')}</div></div>
+    ${Object.entries(PROVIDERS).map(([k,pv])=>`<div class="card flat stack" style="gap:8px;padding:14px"><div class="row between"><b>${pv.name}</b><span class="pill ${aiKey(k)?'ok':''}" id="s-st-${k}">${aiKey(k)?'Key saved':'No key'}</span></div>
+      <div class="row" style="flex-wrap:nowrap;gap:6px"><input type="password" id="s-key-${k}" value="${esc(aiKey(k))}" placeholder="Paste your ${pv.name} API key" autocomplete="off" data-noaccent="1"><button class="btn sm" type="button" data-test="${k}">Test</button></div>
+      <details><summary class="small muted" style="cursor:pointer">How to get a free key · model</summary><div class="small muted stack" style="gap:6px;margin-top:6px">
+       ${k==='gemini'?`<ol style="margin:0;padding-left:18px"><li>Open <a href="${pv.keyUrl}" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with a Google account.</li><li>Tap <b>Create API key</b>, then copy it.</li><li>Paste it above and tap <b>Test</b>.</li></ol><p>Free tier with daily limits. Google may use free-tier requests to improve its products, so don't paste private information.</p>`
+       :`<ol style="margin:0;padding-left:18px"><li>Open <a href="${pv.keyUrl}" target="_blank" rel="noopener">console.mistral.ai/api-keys</a> and create an account.</li><li>Choose the free <b>Experiment</b> plan (it may ask to verify your phone number).</li><li>Create a key, copy it, paste it above and tap <b>Test</b>.</li></ol><p>Free plan with rate limits. Mistral may use free-plan requests to train its models, so don't paste private information.</p>`}
+       <label class="lbl" for="s-model-${k}" style="margin-top:4px">Model (leave empty for ${pv.model})</label><input type="text" id="s-model-${k}" value="${esc(localStorage.getItem('cahier.ai.model.'+k)||'')}" placeholder="${pv.model}" data-noaccent="1"></div></details>
+      <div class="small" id="s-res-${k}"></div></div>`).join('')}
+    <p class="tiny muted">Now using: <b id="s-now">${AI.prov?AI.name():'nothing yet'}</b></p>`}
+   </div>
+   <hr class="sep">
    <div class="stack" style="gap:6px"><b>Start over</b><p class="small muted">Deletes your progress, words, journal and mistakes. Your saved texts are kept.</p><div><button class="btn danger" id="s-reset" type="button">Reset progress</button></div></div>
   </div>`,(sheet)=>{
     $('#s-name',sheet).oninput=e=>{ST.name=e.target.value.trim()||'toi';save();};
@@ -2458,6 +2552,23 @@ function openSettings(){
     const st=$('#s-test',sheet);if(st)st.onclick=()=>TTS.speak("Bonjour ! Aujourd'hui, j'ai pris le tram et je suis allé au bureau.");
     $('#s-rate',sheet).oninput=e=>{ST.rate=+e.target.value;$('#s-rv',sheet).textContent=ST.rate;save();};
     $('#s-acc',sheet).onchange=e=>{ST.strictAccents=e.target.checked;save();};
+    if(!IN_CLAUDE){
+      const now=()=>{AI.refresh();$('#s-now',sheet).textContent=AI.prov?AI.name():'nothing yet';};
+      $$('#s-prov button',sheet).forEach(b=>b.onclick=()=>{aiSet('cahier.ai.pref',b.dataset.p==='auto'?'':b.dataset.p);$$('#s-prov button',sheet).forEach(x=>x.setAttribute('aria-pressed',x===b));now();});
+      Object.keys(PROVIDERS).forEach(k=>{
+        const inp=$('#s-key-'+k,sheet);
+        inp.oninput=()=>{aiSet('cahier.ai.key.'+k,inp.value.trim());const st=$('#s-st-'+k,sheet);st.textContent=inp.value.trim()?'Key saved':'No key';st.className='pill '+(inp.value.trim()?'ok':'');now();};
+        $('#s-model-'+k,sheet).oninput=e=>aiSet('cahier.ai.model.'+k,e.target.value.trim());
+      });
+      $$('[data-test]',sheet).forEach(b=>b.onclick=async()=>{
+        const k=b.dataset.test,out=$('#s-res-'+k,sheet);
+        if(!aiKey(k)){out.innerHTML='<span style="color:var(--warn)">Paste a key first.</span>';return;}
+        out.innerHTML='<span class="spinner"></span> Testing…';
+        try{const t=await extCall(k,[{role:'user',content:'Réponds seulement : « Ça marche ! »'}],{});out.innerHTML=`<span style="color:var(--ok)">✓ Connected. It said: ${esc(t.trim().slice(0,60))}</span>`;}
+        catch(e){const prev=AI.prov;AI.prov=k;out.innerHTML=`<span style="color:var(--red)">${esc(aiMsg(e))}${e.code==='network'?' If your connection works, this service may be blocking requests from the browser: try the other one.':''}</span>`;AI.prov=prev;}
+      });
+      if(focus==='ai')setTimeout(()=>$('#s-ai',sheet).scrollIntoView({block:'start'}),50);
+    }
     const r=$('#s-reset',sheet);r.onclick=()=>{if(!r.dataset.sure){r.dataset.sure=1;r.textContent='Tap again to confirm';return;}const keep={name:ST.name,voice:ST.voice,rate:ST.rate};ST=migrate({...defaultState(),...keep,updatedAt:Date.now()});save();modalClose&&modalClose();go('today');toast('Progress reset.');};
   });
 }
