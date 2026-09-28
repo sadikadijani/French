@@ -1150,8 +1150,8 @@ const Sync={col:null,ready:false,timer:null,busy:false,
   async deleteText(id){if(!this.ready||!this.col)return;try{await this.col.doc('t_'+id).delete();}catch(e){console.warn(e);}}
 };
 function save(){ST.updatedAt=Date.now();lsSet(LS_KEY,ST);Sync.pushState();}
-function saveUserText(t){t.updatedAt=Date.now();const i=USER_TEXTS.findIndex(x=>x.id===t.id);if(i>=0)USER_TEXTS[i]=t;else USER_TEXTS.unshift(t);lsSet(LS_TEXTS,USER_TEXTS);Sync.saveText(t);}
-function deleteUserText(id){USER_TEXTS=USER_TEXTS.filter(t=>t.id!==id);lsSet(LS_TEXTS,USER_TEXTS);Sync.deleteText(id);}
+function saveUserText(t){t.updatedAt=Date.now();ST.updatedAt=Date.now();if(typeof GistSync!=='undefined')GistSync.schedule();const i=USER_TEXTS.findIndex(x=>x.id===t.id);if(i>=0)USER_TEXTS[i]=t;else USER_TEXTS.unshift(t);lsSet(LS_TEXTS,USER_TEXTS);Sync.saveText(t);}
+function deleteUserText(id){tomb(id);USER_TEXTS=USER_TEXTS.filter(t=>t.id!==id);lsSet(LS_TEXTS,USER_TEXTS);Sync.deleteText(id);}
 
 function act(k,n=1){const d=dayKey();ST.activity[d]=ST.activity[d]||{};ST.activity[d][k]=(ST.activity[d][k]||0)+n;save();}
 const todayAct=()=>ST.activity[dayKey()]||{};
@@ -1768,7 +1768,7 @@ function viewSheet(v){
 
   $('#sh-read').onclick=async()=>{const all=[];sh.sections.forEach(s=>s.items.forEach(it=>all.push(sentenceWith(it,true))));let i=0;const next=()=>{if(i<all.length&&route==='exos')TTS.speak(all[i++],{onend:next});};next();};
   $('#sh-reset').onclick=()=>{const b=$('#sh-reset');if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Tap again to clear';return;}sh.sections.forEach(s=>s.items.forEach(it=>{it.ans=it.ans.map(()=>'');it.res=it.res.map(()=>null);it.why='';it.blanks.forEach(bl=>delete bl.right);}));save();viewSheet(v);paintAI();};
-  $('#sh-del').onclick=()=>{const b=$('#sh-del');if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Tap again to delete';return;}ST.sheets=ST.sheets.filter(x=>x.id!==sh.id);save();go('exos');};
+  $('#sh-del').onclick=()=>{const b=$('#sh-del');if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Tap again to delete';return;}tomb(sh.id);ST.sheets=ST.sheets.filter(x=>x.id!==sh.id);save();go('exos');};
   $('#sh-raw').onclick=()=>openModal(`<div class="stack"><div class="row between"><h2>Original text</h2><button class="btn ghost sm" data-close type="button">Close</button></div><pre class="translatable" style="white-space:pre-wrap;font-family:var(--f-read);margin:0">${esc(sh.raw||'')}</pre></div>`);
   const aiB=$('#sh-ai');
   if(aiB) aiB.onclick=async()=>{
@@ -2028,7 +2028,7 @@ function viewNotebook(v){
     const id=b.dataset.rm;
     if(L){L.ids=L.ids.filter(x=>x!==id);save();re();return;}
     if(!b.dataset.sure){b.dataset.sure=1;b.textContent='?';b.title='Tap again to remove from your notebook and all lists';return;}
-    ST.customVocab=ST.customVocab.filter(w=>w.id!==id);ST.nbRefs=(ST.nbRefs||[]).filter(x=>x!==id);lists().forEach(l=>l.ids=l.ids.filter(x=>x!==id));if(id.startsWith('c'))delete ST.srs[id];save();paintChrome();re();});
+    tomb(id);ST.customVocab=ST.customVocab.filter(w=>w.id!==id);ST.nbRefs=(ST.nbRefs||[]).filter(x=>x!==id);lists().forEach(l=>l.ids=l.ids.filter(x=>x!==id));if(id.startsWith('c'))delete ST.srs[id];save();paintChrome();re();});
   $('#nb-copy').onclick=()=>copyText((L?L.name+'\n':'')+base.map(w=>`${w.fr} — ${w.en||'?'}${w.ex?`  (${w.ex})`:''}`).join('\n'));
   $('#nb-prac').onclick=()=>{
     const now=Date.now();
@@ -2039,7 +2039,7 @@ function viewNotebook(v){
   if(L){
     $('#nl-ren').onclick=()=>{$('#nl-renrow').hidden=false;$('#nl-name').focus();};
     $('#nl-ok').onclick=()=>{L.name=$('#nl-name').value.trim()||L.name;save();re();};
-    const d=$('#nl-del');d.onclick=()=>{if(!d.dataset.sure){d.dataset.sure=1;d.textContent='Tap again: delete list (words stay)';return;}ST.lists=lists().filter(x=>x.id!==L.id);if(ST.lastList===L.id)ST.lastList='';save();go('notebook');};
+    const d=$('#nl-del');d.onclick=()=>{if(!d.dataset.sure){d.dataset.sure=1;d.textContent='Tap again: delete list (words stay)';return;}tomb(L.id);ST.lists=lists().filter(x=>x.id!==L.id);if(ST.lastList===L.id)ST.lastList='';save();go('notebook');};
   }else{
     $('#nl-new').onclick=()=>{$('#nl-newrow').hidden=false;const i=$('#nl-newname');i.focus();i.select();};
     $('#nl-create').onclick=()=>{const l=createList($('#nl-newname').value);go('notebook',{list:l.id});};
@@ -2837,7 +2837,7 @@ function viewCarnet(v){
    ${list.length?`<div class="list">${list.map(m=>`<div class="li" style="align-items:flex-start"><div class="grow stack" style="gap:3px"><div class="err" style="padding:0"><div class="pair"><s>${esc(m.wrong)}</s> → <b>${esc(m.right)}</b></div></div>${m.why?`<div class="small muted">${esc(m.why)}</div>`:''}<div class="tiny muted">${esc(src[m.src]||m.src)} · ${esc(frDate(m.t,{day:'numeric',month:'short'}))}${m.fixed?` · ${m.fixed}/2 ✓`:''}</div></div>${spk(m.right)}<button class="iconbtn" type="button" data-del="${m.id}" aria-label="Delete">✕</button></div>`).join('')}</div>`:`<div class="empty">No mistakes here. Your corrections from Ma journée, the texts, grammar and conversations will appear here.</div>`}
   </div>`;
   $$('#mf button').forEach(b=>b.onclick=()=>go('carnet',{f:b.dataset.f}));
-  $$('[data-del]').forEach(b=>b.onclick=()=>{ST.mistakes=ST.mistakes.filter(m=>m.id!==b.dataset.del);save();viewCarnet(v);paintChrome();});
+  $$('[data-del]').forEach(b=>b.onclick=()=>{tomb(b.dataset.del);ST.mistakes=ST.mistakes.filter(m=>m.id!==b.dataset.del);save();viewCarnet(v);paintChrome();});
   $('#m-rev').onclick=()=>{MREV={list:shuffle(list).slice(0,10),i:0,ok:0,answered:false};go('carnet',{review:1,f});};
 }
 function paintMrev(v){
@@ -2851,7 +2851,7 @@ function paintMrev(v){
     if(MREV.answered){MREV.i++;MREV.answered=false;paintMrev(v);return;}
     const val=inp.value;if(!val.trim())return;
     const r=compareAns(val,m.right);const ok=r==='good'||r==='accent';
-    MREV.answered=true;if(ok){MREV.ok++;m.fixed=(m.fixed||0)+1;if(m.fixed>=2)ST.mistakes=ST.mistakes.filter(x=>x.id!==m.id);}
+    MREV.answered=true;if(ok){MREV.ok++;m.fixed=(m.fixed||0)+1;if(m.fixed>=2){tomb(m.id);ST.mistakes=ST.mistakes.filter(x=>x.id!==m.id);}}
     record(ok,'carnet');save();
     $('#mr-fb').innerHTML=`<div class="feedback ${ok?'good':'bad'}">${ok?'Correct ! ':'Answer: '}<span class="ans">${esc(m.right)}</span> ${spk(m.right)}</div>`;
     $('#mr-ok').textContent='Next →';inp.disabled=true;$('#mr-ok').focus();
@@ -2908,6 +2908,8 @@ function openSettings(focus){
     <p class="tiny muted">Now using: <b id="s-now">${AI.prov?AI.name():'nothing yet'}</b></p>`}
    </div>
    <hr class="sep">
+   <div class="stack" id="s-syncbox" style="gap:10px"><b>Sync between devices</b>${syncSettingsHtml()}</div>
+   <hr class="sep">
    <div class="stack" style="gap:6px"><b>Start over</b><p class="small muted">Deletes your progress, words, journal and mistakes. Your saved texts are kept.</p><div><button class="btn danger" id="s-reset" type="button">Reset progress</button></div></div>
   </div>`,(sheet)=>{
     $('#s-name',sheet).oninput=e=>{ST.name=e.target.value.trim()||'toi';save();};
@@ -2932,6 +2934,7 @@ function openSettings(focus){
       });
       if(focus==='ai')setTimeout(()=>$('#s-ai',sheet).scrollIntoView({block:'start'}),50);
     }
+    wireSyncSettings(sheet);if(focus==='sync')setTimeout(()=>$('#s-syncbox',sheet).scrollIntoView({block:'start'}),50);
     const r=$('#s-reset',sheet);r.onclick=()=>{if(!r.dataset.sure){r.dataset.sure=1;r.textContent='Tap again to confirm';return;}const keep={name:ST.name,voice:ST.voice,rate:ST.rate};ST=migrate({...defaultState(),...keep,updatedAt:Date.now()});save();modalClose&&modalClose();go('today');toast('Progress reset.');};
   });
 }
@@ -2947,6 +2950,143 @@ const VIEWS={verbes:viewVerbes,exos:viewExos,notebook:viewNotebook,today:viewTod
   Sync.init();
 })();
 
+
+/* ================= AUTO-UPDATE + SYNC BETWEEN DEVICES (GitHub version) ================= */
+const APP_VERSION='20260928102638';
+/* --- tombstones so deletions sync too --- */
+function tomb(id){if(!id)return;ST.deleted=ST.deleted||{};ST.deleted[id]=Date.now();const k=Object.keys(ST.deleted);if(k.length>1500){k.sort((a,b)=>ST.deleted[a]-ST.deleted[b]).slice(0,300).forEach(x=>delete ST.deleted[x]);}}
+
+/* --- 1. automatic update check --- */
+async function checkForUpdate(){
+  if(IN_CLAUDE||APP_VERSION.startsWith('__')||!/^https?:/.test(location.protocol))return;
+  try{
+    const r=await fetch(location.pathname+'?check='+Date.now(),{cache:'no-store'});if(!r.ok)return;
+    const t=await r.text();const m=t.match(/const APP_VERSION='([^']+)'/);
+    if(!m||m[1]<=APP_VERSION)return;
+    let tried='';try{tried=sessionStorage.getItem('cahier.upd')||'';}catch(e){}
+    if(tried===m[1])return;
+    try{sessionStorage.setItem('cahier.upd',m[1]);}catch(e){}
+    GistSync.flush().finally(()=>{location.replace(location.pathname+'?v='+encodeURIComponent(m[1])+(location.hash||''));});
+  }catch(e){}
+}
+
+/* --- 2. sync through a secret GitHub gist --- */
+const GistSync={file:'cahier-sync.json',timer:null,busy:false,last:0,status:'',
+  token(){try{return (localStorage.getItem('cahier.sync.token')||'').trim();}catch(e){return '';}},
+  gist(){try{return localStorage.getItem('cahier.sync.gist')||'';}catch(e){return '';}},
+  on(){return !IN_CLAUDE&&!!this.token();},
+  async api(path,opt={}){
+    const r=await fetch('https://api.github.com'+path,{...opt,headers:{'Accept':'application/vnd.github+json','Authorization':'Bearer '+this.token(),...(opt.body?{'Content-Type':'application/json'}:{})},cache:'no-store'});
+    if(r.status===401||r.status===403)throw {code:'sync_auth',status:r.status};
+    if(r.status===404)throw {code:'sync_missing'};
+    if(!r.ok)throw {code:'sync_err',status:r.status};
+    return r.status===204?{}:r.json();
+  },
+  payload(){return JSON.stringify({app:'cahier',v:1,savedAt:Date.now(),state:ST,texts:USER_TEXTS});},
+  async findOrCreate(){
+    let id=this.gist();
+    if(id)return id;
+    for(let page=1;page<=3&&!id;page++){const list=await this.api('/gists?per_page=100&page='+page);const g=list.find(x=>x.files&&x.files[this.file]);if(g)id=g.id;if(list.length<100)break;}
+    if(!id){const g=await this.api('/gists',{method:'POST',body:JSON.stringify({description:'Cahier de Français — sync between devices',public:false,files:{[this.file]:{content:this.payload()}}})});id=g.id;}
+    try{localStorage.setItem('cahier.sync.gist',id);}catch(e){}
+    return id;
+  },
+  async readRemote(id){
+    const g=await this.api('/gists/'+id);const f=g.files&&g.files[this.file];if(!f)return null;
+    let txt=f.content;
+    if(f.truncated&&f.raw_url){const r=await fetch(f.raw_url,{cache:'no-store'});txt=await r.text();}
+    try{return JSON.parse(txt);}catch(e){return null;}
+  },
+  async pull(){
+    if(!this.on()||this.busy)return;
+    this.busy=true;this.setStatus('Syncing…');
+    try{
+      const id=await this.findOrCreate();
+      const remote=await this.readRemote(id);
+      if(remote&&remote.state){
+        const before=JSON.stringify([ST,USER_TEXTS]);
+        mergeRemote(remote);
+        if(JSON.stringify([ST,USER_TEXTS])!==before){lsSet(LS_KEY,ST);lsSet(LS_TEXTS,USER_TEXTS);render(true);}
+      }
+      await this.push(true);
+      this.last=Date.now();this.setStatus('Synced '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));
+    }catch(e){this.fail(e);}
+    this.busy=false;
+  },
+  async push(inner){
+    if(!this.on())return;
+    if(this.busy&&!inner){this.schedule();return;}
+    try{
+      const id=await this.findOrCreate();
+      await this.api('/gists/'+id,{method:'PATCH',body:JSON.stringify({files:{[this.file]:{content:this.payload()}}})});
+      this.last=Date.now();if(!inner)this.setStatus('Synced '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));
+    }catch(e){if(e.code==='sync_missing'){try{localStorage.removeItem('cahier.sync.gist');}catch(x){}}if(!inner)this.fail(e);else throw e;}
+  },
+  schedule(){if(!this.on())return;clearTimeout(this.timer);this.timer=setTimeout(()=>this.push(),4000);},
+  flush(){if(!this.on()||!this.timer)return Promise.resolve();clearTimeout(this.timer);this.timer=null;return this.push().catch(()=>{});},
+  fail(e){this.setStatus(e&&e.code==='sync_auth'?'Sync key refused: check it in Réglages':e&&e.code==='sync_missing'?'Sync note not found: it will be recreated':'Sync failed (offline?) — will retry');},
+  setStatus(s){this.status=s;const el=$('#sync-status');if(el)el.textContent=s;}
+};
+function mergeRemote(remote){
+  const R=migrate(JSON.parse(JSON.stringify(remote.state)));const L=ST;
+  const newer=(R.updatedAt||0)>(L.updatedAt||0);
+  const base=newer?R:L,other=newer?L:R;
+  const dead={...(L.deleted||{}),...(R.deleted||{})};
+  const out=JSON.parse(JSON.stringify(base));out.deleted=dead;
+  const alive=x=>x&&!dead[x.id];
+  const byId=(a,b)=>{const m=new Map();[...(b||[]),...(a||[])].forEach(x=>{if(x&&x.id)m.set(x.id,x);});return [...m.values()].filter(alive);};
+  out.customVocab=byId(base.customVocab,other.customVocab);
+  out.sheets=byId(base.sheets,other.sheets).sort((a,b)=>(b.created||0)-(a.created||0));
+  out.journal=byId(base.journal,other.journal).sort((a,b)=>b.t-a.t).slice(0,40);
+  out.mistakes=byId(base.mistakes,other.mistakes).sort((a,b)=>b.t-a.t).slice(0,250);
+  const lm=new Map();[...(other.lists||[]),...(base.lists||[])].forEach(l=>{if(!l||dead[l.id])return;const e=lm.get(l.id);lm.set(l.id,e?{...l,ids:[...new Set([...l.ids,...e.ids])]}:{...l,ids:[...l.ids]});});
+  out.lists=[...lm.values()].map(l=>({...l,ids:l.ids.filter(i=>!dead[i])})).sort((a,b)=>(b.created||0)-(a.created||0));
+  const uni=(a,b)=>[...new Set([...(a||[]),...(b||[])])].filter(x=>!dead[x]);
+  out.myVerbs=uni(base.myVerbs,other.myVerbs);out.nbRefs=uni(base.nbRefs,other.nbRefs);out.verbRecent=uni(base.verbRecent,other.verbRecent).slice(0,12);
+  out.srs={...other.srs};for(const [k,c] of Object.entries(base.srs||{})){const o=out.srs[k];if(!o||(c.reps||0)>(o.reps||0)||((c.reps||0)===(o.reps||0)&&(c.due||0)>=(o.due||0)))out.srs[k]=c;}
+  for(const k of Object.keys(out.srs))if(dead[k])delete out.srs[k];
+  out.activity={};for(const src of [other.activity||{},base.activity||{}])for(const [d,a] of Object.entries(src)){out.activity[d]=out.activity[d]||{};for(const [k,n] of Object.entries(a))out.activity[d][k]=Math.max(out.activity[d][k]||0,n);}
+  out.textsRead={...(other.textsRead||{}),...(base.textsRead||{})};
+  out.unitScores={...(other.unitScores||{})};for(const [k,s] of Object.entries(base.unitScores||{})){const o=out.unitScores[k];out.unitScores[k]=o?{...s,best:Math.max(s.best||0,o.best||0),n:Math.max(s.n||0,o.n||0)}:s;}
+  for(const k of ['verbTables','verbEx','dict','extraDrills'])out[k]={...(other[k]||{}),...(base[k]||{})};
+  const rs=new Map();[...(other.results||[]),...(base.results||[])].forEach(r=>rs.set(r.t+':'+r.src,r));out.results=[...rs.values()].sort((a,b)=>a.t-b.t).slice(-300);
+  out.updatedAt=Math.max(L.updatedAt||0,R.updatedAt||0);
+  ST=migrate(out);
+  const tm=new Map();[...(remote.texts||[]),...USER_TEXTS].forEach(t=>{if(!t||dead[t.id])return;const e=tm.get(t.id);if(!e||(t.updatedAt||0)>=(e.updatedAt||0))tm.set(t.id,t);});
+  USER_TEXTS=[...tm.values()].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+}
+function syncSettingsHtml(){
+  if(IN_CLAUDE) return `<p class="small muted">Inside Claude, your progress is saved to your Claude account automatically.</p>`;
+  const on=GistSync.on();
+  return `<p class="small muted">Keeps your words, lists, exercises and progress the same on your iPhone, iPad and computer, using a secret note (a “gist”) in your GitHub account. Paste the same key on each device.</p>
+   <div class="row" style="flex-wrap:nowrap;gap:6px"><input type="password" id="s-sync" value="${esc(GistSync.token())}" placeholder="GitHub key (starts with ghp_ or github_pat_)" autocomplete="off" data-noaccent="1"><button class="btn sm" id="s-sync-go" type="button">${on?'Sync now':'Connect'}</button></div>
+   <div class="small" id="sync-status" style="color:var(--ink-2)">${esc(GistSync.status||(on?'Connected':'Not connected'))}</div>
+   <details><summary class="small muted" style="cursor:pointer">How to get the key (3 minutes, once)</summary><ol class="small muted" style="margin:6px 0 0;padding-left:18px">
+    <li>On any device, open <a href="https://github.com/settings/tokens/new?scopes=gist&description=Cahier%20sync" target="_blank" rel="noopener">github.com/settings/tokens/new</a> and sign in. The link pre-selects the <b>gist</b> permission only.</li>
+    <li>Set <b>Expiration</b> to <b>No expiration</b> (or 1 year), scroll down and tap <b>Generate token</b>.</li>
+    <li>Copy the key (starts with <b>ghp_</b>). GitHub shows it only once — keep it in a safe note.</li>
+    <li>Paste it here and tap <b>Connect</b>, then do the same on your other devices.</li></ol>
+    <p class="tiny muted" style="margin-top:6px">This key can only create and edit gists: it can't touch your repositories or account. The key stays on your devices.</p></details>`;
+}
+function wireSyncSettings(sheet){
+  if(IN_CLAUDE)return;
+  const i=$('#s-sync',sheet),b=$('#s-sync-go',sheet);if(!i)return;
+  const saveKey=()=>{const v=i.value.trim();try{if(v)localStorage.setItem('cahier.sync.token',v);else{localStorage.removeItem('cahier.sync.token');localStorage.removeItem('cahier.sync.gist');}}catch(e){}};
+  i.onchange=saveKey;
+  b.onclick=async()=>{saveKey();if(!GistSync.on()){GistSync.setStatus('Paste your GitHub key first.');return;}b.disabled=true;await GistSync.pull();b.disabled=false;b.textContent='Sync now';};
+}
+/* start: pull on open and whenever the app comes back to the screen; push shortly after every change */
+(function(){
+  if(IN_CLAUDE)return;
+  const oldSave=save;
+  save=function(){oldSave();GistSync.schedule();};
+  setTimeout(()=>{checkForUpdate();GistSync.pull();},800);
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible'){checkForUpdate();if(Date.now()-GistSync.last>15000)GistSync.pull();}
+    else GistSync.flush();
+  });
+  window.addEventListener('pagehide',()=>GistSync.flush());
+})();
 
 </script>
 </body>
