@@ -198,6 +198,12 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:0}
 .toast{background:var(--ink);color:var(--paper);border-radius:10px;padding:10px 16px;font-weight:500;font-size:.9rem;box-shadow:var(--shadow);animation:tin .25s ease}
 .toast.good{background:var(--ok);color:#fff}
 @keyframes tin{from{opacity:0;transform:translateY(8px)}}
+
+.navic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#tab-more svg{fill:currentColor;stroke:none}
+.ansline{display:block;line-height:32px;color:var(--ok);font-family:var(--f-read)}
+.ansline .anstext{color:var(--ink)}
+.ansline .iconbtn{width:26px;height:26px;vertical-align:middle}
 #accentbar{position:fixed;left:0;right:0;bottom:0;z-index:65;display:flex;gap:4px;justify-content:center;flex-wrap:wrap;background:var(--surface-2);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
 #accentbar button{min-width:34px;height:34px;border-radius:7px;border:1px solid var(--line);background:var(--surface);font-family:var(--f-read);font-size:1.05rem}
 
@@ -1700,7 +1706,7 @@ function viewSheet(v){
    <div class="row">
     <button class="btn primary" id="sh-check" type="button">Check</button>
     <button class="btn" id="sh-ai" type="button" ${AI.on()?'':'hidden'}>Check &amp; explain with AI</button>
-    <button class="btn ghost" id="sh-show" type="button">Show answers</button>
+    <button class="btn ghost" id="sh-show" type="button">${sh.showAns?'Hide answers':'Show answers'}</button>
     <button class="btn ghost" id="sh-read" type="button">▶ Read all</button>
     <button class="btn ghost" id="sh-reset" type="button">Reset</button></div>
    <div id="sh-score"></div>
@@ -1730,7 +1736,10 @@ function viewSheet(v){
       it.blanks.forEach((bl,b)=>{const inp=$(`.blank-in[data-k="${si}:${ii}:${b}"]`,v);inp.classList.remove('ok','bad','close');if(it.res[b])inp.classList.add(it.res[b]);if(it.res[b]){tot++;if(it.res[b]==='ok')ok++;}});
       const fb=$(`[data-f="${si}:${ii}"]`,v);
       const notes=it.blanks.map((bl,b)=>it.res[b]==='bad'&&bl.right?`<span class="hand">${esc(bl.right)}</span>`:it.res[b]==='close'?`<span class="tiny" style="color:var(--warn)">accents</span>`:'').filter(Boolean);
-      fb.innerHTML=(notes.length?' '+notes.join(' '):'')+(it.why?`<span class="tr" style="line-height:1.5;padding-bottom:6px">${esc(it.why)}</span>`:'');
+      const full=(sh.showAns||it.res.some(r=>r==='bad'))&&it.blanks.some(bl=>bl.right||bl.local)?sentenceWith(it,true):'';
+      fb.innerHTML=(notes.length?' '+notes.join(' '):'')
+        +(full?`<span class="ansline"><span class="tiny muted">✓</span> <span class="anstext">${tokenHtml(full)}</span> <button class="iconbtn" type="button" data-say="${esc(full)}" aria-label="Listen to the correct sentence">${ICON.play}</button></span>`:'')
+        +(it.why?`<span class="tr" style="line-height:1.5;padding-bottom:6px">${esc(it.why)}</span>`:'');
     }));
     $('#sh-score',v).innerHTML=tot?`<div class="note"><b class="num">${ok}/${tot}</b> correct${unk?'':''}.</div>`:'';
   };
@@ -1751,10 +1760,12 @@ function viewSheet(v){
     else if(!checked) toast('Fill in some blanks first.');
   };
   $('#sh-show').onclick=()=>{
-    let n=0;
-    sh.sections.forEach((s,si)=>s.items.forEach((it,ii)=>it.blanks.forEach((bl,b)=>{const ans=bl.right||(bl.local&&bl.local[0]);if(ans&&!it.ans[b]){const inp=$(`.blank-in[data-k="${si}:${ii}:${b}"]`,v);inp.placeholder=ans;n++;}})));
-    toast(n?'Answers shown in grey inside the empty blanks.':AI.on()?'No automatic answers here. Use “Check & explain with AI”.':'No automatic answers for these blanks.');
+    const any=sh.sections.some(s=>s.items.some(it=>it.blanks.some(bl=>bl.right||bl.local)));
+    if(!any){toast(AI.on()?'No automatic answers here. Use “Check & explain with AI”.':'No automatic answers for these blanks.');return;}
+    sh.showAns=!sh.showAns;save();paintFb();$('#sh-show').textContent=sh.showAns?'Hide answers':'Show answers';
+    if(sh.showAns)toast('Correct sentences shown under each line. Tap a word to translate, ▶ to listen.');
   };
+
   $('#sh-read').onclick=async()=>{const all=[];sh.sections.forEach(s=>s.items.forEach(it=>all.push(sentenceWith(it,true))));let i=0;const next=()=>{if(i<all.length&&route==='exos')TTS.speak(all[i++],{onend:next});};next();};
   $('#sh-reset').onclick=()=>{const b=$('#sh-reset');if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Tap again to clear';return;}sh.sections.forEach(s=>s.items.forEach(it=>{it.ans=it.ans.map(()=>'');it.res=it.res.map(()=>null);it.why='';it.blanks.forEach(bl=>delete bl.right);}));save();viewSheet(v);paintAI();};
   $('#sh-del').onclick=()=>{const b=$('#sh-del');if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Tap again to delete';return;}ST.sheets=ST.sheets.filter(x=>x.id!==sh.id);save();go('exos');};
@@ -2054,16 +2065,29 @@ const suggestText=()=>{const ts=allTexts().filter(t=>t.level===ST.level);return 
 /* ================= ROUTER ================= */
 const ROUTES=[{id:'today',t:"Aujourd'hui",tab:1},{id:'journee',t:'Ma journée',s:'Journée',tab:1},{id:'textes',t:'Textes',tab:1},{id:'exos',t:'Exercices'},{id:'parler',t:'Parler',tab:1},{id:'mots',t:'Mots',tab:1},{id:'notebook',t:'Mes mots'},{id:'grammaire',t:'Grammaire',s:'Gramm.',tab:1},{id:'verbes',t:'Verbes'},{id:'carnet',t:"Carnet d'erreurs"},{id:'progres',t:'Progrès'}];
 let route='today',params={};
-function go(r,p={}){TTS.stop();hidePop();clearInterval(TIMER.h);TIMER.run=false;READ.playing=false;route=ROUTES.some(x=>x.id===r)?r:'today';params=p||{};try{if(location.hash!=='#'+route)history.replaceState(null,'','#'+route);}catch(e){}render();window.scrollTo(0,0);}
+function go(r,p={}){TTS.stop();hidePop();if(modalClose)modalClose();clearInterval(TIMER.h);TIMER.run=false;READ.playing=false;route=ROUTES.some(x=>x.id===r)?r:'today';params=p||{};try{if(location.hash!=='#'+route)history.replaceState(null,'','#'+route);}catch(e){}render();window.scrollTo(0,0);}
 function paintChrome(){
   const cur=r=>r.id===route?'aria-current="page"':'';
   $('#sidenav').innerHTML=ROUTES.map(r=>`<button type="button" data-go="${r.id}" ${cur(r)}>${ICON[r.id]}<span>${esc(r.t)}</span>${r.id==='notebook'&&ST.customVocab.length?`<span class="pill" style="margin-left:auto">${notebookWords().length}</span>`:''}${r.id==='carnet'&&ST.mistakes.length?`<span class="pill" style="margin-left:auto">${ST.mistakes.length}</span>`:''}</button>`).join('');
-  $('#tabbar').innerHTML=ROUTES.filter(r=>r.tab).map(r=>`<button type="button" data-go="${r.id}" ${cur(r)}>${ICON[r.id]}<span>${esc(r.s||r.t)}</span></button>`).join('');
+  const TABS=['today','journee','textes','mots','parler'];
+  const inMore=!TABS.includes(route);
+  $('#tabbar').innerHTML=TABS.map(id=>ROUTES.find(r=>r.id===id)).map(r=>`<button type="button" data-go="${r.id}" ${cur(r)}>${ICON[r.id]}<span>${esc(r.s||r.t)}</span></button>`).join('')
+    +`<button type="button" id="tab-more" ${inMore?'aria-current="page"':''}><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>${inMore?esc((ROUTES.find(r=>r.id===route)||{}).s||'More'):'More'}</span></button>`;
+  $('#tab-more').onclick=openMoreMenu;
   const chip=`<b>${ST.level}</b><span>${ST.mode==='adaptive'?'adaptatif':'manuel'}</span>`;
   $('#lvchip-side').innerHTML=chip;$('#lvchip-top').innerHTML=chip;
 }
 $('#lvchip-side').onclick=$('#lvchip-top').onclick=()=>go('progres');
 $('#settings-side').onclick=$('#settings-top').onclick=()=>openSettings();
+function openMoreMenu(){
+  const items=['exos','notebook','verbes','grammaire','carnet','progres'];
+  const sub={exos:"Your teacher's fill-in-the-blank sheets",notebook:'Saved words, expressions and lists',verbes:'Conjugation, examples, my verbs',grammaire:'The tense ladder',carnet:'Your mistakes to review',progres:'Level, streak, history'};
+  openModal(`<div class="stack"><div class="row between"><h2>More</h2><button class="btn ghost sm" data-close type="button">Close</button></div>
+   <div class="list">${items.map(id=>{const r=ROUTES.find(x=>x.id===id);return `<button type="button" class="li" data-go="${id}" style="width:100%;border-left:0;border-right:0;border-bottom:0;background:none;text-align:left;cursor:pointer"><span style="width:22px;color:var(--blue)" class="navic">${ICON[id]}</span><span class="grow"><b>${esc(r.t)}</b><br><span class="small muted">${sub[id]}</span></span><span class="muted">›</span></button>`;}).join('')}
+    <button type="button" class="li" id="more-set" style="width:100%;border-left:0;border-right:0;border-bottom:0;background:none;text-align:left;cursor:pointer"><span style="width:22px"></span><span class="grow"><b>Réglages</b><br><span class="small muted">Name, voice, AI connection</span></span><span class="muted">›</span></button></div></div>`,(sheet,close)=>{
+    $('#more-set',sheet).onclick=()=>{close();openSettings();};
+  });
+}
 function render(soft){
   paintChrome();
   if(soft){const a=document.activeElement;if((a&&a.matches('input,textarea'))||params.session||params.drill||CHAT.active)return;}
