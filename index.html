@@ -1187,23 +1187,23 @@ function fileToB64(f){return new Promise((res,rej)=>{const img=new Image();const
   img.onload=()=>{const s=Math.min(1,1600/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);res({type:'image/jpeg',b64:c.toDataURL('image/jpeg',0.85).split(',')[1]});};
   img.onerror=()=>{URL.revokeObjectURL(url);rej({code:'image_rejected'});};img.src=url;});}
 function extErr(status,d){
-  const msg=JSON.stringify(d||{}).toLowerCase();
-  if(status===401||status===403||(status===400&&/api[ _-]?key/.test(msg)))return {code:'bad_key'};
-  if(status===404)return {code:'bad_model'};
-  if(status===429)return {code:'rate_limited'};
-  if(status===413)return {code:'prompt_too_large'};
-  return {code:'upstream_error',message:msg.slice(0,200)};
+  const raw=(d&&d.error&&(d.error.message||d.error.status))||(d&&(d.message||d.detail&&JSON.stringify(d.detail)))||'';
+  const msg=String(raw).toLowerCase();
+  const base={status,detail:String(raw).slice(0,180)};
+  if(status===401||status===403||(status===400&&/api[ _-]?key/.test(msg)))return {code:'bad_key',...base};
+  if(status===404)return {code:'bad_model',...base};
+  if(status===429)return {code:'rate_limited',...base};
+  if(status===413)return {code:'prompt_too_large',...base};
+  return {code:'upstream_error',...base};
 }
-async function extCall(prov,turns,{json=false,images=null,signal}={}){
-  const key=aiKey(prov),model=aiModel(prov);
-  if(!key) throw {code:'unavailable'};
-  const imgs=[];if(images){const list=images instanceof Blob?[images]:[...images];for(const f of list.slice(0,3))imgs.push(await fileToB64(f));}
-  const merged=[];for(const t of turns){const role=t.role==='assistant'?'assistant':'user';const last=merged[merged.length-1];if(last&&last.role===role)last.content+='\n\n'+t.content;else merged.push({role,content:String(t.content)});}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function extRequest(prov,model,key,merged,imgs,json,signal){
   let res,d;
   try{
     if(prov==='gemini'){
       const contents=merged.map((t,i)=>({role:t.role==='assistant'?'model':'user',parts:[{text:t.content},...(i===merged.length-1?imgs.map(im=>({inline_data:{mime_type:im.type,data:im.b64}})):[])]}));
-      res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify({contents,generationConfig:json?{responseMimeType:'application/json',temperature:0.4}:{temperature:0.7}}),signal});
+      const gc=json?{responseMimeType:'application/json',temperature:0.4}:{temperature:0.7};
+      res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:JSON.stringify({contents,generationConfig:gc}),signal});
     }else{
       const messages=merged.map((t,i)=>({role:t.role,content:(i===merged.length-1&&imgs.length)?[{type:'text',text:t.content},...imgs.map(im=>({type:'image_url',image_url:`data:${im.type};base64,${im.b64}`}))]:t.content}));
       res=await fetch('https://api.mistral.ai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model,messages,temperature:json?0.3:0.7,...(json?{response_format:{type:'json_object'}}:{})}),signal});
@@ -1212,9 +1212,35 @@ async function extCall(prov,turns,{json=false,images=null,signal}={}){
   }catch(e){if(e&&e.name==='AbortError')throw {code:'cancelled'};throw {code:'network'};}
   if(!res.ok) throw extErr(res.status,d);
   let txt='';
-  if(prov==='gemini'){const c=d.candidates&&d.candidates[0];txt=((c&&c.content&&c.content.parts)||[]).map(p=>p.text||'').join('');if(!txt)throw {code:(d.promptFeedback&&d.promptFeedback.blockReason)||(c&&c.finishReason==='SAFETY')?'refused':'empty_completion'};}
-  else{const m=d.choices&&d.choices[0]&&d.choices[0].message;const c=m&&m.content;txt=Array.isArray(c)?c.map(x=>x.text||'').join(''):String(c||'');if(!txt)throw {code:'empty_completion'};}
+  if(prov==='gemini'){
+    const c=d.candidates&&d.candidates[0];
+    txt=((c&&c.content&&c.content.parts)||[]).filter(p=>!p.thought).map(p=>p.text||'').join('');
+    if(!txt){const why=(d.promptFeedback&&d.promptFeedback.blockReason)||(c&&c.finishReason)||'';throw {code:/SAFETY|BLOCK|PROHIBITED/.test(why)?'refused':'empty_completion',detail:why};}
+  }else{const m=d.choices&&d.choices[0]&&d.choices[0].message;const c=m&&m.content;txt=Array.isArray(c)?c.map(x=>x.text||'').join(''):String(c||'');if(!txt)throw {code:'empty_completion'};}
   return txt;
+}
+async function extCall(prov,turns,{json=false,images=null,signal}={}){
+  const key=aiKey(prov);let model=aiModel(prov);
+  if(!key) throw {code:'unavailable'};
+  const imgs=[];if(images){const list=images instanceof Blob?[images]:[...images];for(const f of list.slice(0,3))imgs.push(await fileToB64(f));}
+  const merged=[];for(const t of turns){const role=t.role==='assistant'?'assistant':'user';const last=merged[merged.length-1];if(last&&last.role===role)last.content+='\n\n'+t.content;else merged.push({role,content:String(t.content)});}
+  const custom=(localStorage.getItem('cahier.ai.model.'+prov)||'').trim();
+  const fallbacks=prov==='gemini'?[model,...(custom?[]:['gemini-2.5-flash','gemini-2.5-flash-lite'])]:[model,...(custom?[]:['mistral-small-2506','open-mistral-nemo'])];
+  let lastErr=null,useJson=json;
+  for(const m of [...new Set(fallbacks)]){
+    for(let attempt=0;attempt<3;attempt++){
+      try{return await extRequest(prov,m,key,merged,imgs,useJson,signal);}
+      catch(e){
+        lastErr=e;
+        if(e.code==='cancelled'||e.code==='bad_key'||e.code==='network'||e.code==='refused'||e.code==='prompt_too_large') throw e;
+        if(e.code==='upstream_error'&&e.status===400&&useJson){useJson=false;continue;}
+        if(e.code==='bad_model') break;
+        if((e.code==='upstream_error'&&(!e.status||e.status>=500))||e.code==='rate_limited'||e.code==='empty_completion'){ if(attempt<2){await sleep(1200*(attempt+1));continue;} break; }
+        break;
+      }
+    }
+  }
+  throw lastErr||{code:'upstream_error'};
 }
 const AI={fn:null,state:'loading',images:null,prov:null,claudeImages:null,
   async init(){
@@ -1259,7 +1285,8 @@ function aiMsg(e){
   const c=e&&e.code;
   if(AI.prov==='claude'&&(c==='not_granted'||c==='sampling_disabled'||c==='not_declared'||c==='capability_disabled')){AI.state='denied';paintAI();return 'Claude access is off for this page, so AI features are paused. Reload the page to be asked again.';}
   const who=AI.name();
-  return ({rate_limited:`${who}'s limit is reached for now. Wait a minute (or until tomorrow for the daily free limit), then try again.`,invalid_json:'The answer came back in an unexpected format. Try again.',refused:`${who} declined this request. Try rephrasing it.`,session_expired:'Your Claude session expired. Sign in again, then retry.',prompt_too_large:'That text is too long. Try a shorter part.',unavailable:'AI features need a connection: add a free Gemini or Mistral key in Réglages → AI, or open the app inside Claude.',image_rejected:"That image couldn't be read. Try a clearer JPG or PNG photo.",images_unavailable:"Photos can't be sent from this view. Paste the text instead.",cancelled:'Stopped.',empty_completion:'No answer came back. Try again.',bad_key:`Your ${who} key was refused. Check it in Réglages → AI.`,bad_model:`${who} doesn't know that model name. Reset it in Réglages → AI.`,network:`Couldn't reach ${who}. Check your internet connection and try again.`})[c]||`Something went wrong reaching ${who}. Try again.`;
+  const extra=e&&e.detail&&AI.prov!=='claude'?` (${who}: ${e.detail})`:'';
+  return (({rate_limited:`${who}'s limit is reached for now. Wait a minute (or until tomorrow for the daily free limit), then try again.`,invalid_json:'The answer came back in an unexpected format. Try again.',refused:`${who} declined this request. Try rephrasing it.`,session_expired:'Your Claude session expired. Sign in again, then retry.',prompt_too_large:'That text is too long. Try a shorter part.',unavailable:'AI features need a connection: add a free Gemini or Mistral key in Réglages → AI, or open the app inside Claude.',image_rejected:"That image couldn't be read. Try a clearer JPG or PNG photo.",images_unavailable:"Photos can't be sent from this view. Paste the text instead.",cancelled:'Stopped.',empty_completion:'No answer came back. Try again.',bad_key:`Your ${who} key was refused. Check it in Réglages → AI.`,bad_model:`${who} doesn't know that model name. Reset it in Réglages → AI.`,network:`Couldn't reach ${who}. Check your internet connection and try again.`})[c]||`Something went wrong reaching ${who}. Try again.`)+extra;
 }
 function aiGate(){
   if(AI.state==='loading') return `<div class="note">Connecting…</div>`;
