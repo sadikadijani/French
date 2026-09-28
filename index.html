@@ -180,10 +180,15 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:0}
 /* ---------- popover / modal / toast ---------- */
 #pop{position:fixed;z-index:60;width:min(320px,calc(100vw - 24px));background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:14px}
 #pop .pw{font-family:var(--f-read);font-size:1.25rem}
-#selbar{position:fixed;z-index:55;display:flex;gap:1px;background:var(--ink);border-radius:9px;overflow:hidden;box-shadow:var(--shadow)}
-#selbar button{background:var(--ink);color:var(--paper);border:0;padding:8px 13px;font-weight:600;font-size:.84rem}
+#selbar{position:fixed;z-index:55;display:flex;align-items:center;gap:1px;background:var(--ink);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);max-width:calc(100vw - 24px)}
+#selbar button{background:var(--ink);color:var(--paper);border:0;padding:9px 13px;font-weight:600;font-size:.86rem;white-space:nowrap}
 #selbar button:hover{background:color-mix(in srgb,var(--ink) 85%,var(--paper))}
-#selbar button + button{border-left:1px solid color-mix(in srgb,var(--paper) 25%,transparent)}
+#selbar button + button,#selbar span + button{border-left:1px solid color-mix(in srgb,var(--paper) 25%,transparent)}
+#sel-txt{display:none;color:var(--paper);opacity:.75;font-family:var(--f-read);font-size:.85rem;padding:0 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}
+#selbar.dock{left:12px!important;right:12px;top:auto!important;bottom:calc(76px + env(safe-area-inset-bottom,0px));border-radius:12px}
+#selbar.dock #sel-txt{display:block}
+#selbar.dock button{padding:12px 14px;font-size:.92rem}
+@media (min-width:861px){#selbar.dock{bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%!important;right:auto;transform:translateX(-50%);width:min(560px,calc(100vw - 280px))}}
 .nbrow .en.missing{color:var(--warn);font-style:italic}
 #modal{position:fixed;inset:0;z-index:70;background:rgba(10,12,30,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px}
 @media (min-width:640px){#modal{align-items:center}}
@@ -330,7 +335,7 @@ input.blank-in::placeholder{color:var(--ink-3);font-style:italic}
   <nav class="tabbar" id="tabbar" aria-label="Sections"></nav>
 </div>
 <div id="pop" hidden></div>
-<div id="selbar" hidden><button id="sel-tr" type="button">Traduire</button><button id="sel-add" type="button">+ Notebook</button></div>
+<div id="selbar" hidden><span id="sel-txt"></span><button id="sel-say" type="button" aria-label="Listen">▶</button><button id="sel-tr" type="button">Translate</button><button id="sel-add" type="button">+ Notebook</button></div>
 <div id="modal" hidden></div>
 <div id="toast" aria-live="polite"></div>
 <div id="accentbar" hidden></div>
@@ -1400,29 +1405,41 @@ async function pasteInto(input){
   input.focus();toast('Long-press the field and choose Paste.');
 }
 
-/* selection → translate / add */
+/* selection → translate / listen / add
+   Touch devices: the bar sits fixed above the tab bar (iOS shows its own menu near the selection),
+   it appears on selectionchange (handles can be dragged without touchend) and stays long enough to be tapped. */
 (function(){
   const bar=$('#selbar'),add=$('#sel-add');
+  const coarse=window.matchMedia&&matchMedia('(pointer:coarse)').matches;
+  let touchedAt=0,hideT=null,showT=null;
+  if(coarse) bar.classList.add('dock');
+  const hide=()=>{if(Date.now()-touchedAt<900)return;bar.hidden=true;};
   const check=()=>{
-    const sel=window.getSelection();const txt=sel?String(sel).replace(/\s+/g,' ').trim():'';
-    if(!txt||txt.length<2||txt.length>1500){bar.hidden=true;return;}
+    const sel=window.getSelection();const txt=sel&&sel.rangeCount?String(sel).replace(/\s+/g,' ').trim():'';
+    if(!txt||txt.length<2||txt.length>1500){clearTimeout(hideT);hideT=setTimeout(hide,coarse?600:0);return;}
     const node=sel.anchorNode&&(sel.anchorNode.nodeType===1?sel.anchorNode:sel.anchorNode.parentElement);
-    if(!node||!node.closest('.reader,.corr,.bubble,.translatable')){bar.hidden=true;return;}
-    const r=sel.getRangeAt(0).getBoundingClientRect();
-    add.hidden=txt.length>80;
+    if(!node||!node.closest('.reader,.corr,.bubble,.translatable')||node.closest('input,textarea')){hide();return;}
+    clearTimeout(hideT);
+    add.hidden=txt.length>220;
+    $('#sel-txt').textContent=txt.length>60?txt.slice(0,57)+'…':txt;
     bar.hidden=false;
-    bar.style.left=Math.min(Math.max(12,r.left+r.width/2-110),window.innerWidth-240)+'px';
-    bar.style.top=Math.max(12,r.top-50)+'px';
+    if(!coarse){const r=sel.getRangeAt(0).getBoundingClientRect();
+      bar.style.left=Math.min(Math.max(12,r.left+r.width/2-150),window.innerWidth-320)+'px';
+      bar.style.top=Math.max(12,r.top-50)+'px';}
     bar.dataset.text=txt;
     const s=node.closest('.sent');
-    bar.dataset.ctx=s?($('.fr',s)||s).textContent.trim():'';
+    bar.dataset.ctx=s?($('.fr',s)||s).textContent.replace(/\s+/g,' ').trim():'';
   };
+  document.addEventListener('selectionchange',()=>{clearTimeout(showT);showT=setTimeout(check,coarse?350:120);});
   document.addEventListener('mouseup',()=>setTimeout(check,10));
-  document.addEventListener('touchend',()=>setTimeout(check,250));
-  document.addEventListener('selectionchange',()=>{const s=window.getSelection();if(!s||!String(s).trim())bar.hidden=true;});
   bar.addEventListener('mousedown',e=>e.preventDefault());
-  $('#sel-tr').addEventListener('click',()=>{bar.hidden=true;openTranslate(bar.dataset.text,true);});
-  add.addEventListener('click',()=>{bar.hidden=true;const t=bar.dataset.text.replace(/^[«"“(\s]+|[»"”).,;:!?\s]+$/g,'');openAddWord({fr:t,ex:bar.dataset.ctx||'',src:currentSource()});});
+  bar.addEventListener('touchstart',()=>{touchedAt=Date.now();},{passive:true});
+  bar.addEventListener('pointerdown',()=>{touchedAt=Date.now();});
+  const txt=()=>bar.dataset.text||'';
+  const done=()=>{touchedAt=0;bar.hidden=true;try{window.getSelection().removeAllRanges();}catch(e){}};
+  $('#sel-tr').addEventListener('click',()=>{const t=txt();done();openTranslate(t,true);});
+  $('#sel-say').addEventListener('click',e=>{touchedAt=Date.now();TTS.speak(txt(),{btn:e.currentTarget});});
+  add.addEventListener('click',()=>{const t=txt().replace(/^[«"“(\s]+|[»"”).,;:!?\s]+$/g,''),ctx=bar.dataset.ctx||'';done();openAddWord({fr:t,ex:ctx&&ctx!==t?ctx:'',src:currentSource()});});
 })();
 function currentSource(){if(route==='textes'&&params.id){const t=allTexts().find(x=>x.id===params.id);if(t)return t.title;}if(route==='exos'&&params.id){const s=(ST.sheets||[]).find(x=>x.id===params.id);if(s)return s.title;}return ({journee:'Ma journée',parler:'Conversation'})[route]||'';}
 
