@@ -324,6 +324,7 @@ input.blank-in::placeholder{color:var(--ink-3);font-style:italic}
       <div class="brand-mark" aria-hidden="true">C</div>
       <div><div class="brand-name">Cahier</div><div class="brand-sub">de français</div></div>
     </div>
+    <button class="btn ghost sm nav-back" type="button" hidden style="justify-content:flex-start">← Back</button>
     <nav class="nav" id="sidenav" aria-label="Sections"></nav>
     <div class="side-foot">
       <button class="levelchip" id="lvchip-side" type="button"></button>
@@ -332,7 +333,7 @@ input.blank-in::placeholder{color:var(--ink-3);font-style:italic}
   </aside>
   <main>
     <header class="top">
-      <div class="brand"><div class="brand-mark" aria-hidden="true">C</div><div class="brand-name">Cahier</div></div>
+      <div class="row" style="gap:6px;flex-wrap:nowrap"><button class="iconbtn nav-back" type="button" aria-label="Back" hidden><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><div class="brand"><div class="brand-mark" aria-hidden="true">C</div><div class="brand-name">Cahier</div></div></div>
       <div class="row" style="gap:6px">
         <button class="levelchip" id="lvchip-top" type="button"></button>
         <button class="iconbtn" id="settings-top" type="button" aria-label="Réglages"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
@@ -2065,7 +2066,36 @@ const suggestText=()=>{const ts=allTexts().filter(t=>t.level===ST.level);return 
 /* ================= ROUTER ================= */
 const ROUTES=[{id:'today',t:"Aujourd'hui",tab:1},{id:'journee',t:'Ma journée',s:'Journée',tab:1},{id:'textes',t:'Textes',tab:1},{id:'exos',t:'Exercices'},{id:'parler',t:'Parler',tab:1},{id:'mots',t:'Mots',tab:1},{id:'notebook',t:'Mes mots'},{id:'grammaire',t:'Grammaire',s:'Gramm.',tab:1},{id:'verbes',t:'Verbes'},{id:'carnet',t:"Carnet d'erreurs"},{id:'progres',t:'Progrès'}];
 let route='today',params={};
-function go(r,p={}){TTS.stop();hidePop();if(modalClose)modalClose();clearInterval(TIMER.h);TIMER.run=false;READ.playing=false;route=ROUTES.some(x=>x.id===r)?r:'today';params=p||{};try{if(location.hash!=='#'+route)history.replaceState(null,'','#'+route);}catch(e){}render();window.scrollTo(0,0);}
+/* navigation with real history: the back swipe / back button returns to the exact page and scroll position */
+let NAV_DEPTH=0;
+const plainParams=o=>{try{return JSON.parse(JSON.stringify(o||{}));}catch(e){return {};}};
+function go(r,p={},opts={}){
+  TTS.stop();hidePop();if(modalClose)modalClose();clearInterval(TIMER.h);TIMER.run=false;READ.playing=false;
+  const nr=ROUTES.some(x=>x.id===r)?r:'today',np=p||{};
+  if(!opts.fromPop){
+    try{history.replaceState({route,params:plainParams(params),y:window.scrollY,d:NAV_DEPTH},'',location.href);}catch(e){}
+    NAV_DEPTH++;
+    try{history.pushState({route:nr,params:plainParams(np),y:0,d:NAV_DEPTH},'','#'+nr);}catch(e){}
+  }
+  route=nr;params=np;render();
+  const y=opts.y||0;window.scrollTo(0,y);if(y)requestAnimationFrame(()=>window.scrollTo(0,y));
+  paintBack();
+}
+function goBack(){if(NAV_DEPTH>0)history.back();else go('today');}
+function paintBack(){$$('.nav-back').forEach(b=>b.hidden=NAV_DEPTH<=0);}
+window.addEventListener('popstate',e=>{
+  const s=e.state;
+  if(!s||!s.route){NAV_DEPTH=0;go('today',{},{fromPop:true});return;}
+  NAV_DEPTH=s.d||0;go(s.route,s.params||{},{fromPop:true,y:s.y||0});
+});
+/* home-screen app on iPhone/iPad has no browser back swipe: add our own from the left edge */
+(function(){
+  const standalone=window.navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);
+  if(!standalone)return;
+  let sx=0,sy=0,on=false;
+  document.addEventListener('touchstart',e=>{const t=e.touches[0];on=t.clientX<28&&NAV_DEPTH>0;sx=t.clientX;sy=t.clientY;},{passive:true});
+  document.addEventListener('touchend',e=>{if(!on)return;on=false;const t=e.changedTouches[0];if(t.clientX-sx>70&&Math.abs(t.clientY-sy)<60)goBack();},{passive:true});
+})();
 function paintChrome(){
   const cur=r=>r.id===route?'aria-current="page"':'';
   $('#sidenav').innerHTML=ROUTES.map(r=>`<button type="button" data-go="${r.id}" ${cur(r)}>${ICON[r.id]}<span>${esc(r.t)}</span>${r.id==='notebook'&&ST.customVocab.length?`<span class="pill" style="margin-left:auto">${notebookWords().length}</span>`:''}${r.id==='carnet'&&ST.mistakes.length?`<span class="pill" style="margin-left:auto">${ST.mistakes.length}</span>`:''}</button>`).join('');
@@ -2944,6 +2974,8 @@ const VIEWS={verbes:viewVerbes,exos:viewExos,notebook:viewNotebook,today:viewTod
 (function boot(){
   const h=(location.hash||'').replace('#','');
   if(ROUTES.some(r=>r.id===h)) route=h;
+  try{history.replaceState({route,params:{},y:0,d:0},'',location.href);}catch(e){}
+  $$('.nav-back').forEach(b=>b.onclick=goBack);paintBack();
   TTS.init();
   render();
   AI.init();
@@ -2952,7 +2984,7 @@ const VIEWS={verbes:viewVerbes,exos:viewExos,notebook:viewNotebook,today:viewTod
 
 
 /* ================= AUTO-UPDATE + SYNC BETWEEN DEVICES (GitHub version) ================= */
-const APP_VERSION='20260928102638';
+const APP_VERSION='20261003131534';
 /* --- tombstones so deletions sync too --- */
 function tomb(id){if(!id)return;ST.deleted=ST.deleted||{};ST.deleted[id]=Date.now();const k=Object.keys(ST.deleted);if(k.length>1500){k.sort((a,b)=>ST.deleted[a]-ST.deleted[b]).slice(0,300).forEach(x=>delete ST.deleted[x]);}}
 
